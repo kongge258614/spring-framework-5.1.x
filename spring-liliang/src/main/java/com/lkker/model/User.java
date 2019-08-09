@@ -1,13 +1,11 @@
 package com.lkker.model;
 
-import org.springframework.stereotype.Component;
-
 /**
  * @Author liliang
  * @Date 2019/8/9 21:54
  * @Description
  **/
-@Component
+
 public class User {
 
 	private String id;
