@@ -83,6 +83,7 @@ public class AnnotationBeanNameGenerator implements BeanNameGenerator {
 	 * Derive a bean name from one of the annotations on the class.
 	 * @param annotatedDef the annotation-aware bean definition
 	 * @return the bean name, or {@code null} if none is found
+	 * 从一个类上获取bean的名字。
 	 */
 	@Nullable
 	protected String determineBeanNameFromAnnotation(AnnotatedBeanDefinition annotatedDef) {

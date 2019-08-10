@@ -38,6 +38,9 @@ import org.springframework.util.Assert;
  * This is an alternative to {@link ClassPathBeanDefinitionScanner}, applying
  * the same resolution of annotations but for explicitly registered classes only.
  *
+ * 	一个实用的适配器，有计划的注册被注解标注的bean 类
+ * 	这是一个 ClassPathBeanDefinitionScanner 的替代方案，使用相同的注解，但是仅仅是显示的注册类
+ *
  * @author Juergen Hoeller
  * @author Chris Beams
  * @author Sam Brannen
@@ -73,6 +76,7 @@ public class AnnotatedBeanDefinitionReader {
 	/**
 	 * Create a new {@code AnnotatedBeanDefinitionReader} for the given registry and using
 	 * the given {@link Environment}.
+	 *  为传入的registry创建一个新的 AnnotatedBeanDefinitionReader，使用传入的环境
 	 * @param registry the {@code BeanFactory} to load bean definitions into,
 	 * in the form of a {@code BeanDefinitionRegistry}
 	 * @param environment the {@code Environment} to use when evaluating bean definition
@@ -129,6 +133,8 @@ public class AnnotatedBeanDefinitionReader {
 	 * annotated class more than once has no additional effect.
 	 * @param annotatedClasses one or more annotated classes,
 	 * e.g. {@link Configuration @Configuration} classes
+	 *  注册一个或多个被注解标识的类
+	 *  调用register是幂等的，多次添加同一个带注解的类没有其他的效果。
 	 */
 	public void register(Class<?>... annotatedClasses) {
 		for (Class<?> annotatedClass : annotatedClasses) {
@@ -250,6 +256,7 @@ public class AnnotatedBeanDefinitionReader {
 	/**
 	 * Get the Environment from the given registry if possible, otherwise return a new
 	 * StandardEnvironment.
+	 * 	如果可能，从给定的注册表中获取环境，否则返回新的StandardEnvironment。
 	 */
 	private static Environment getOrCreateEnvironment(BeanDefinitionRegistry registry) {
 		Assert.notNull(registry, "BeanDefinitionRegistry must not be null");

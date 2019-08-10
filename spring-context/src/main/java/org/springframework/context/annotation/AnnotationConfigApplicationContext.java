@@ -185,7 +185,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 
 
 	//---------------------------------------------------------------------
-	// Convenient methods for registering individual beans
+	// Convenient methods for registering individual beans  注册单个bean的方便方法
 	//---------------------------------------------------------------------
 
 	/**

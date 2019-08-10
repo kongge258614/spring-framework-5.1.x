@@ -19,7 +19,7 @@ package org.springframework.context.annotation;
 /**
  * Common interface for annotation config application contexts,
  * defining {@link #register} and {@link #scan} methods.
- *
+ *	公共接口，定义了register方法和 scan方法
  * @author Juergen Hoeller
  * @since 4.1
  */
