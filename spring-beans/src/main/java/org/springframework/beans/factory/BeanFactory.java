@@ -27,6 +27,8 @@ import org.springframework.lang.Nullable;
  * {@link org.springframework.beans.factory.config.ConfigurableBeanFactory}
  * are available for specific purposes.
  *
+ * 访问spring bean 容器的根接口
+ *
  * <p>This interface is implemented by objects that hold a number of bean definitions,
  * each uniquely identified by a String name. Depending on the bean definition,
  * the factory will return either an independent instance of a contained object
@@ -120,6 +122,10 @@ public interface BeanFactory {
 	 * beans <i>created</i> by the FactoryBean. For example, if the bean named
 	 * {@code myJndiObject} is a FactoryBean, getting {@code &myJndiObject}
 	 * will return the factory, not the instance returned by the factory.
+	 *
+	 * 用于区分 factorybean实例的引用，并将其与factorybean创建的bean区分开来。
+	 * 如果一个bean 实现了 FactoryBean 接口，那么该bean默认的名字代表的是 FactoryBean 返回的bean实例。
+	 *
 	 */
 	String FACTORY_BEAN_PREFIX = "&";
 
@@ -214,6 +220,8 @@ public interface BeanFactory {
 	 * @return a corresponding provider handle
 	 * @since 5.1
 	 * @see #getBeanProvider(ResolvableType)
+	 *
+	 * 为指定的bean返回一个provider，允许对实例进行灵活的检索，包括可用性和唯一性的选项。
 	 */
 	<T> ObjectProvider<T> getBeanProvider(Class<T> requiredType);
 
