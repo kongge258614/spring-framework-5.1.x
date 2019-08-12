@@ -147,7 +147,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	private String serializationId;
 
 	/** Whether to allow re-registration of a different definition with the same name. */
-
+	// 是否允许重新注册具有相同名称的不同 definition 。
 	private boolean allowBeanDefinitionOverriding = true;
 
 	/** Whether to allow eager class loading even for lazy-init beans. */
@@ -175,7 +175,11 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	/** Map of singleton-only bean names, keyed by dependency type. */
 	private final Map<Class<?>, String[]> singletonBeanNamesByType = new ConcurrentHashMap<>(64);
 
-	/** List of bean definition names, in registration order. */
+	/** List of bean definition names, in registration order.
+	 *
+	 * bean定义名称列表，按注册顺序排列
+	 *
+	 * */
 	private volatile List<String> beanDefinitionNames = new ArrayList<>(256);
 
 	/** List of names of manually registered singletons, in registration order. */
@@ -339,7 +343,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 
 	//---------------------------------------------------------------------
-	// Implementation of remaining BeanFactory methods
+	// Implementation of remaining BeanFactory methods  实现剩余的beanfactory方法
 	//---------------------------------------------------------------------
 
 	@Override
