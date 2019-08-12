@@ -70,7 +70,7 @@ public class AnnotatedBeanDefinitionReader {
 	 * @see #setEnvironment(Environment)
 	 *
 	 * 创建一个新的 AnnotatedBeanDefinitionReader ，如果这个registry具有环境功能，例如 ApplicationContext，这个环境将会被传递下去，
-	 * 否则，将创建并使用一个新的 StandardEnvironment。
+	 * 	 * 否则，将创建并使用一个新的 StandardEnvironment。
 	 */
 	public AnnotatedBeanDefinitionReader(BeanDefinitionRegistry registry) {
 		this(registry, getOrCreateEnvironment(registry));
