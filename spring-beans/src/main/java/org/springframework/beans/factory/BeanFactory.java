@@ -125,6 +125,7 @@ public interface BeanFactory {
 	 *
 	 * 用于区分 factorybean实例的引用，并将其与factorybean创建的bean区分开来。
 	 * 如果一个bean 实现了 FactoryBean 接口，那么该bean默认的名字代表的是 FactoryBean 返回的bean实例。
+	 * 对FactoryBean的转义定义，因为如果使用bean的名字检索FactoryBean得到的对象是FactoryBean生成的对象，如果要得到FactoryBean对象本身，则需要在bean名字前面添加前缀。
 	 *
 	 */
 	String FACTORY_BEAN_PREFIX = "&";
@@ -141,6 +142,8 @@ public interface BeanFactory {
 	 * @return an instance of the bean
 	 * @throws NoSuchBeanDefinitionException if there is no bean with the specified name
 	 * @throws BeansException if the bean could not be obtained
+	 *
+	 * 根据bean的名字，获取在IOC容器中得到的bean的实例
 	 */
 	Object getBean(String name) throws BeansException;
 
@@ -210,6 +213,8 @@ public interface BeanFactory {
 	 * the affected bean isn't a prototype
 	 * @throws BeansException if the bean could not be created
 	 * @since 4.1
+	 *
+	 * 根据Bean的名字，构造器，工厂方法，返回bean实例
 	 */
 	<T> T getBean(Class<T> requiredType, Object... args) throws BeansException;
 
