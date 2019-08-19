@@ -515,40 +515,52 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {
 			// Prepare this context for refreshing.
+			// 容器预先准备，记录容器启动时间和标记
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
+			// 配置bean工厂，里面实现了BeanDefinition的装载。
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// Prepare the bean factory for use in this context.
+			// 配置bean工厂的上下文信息，如类装载器等
 			prepareBeanFactory(beanFactory);
 
 			try {
 				// Allows post-processing of the bean factory in context subclasses.
+				// 在BeanDefinition被装载后，提供一个修改BeanFactory的入口
 				postProcessBeanFactory(beanFactory);
 
 				// Invoke factory processors registered as beans in the context.
+				// 在bean初始化之前，提供对BeanDefinition修改入口，PropertyPlaceholderConfigurer在这里被调用
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
+				// 注册各种BeanPostProcessors，用于在bean被初始化时进行拦截，进行额外初始化操作
 				registerBeanPostProcessors(beanFactory);
 
 				// Initialize message source for this context.
+				// 初始化 messageSource
 				initMessageSource();
 
 				// Initialize event multicaster for this context.
+				// 初始化上下文事件广播
 				initApplicationEventMulticaster();
 
 				// Initialize other special beans in specific context subclasses.
+				// 模板方法
 				onRefresh();
 
 				// Check for listener beans and register them.
+				// 检查监听器bean，并且注册监听器
 				registerListeners();
 
 				// Instantiate all remaining (non-lazy-init) singletons.
+				// 初始化所有未初始化的非懒加载的单例Bean
 				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.
+				// 发布事件通知
 				finishRefresh();
 			}
 
@@ -579,6 +591,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	/**
 	 * Prepare this context for refreshing, setting its startup date and
 	 * active flag as well as performing any initialization of property sources.
+	 * 准备工作，设置其启动日期、是否处于活动状态以及执行属性源的任何初始化。
 	 */
 	protected void prepareRefresh() {
 		// Switch to active.
