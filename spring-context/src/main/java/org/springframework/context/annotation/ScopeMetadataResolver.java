@@ -20,6 +20,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 
 /**
  * Strategy interface for resolving the scope of bean definitions.
+ * 用户解析bean定义的作用域的策略接口。
  *
  * @author Mark Fisher
  * @since 2.5

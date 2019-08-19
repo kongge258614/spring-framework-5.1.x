@@ -32,7 +32,7 @@ import org.springframework.util.Assert;
  * @see ScopeMetadataResolver
  * @see ScopedProxyMode
  */
-public class ScopeMetadata {
+public class ScopeMetadata {    // 作用域的元数据
 
 	private String scopeName = BeanDefinition.SCOPE_SINGLETON;
 

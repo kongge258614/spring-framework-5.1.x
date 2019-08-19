@@ -69,6 +69,8 @@ import static org.springframework.context.annotation.AnnotationConfigUtils.CONFI
  * {@link BeanFactoryPostProcessor} used for bootstrapping processing of
  * {@link Configuration @Configuration} classes.
  *
+ *  用于@Configuration类的引导处理
+ *
  * <p>Registered by default when using {@code <context:annotation-config/>} or
  * {@code <context:component-scan/>}. Otherwise, may be declared manually as
  * with any other BeanFactoryPostProcessor.
