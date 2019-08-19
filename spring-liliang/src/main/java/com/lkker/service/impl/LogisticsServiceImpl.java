@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
  * @Date 2019/8/10 16:02
  * @Description
  **/
-@Service()
+@Service
 public class LogisticsServiceImpl implements LogisticsService {
 	@Override
 	public void save() {
