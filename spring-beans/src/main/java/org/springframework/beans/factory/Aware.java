@@ -22,6 +22,9 @@ package org.springframework.beans.factory;
  * The actual method signature is determined by individual subinterfaces but should
  * typically consist of just one void-returning method that accepts a single argument.
  *
+ * 一个标记接口，表示bean有资格通过回调样式的方法被特定框架对象的spring容器通知。
+ * 实际方法签名由各个子接口确定，但通常只包含一个接受单个参数的返回void的方法。
+ *
  * <p>Note that merely implementing {@link Aware} provides no default functionality.
  * Rather, processing must be done explicitly, for example in a
  * {@link org.springframework.beans.factory.config.BeanPostProcessor}.
