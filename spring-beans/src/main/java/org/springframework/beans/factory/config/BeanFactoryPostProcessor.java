@@ -37,6 +37,10 @@ import org.springframework.beans.BeansException;
  * If bean instance interaction is required, consider implementing
  * {@link BeanPostProcessor} instead.
  *
+ * 允许自定义的修改应用程序上下文的bean的定义。调整上下文的基础bean工厂的bean属性值。
+ * spring的扩展点之一，spring允许BeanFactoryPostProcessor在容器实例化任何其他bean之前读取配置元数据，并可以根据需要进行修改。
+ * 例如可以把bean的scope从singleton改为prototype，也可以修改property的值。
+ *
  * @author Juergen Hoeller
  * @since 06.07.2003
  * @see BeanPostProcessor

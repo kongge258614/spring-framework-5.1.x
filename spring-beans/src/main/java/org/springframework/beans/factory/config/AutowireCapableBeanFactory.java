@@ -30,6 +30,8 @@ import org.springframework.lang.Nullable;
  * interface to be implemented by bean factories that are capable of
  * autowiring, provided that they want to expose this functionality for
  * existing bean instances.
+ * BeanFactory的扩展接口，实现可自动装配。
+ *
  *
  * <p>This subinterface of BeanFactory is not meant to be used in normal
  * application code: stick to {@link org.springframework.beans.factory.BeanFactory}
@@ -128,6 +130,8 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	 * Fully create a new bean instance of the given class.
 	 * <p>Performs full initialization of the bean, including all applicable
 	 * {@link BeanPostProcessor BeanPostProcessors}.
+	 * 创建给定类的新bean实例。执行bean的完整初始化，包括所有适用的初始化
+	 *
 	 * <p>Note: This is intended for creating a fresh instance, populating annotated
 	 * fields and methods as well as applying all standard bean initialization callbacks.
 	 * It does <i>not</i> imply traditional by-name or by-type autowiring of properties;
@@ -135,6 +139,8 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	 * @param beanClass the class of the bean to create
 	 * @return the new bean instance
 	 * @throws BeansException if instantiation or wiring failed
+	 *
+	 * 注意：这是为了创建一个新的实例，填充带注释的字段和方法，以及应用所有标准bean初始化回调。
 	 */
 	<T> T createBean(Class<T> beanClass) throws BeansException;
 

@@ -31,7 +31,7 @@ import org.springframework.lang.Nullable;
  * <p>This is just a minimal interface: The main intention is to allow a
  * {@link BeanFactoryPostProcessor} such as {@link PropertyPlaceholderConfigurer}
  * to introspect and modify property values and other bean metadata.
- *
+ * 这只是一个最小的接口，主要目的是允许一个BeanFactoryPostProcessor去反省并修改属性值和其他bean元数据。
  * @author Juergen Hoeller
  * @author Rob Harrop
  * @since 19.03.2004
@@ -43,8 +43,10 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 
 	/**
 	 * Scope identifier for the standard singleton scope: "singleton".
+	 * 标准单例范围的范围标识符:“单例”。
 	 * <p>Note that extended bean factories might support further scopes.
 	 * @see #setScope
+	 *  单例
 	 */
 	String SCOPE_SINGLETON = ConfigurableBeanFactory.SCOPE_SINGLETON;
 
@@ -52,6 +54,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 * Scope identifier for the standard prototype scope: "prototype".
 	 * <p>Note that extended bean factories might support further scopes.
 	 * @see #setScope
+	 *  原型
 	 */
 	String SCOPE_PROTOTYPE = ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
@@ -87,6 +90,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 
 	/**
 	 * Set the name of the parent definition of this bean definition, if any.
+	 *  为该bean的父类设置名字。
 	 */
 	void setParentName(@Nullable String parentName);
 
