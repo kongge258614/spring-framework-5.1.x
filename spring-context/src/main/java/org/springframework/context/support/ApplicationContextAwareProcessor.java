@@ -66,7 +66,7 @@ class ApplicationContextAwareProcessor implements BeanPostProcessor {
 
 
 	/**
-	 * Create a new ApplicationContextAwareProcessor for the given context.   为给定的上下文创建一个新的applicationcontext wareprocessor。
+	 * Create a new ApplicationContextAwareProcessor for the given context.   为给定的上下文创建一个新的applicationcontextAwareprocessor。
 	 */
 	public ApplicationContextAwareProcessor(ConfigurableApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;

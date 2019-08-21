@@ -82,8 +82,18 @@ final class PostProcessorRegistrationDelegate {
 			List<BeanDefinitionRegistryPostProcessor> currentRegistryProcessors = new ArrayList<>();
 
 			// First, invoke the BeanDefinitionRegistryPostProcessors that implement PriorityOrdered.
-			String[] postProcessorNames =
-					beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
+			String[] postProcessorNames = beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
+
+			/**
+			 * 这个地方可以得到一个 BeanFactoryPostProcessor ，因为是spring默认在最开始自己注册的
+			 * 为什么要在最开始注册这个呢？
+			 * 因为spring的工厂需要解析、扫描等等功能
+			 * 而这些功能都是需要在spring工厂初始化完成之前执行
+			 * 要么在工厂最开始的时候，要么在工厂初始化之中，反正不能在初始化之后，因为如果在之后就没有了意义，因为那个时候已经需要使用工厂了。
+			 * 所以这里spring在一开始就注册了一个 BeanFactoryPostProcessor ，用来查收springfactory的实例化过程。
+			 *
+			 */
+
 			for (String ppName : postProcessorNames) {
 				if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
 					currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));
@@ -265,7 +275,7 @@ final class PostProcessorRegistrationDelegate {
 	}
 
 	/**
-	 * Invoke the given BeanDefinitionRegistryPostProcessor beans.
+	 * Invoke the given BeanDefinitionRegistryPostProcessor beans.  调用(处理)给定的BeanDefinitionRegistryPostProcessor beans
 	 */
 	private static void invokeBeanDefinitionRegistryPostProcessors(
 			Collection<? extends BeanDefinitionRegistryPostProcessor> postProcessors, BeanDefinitionRegistry registry) {
@@ -276,7 +286,7 @@ final class PostProcessorRegistrationDelegate {
 	}
 
 	/**
-	 * Invoke the given BeanFactoryPostProcessor beans.
+	 * Invoke the given BeanFactoryPostProcessor beans.   调用给定的BeanFactoryPostProcessor bean。
 	 */
 	private static void invokeBeanFactoryPostProcessors(
 			Collection<? extends BeanFactoryPostProcessor> postProcessors, ConfigurableListableBeanFactory beanFactory) {
