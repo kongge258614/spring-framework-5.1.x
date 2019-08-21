@@ -1,6 +1,7 @@
 package com.lkker;
 
 import com.lkker.config.JavaConfig;
+import com.lkker.service.impl.LogisticsServiceImpl;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
@@ -24,5 +25,13 @@ public class Test {
 		for (String name: beanDefinitionNames){
 			System.out.println(name);
 		}
+
+		System.out.println("......................................................");
+
+		LogisticsServiceImpl logisticsServiceImpl1 = (LogisticsServiceImpl) atx.getBean("logisticsServiceImpl");
+		LogisticsServiceImpl logisticsServiceImpl2 = (LogisticsServiceImpl) atx.getBean("logisticsServiceImpl");
+
+		System.out.println(logisticsServiceImpl1 == logisticsServiceImpl2);
+
 	}
 }
