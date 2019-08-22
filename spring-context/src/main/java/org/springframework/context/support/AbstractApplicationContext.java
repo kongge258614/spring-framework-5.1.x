@@ -518,6 +518,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	}
 
 	// 准备好工厂，实例化bean
+
+	/**
+	 * refresh 到底做了啥？？？
+	 *
+	 *
+	 */
 	@Override
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {
@@ -671,7 +677,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		beanFactory.addPropertyEditorRegistrar(new ResourceEditorRegistrar(this, getEnvironment()));
 
 		// Configure the bean factory with context callbacks.
-		// 添加一个后置管理器，能够在bean中获得各种Aware（Aware有其独自的作用）
+		// 添加一个后置管理器，能够在bean中获得各种Aware（Aware有其独自的作用） 能够插手bean的实例化过程
 		beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
 		beanFactory.ignoreDependencyInterface(EnvironmentAware.class);
 		beanFactory.ignoreDependencyInterface(EmbeddedValueResolverAware.class);
@@ -727,6 +733,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * <p>Must be called before singleton instantiation.
 	 */
 	protected void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
+		// 这个地方需要注意，getBeanFactoryPostProcessors() 是获取自定义的
 		PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(beanFactory, getBeanFactoryPostProcessors());
 
 		// Detect a LoadTimeWeaver and prepare for weaving, if found in the meantime
