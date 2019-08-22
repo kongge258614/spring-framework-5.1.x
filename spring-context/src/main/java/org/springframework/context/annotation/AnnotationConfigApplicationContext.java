@@ -92,6 +92,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 */
 	public AnnotationConfigApplicationContext(Class<?>... annotatedClasses) {
 		this();
+		// register 处理在创建 AnnotationConfigApplicationContext 时，传入的 Java 配置类或被注解标注的Javabean
 		register(annotatedClasses);
 		refresh();
 	}

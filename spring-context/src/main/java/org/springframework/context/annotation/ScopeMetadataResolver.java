@@ -40,6 +40,8 @@ public interface ScopeMetadataResolver {
 	 * {@link BeanDefinition#attributeNames()} of the supplied {@code definition}.
 	 * @param definition the target bean definition
 	 * @return the relevant scope metadata; never {@code null}
+	 *
+	 * 解析适用于所提供bean定义的scopemetadata。
 	 */
 	ScopeMetadata resolveScopeMetadata(BeanDefinition definition);
 
