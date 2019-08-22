@@ -236,9 +236,16 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	 * @throws BeansException if the bean could not be created
 	 */
 	@SuppressWarnings("unchecked")
-	protected <T> T doGetBean(final String name, @Nullable final Class<T> requiredType,
-			@Nullable final Object[] args, boolean typeCheckOnly) throws BeansException {
+	protected <T> T doGetBean(final String name, @Nullable final Class<T> requiredType, @Nullable final Object[] args, boolean typeCheckOnly) throws BeansException {
 
+		/**
+		 * 获取name对应的真正beanName
+		 *
+		 * 因为传入的参数可能是alias，也可能是FactoryBean的name，所以需要进行解析，包含以下内容：
+		 * 1. 如果是FactoryBean，则去掉修饰符"&"
+		 * 2. 沿着引用链获取alias对应的最终name.
+		 *
+		 */
 		final String beanName = transformedBeanName(name);
 		Object bean;
 
@@ -1150,6 +1157,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	 * Initialize the given BeanWrapper with the custom editors registered
 	 * with this factory. To be called for BeanWrappers that will create
 	 * and populate bean instances.
+	 *
+	 * 使用在该工厂注册的自定义编辑器初始化给定的beanwrapper.  (wrapper: 包装类)
+	 * 调用将创建和填充bean实例的beanwrapper.
+	 *
 	 * <p>The default implementation delegates to {@link #registerCustomEditors}.
 	 * Can be overridden in subclasses.
 	 * @param bw the BeanWrapper to initialize

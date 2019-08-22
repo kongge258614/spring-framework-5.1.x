@@ -118,8 +118,7 @@ import org.springframework.util.StringUtils;
  * @see DefaultListableBeanFactory
  * @see BeanDefinitionRegistry
  */
-public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory
-		implements AutowireCapableBeanFactory {
+public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory implements AutowireCapableBeanFactory {
 
 	/** Strategy for creating bean instances. */
 	private InstantiationStrategy instantiationStrategy = new CglibSubclassingInstantiationStrategy();
@@ -475,8 +474,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 * 该类的核心方法：创建一个bean实例。填充bean实例，应用后处理程序，等等。
 	 */
 	@Override
-	protected Object createBean(String beanName, RootBeanDefinition mbd, @Nullable Object[] args)
-			throws BeanCreationException {
+	protected Object createBean(String beanName, RootBeanDefinition mbd, @Nullable Object[] args) throws BeanCreationException {
 
 		if (logger.isTraceEnabled()) {
 			logger.trace("Creating instance of bean '" + beanName + "'");
@@ -548,7 +546,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	protected Object doCreateBean(final String beanName, final RootBeanDefinition mbd, final @Nullable Object[] args)
 			throws BeanCreationException {
 
-		// Instantiate the bean.
+		// Instantiate the bean.  实例化bean
 		BeanWrapper instanceWrapper = null;
 		if (mbd.isSingleton()) {
 			instanceWrapper = this.factoryBeanInstanceCache.remove(beanName);
@@ -1280,6 +1278,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 	/**
 	 * Instantiate the given bean using its default constructor.
+	 *
+	 * 使用给定bean的默认构造函数实例化它。
+	 *
 	 * @param beanName the name of the bean
 	 * @param mbd the bean definition for the bean
 	 * @return a BeanWrapper for the new instance
@@ -1301,8 +1302,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			return bw;
 		}
 		catch (Throwable ex) {
-			throw new BeanCreationException(
-					mbd.getResourceDescription(), beanName, "Instantiation of bean failed", ex);
+			throw new BeanCreationException(mbd.getResourceDescription(), beanName, "Instantiation of bean failed", ex);
 		}
 	}
 
