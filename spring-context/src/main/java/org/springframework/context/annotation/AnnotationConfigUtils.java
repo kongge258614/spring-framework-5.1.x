@@ -45,6 +45,10 @@ import org.springframework.util.ClassUtils;
  * definitions for annotation-based configuration. Also registers a common
  * {@link org.springframework.beans.factory.support.AutowireCandidateResolver}.
  *
+ * 允许方便的注册 BeanPostProcessor 和 BeanFactoryPostProcessor 的工具类。基于注解配置的定义。
+ * 也可以注册 AutowireCandidateResolver 。
+ *
+ *
  * @author Mark Fisher
  * @author Juergen Hoeller
  * @author Chris Beams
@@ -147,8 +151,7 @@ public abstract class AnnotationConfigUtils {
 	 * that have actually been registered by this call
 	 * 向给定的registry中注册所有相关联的后置处理器
 	 */
-	public static Set<BeanDefinitionHolder> registerAnnotationConfigProcessors(
-			BeanDefinitionRegistry registry, @Nullable Object source) {
+	public static Set<BeanDefinitionHolder> registerAnnotationConfigProcessors(BeanDefinitionRegistry registry, @Nullable Object source) {
 
 		DefaultListableBeanFactory beanFactory = unwrapDefaultListableBeanFactory(registry);
 		if (beanFactory != null) { //给工厂中注入属性
@@ -212,8 +215,7 @@ public abstract class AnnotationConfigUtils {
 		return beanDefs;
 	}
 
-	private static BeanDefinitionHolder registerPostProcessor(
-			BeanDefinitionRegistry registry, RootBeanDefinition definition, String beanName) {
+	private static BeanDefinitionHolder registerPostProcessor(BeanDefinitionRegistry registry, RootBeanDefinition definition, String beanName) {
 
 		definition.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
 		registry.registerBeanDefinition(beanName, definition);
