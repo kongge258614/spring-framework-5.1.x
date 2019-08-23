@@ -147,21 +147,26 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	@Nullable
 	private String scope = SCOPE_DEFAULT;
 
+	// 是否是抽象
 	private boolean abstractFlag = false;
 
+	// 是否延迟加载
 	private boolean lazyInit = false;
 
 	private int autowireMode = AUTOWIRE_NO;
 
 	private int dependencyCheck = DEPENDENCY_CHECK_NONE;
 
+	// 用来表示一个bean的实例化依靠另一个bean先实例化，对应bean属性 depend-on
 	@Nullable
 	private String[] dependsOn;
 
 	private boolean autowireCandidate = true;
 
+	// 自动装配时出现多个bean候选者时，将作为首先，对应bean属性primary
 	private boolean primary = false;
 
+	// 用于记录Qualifier,对应子元素qualifier
 	private final Map<String, AutowireCandidateQualifier> qualifiers = new LinkedHashMap<>();
 
 	@Nullable
@@ -177,6 +182,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	@Nullable
 	private String factoryMethodName;
 
+	// 记录构造函数注入属性，对应bean属性 constructor-arg
 	@Nullable
 	private ConstructorArgumentValues constructorArgumentValues;
 

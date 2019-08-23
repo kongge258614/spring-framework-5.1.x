@@ -159,9 +159,18 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 		}
 	}
 
+	/**
+	 * 此方法第二个参数设置为 true，即 allowEarlyReference=true，表示允许对 bean 的早期依赖，
+	 * Spring 中 bean 的依赖关系由开发者控制，具备极大的自由配置空间，如果配置不当，可能会导致循环依赖的场景，
+	 * 即 A 依赖于 B，而 B 又依赖于 A，当初始化 A 的时候，检测到引用的 B 还没有实例化，就会转去实例 B，
+	 * 实例化 B 的过程中又会发现 A 还没有实例化完成，从而又回来实例化 A，因此陷入死锁。而 allowEarlyReference 则会提前曝光 bean 的创建过程。
+	 * @param beanName the name of the bean to look for
+	 * @return
+	 */
 	@Override
 	@Nullable
 	public Object getSingleton(String beanName) {
+		// true 表示允许早期依赖
 		return getSingleton(beanName, true);
 	}
 
@@ -172,20 +181,33 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 *
 	 * 返回在给定名称下注册的(原始)单例对象。检查已经实例化了单例，还允许
 	 * 对当前创建的singleton的引用（解析循环引用）
+	 *
+	 * 该方法的逻辑是首先从存放 bean 实例的集合 singletonObjects 中获取实例，如果实例不存在且正在创建中，
+	 * 则尝试从 earlySingletonObjects 中获取正在创建中的 bean 实例，如果仍然不存在并且允许早期依赖，则将 ObjectFactory 提前曝光。
 	 * @param beanName the name of the bean to look for
 	 * @param allowEarlyReference whether early references should be created or not
 	 * @return the registered singleton object, or {@code null} if none found
 	 */
 	@Nullable
 	protected Object getSingleton(String beanName, boolean allowEarlyReference) {
+		// 检查缓存中是否存在实例
 		Object singletonObject = this.singletonObjects.get(beanName);
 		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
+			// 如果为空，则锁定全局变量并进行处理
 			synchronized (this.singletonObjects) {
-				singletonObject = this.earlySingletonObjects.get(beanName);
+				singletonObject = this.earlySingletonObjects.get(beanName);    //earlySingletonObjects以beanName为key存储bean实例（这里的实例还处于创建中）
+				/**
+				 * singletonObjects 和 earlySingletonObjects 的区别
+				 * 两者都是以 beanName 为 key，bean 实例为 value 进行存储，区别在于 singletonObjects 存储的是实例化完成的 bean 实例，
+				 * 而 earlySingletonObjects 存储的是正在实例化中的 bean，所以两个集合的内容是互斥的。
+				 */
 				if (singletonObject == null && allowEarlyReference) {
-					ObjectFactory<?> singletonFactory = this.singletonFactories.get(beanName);
+					// 当某些方法需要提前初始化的时候，会调用addSingletonFactory将对应的objectFactory初始化策略存储在singletonFactories中
+					ObjectFactory<?> singletonFactory = this.singletonFactories.get(beanName);  // singletonFactories以beanName为key存储创建bean的工厂
 					if (singletonFactory != null) {
+						// 调用预先设定的getObject()方法
 						singletonObject = singletonFactory.getObject();
+						// earlySingletonObjects和singletonFactories互斥
 						this.earlySingletonObjects.put(beanName, singletonObject);
 						this.singletonFactories.remove(beanName);
 					}
