@@ -67,7 +67,12 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * 	创建一个新的AnnotationConfigApplicationContext，需要通过调用register，并且手动刷新。
 	 */
 	public AnnotationConfigApplicationContext() {
+		// 创建一个读取注解的bean定义读取器
 		this.reader = new AnnotatedBeanDefinitionReader(this);
+
+		// 可以用来扫描包或者类，继而转换成bd
+		// 但实际上我们扫描包用的不是scanner这个对象。是spring自己new的一个ClassPathBeanDefinitionScanner
+		// 这里的scanner仅仅是为了程序员能够在外部调用 AnnotationConfigApplicationContext 对象的scan方法.
 		this.scanner = new ClassPathBeanDefinitionScanner(this);
 	}
 
