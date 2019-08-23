@@ -25,6 +25,7 @@ import org.springframework.lang.Nullable;
  * @author Rob Harrop
  * @since 2.0
  */
+// 属性访问器，具备处理属性的能力
 public interface AttributeAccessor {
 
 	/**

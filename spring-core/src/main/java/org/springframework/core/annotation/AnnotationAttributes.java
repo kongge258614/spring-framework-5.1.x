@@ -36,6 +36,8 @@ import org.springframework.util.StringUtils;
  * code as well as convenience methods for looking up annotation attributes
  * in a type-safe fashion.
  *
+ *
+ * LinkedHashMap
  * @author Chris Beams
  * @author Sam Brannen
  * @author Juergen Hoeller
@@ -44,6 +46,7 @@ import org.springframework.util.StringUtils;
  * @see AnnotatedElementUtils
  */
 @SuppressWarnings("serial")
+// hashmap
 public class AnnotationAttributes extends LinkedHashMap<String, Object> {
 
 	private static final String UNKNOWN = "unknown";
