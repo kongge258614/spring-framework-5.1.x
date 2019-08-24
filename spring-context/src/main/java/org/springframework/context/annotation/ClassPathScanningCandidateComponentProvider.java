@@ -422,6 +422,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 			Resource[] resources = getResourcePatternResolver().getResources(packageSearchPath);
 			boolean traceEnabled = logger.isTraceEnabled();
 			boolean debugEnabled = logger.isDebugEnabled();
+			// 判断是否加了注解
 			for (Resource resource : resources) {
 				if (traceEnabled) {
 					logger.trace("Scanning " + resource);

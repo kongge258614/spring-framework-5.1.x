@@ -219,6 +219,8 @@ class ConfigurationClassParser {
 			return;
 		}
 
+		//处理Imported的情况
+		//就是当前这个注解类有没有被别的类import
 		ConfigurationClass existingClass = this.configurationClasses.get(configClass);
 		if (existingClass != null) {
 			if (configClass.isImported()) {
@@ -239,6 +241,7 @@ class ConfigurationClassParser {
 		// Recursively process the configuration class and its superclass hierarchy.
 		SourceClass sourceClass = asSourceClass(configClass);
 		do {
+			// 处理内部类
 			sourceClass = doProcessConfigurationClass(configClass, sourceClass);
 		}
 		while (sourceClass != null);
@@ -260,6 +263,7 @@ class ConfigurationClassParser {
 
 		if (configClass.getMetadata().isAnnotated(Component.class.getName())) {
 			// Recursively process any member (nested) classes first
+			// 处理内部类
 			processMemberClasses(configClass, sourceClass);
 		}
 
@@ -276,7 +280,7 @@ class ConfigurationClassParser {
 			}
 		}
 
-		// Process any @ComponentScan annotations
+		// Process any @ComponentScan annotations  处理所有的@ComponentScan注释
 		Set<AnnotationAttributes> componentScans = AnnotationConfigUtils.attributesForRepeatable(
 				sourceClass.getMetadata(), ComponentScans.class, ComponentScan.class);
 		if (!componentScans.isEmpty() &&

@@ -275,9 +275,12 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 				candidate.setScope(scopeMetadata.getScopeName());
 				String beanName = this.beanNameGenerator.generateBeanName(candidate, this.registry);
 				if (candidate instanceof AbstractBeanDefinition) {
+					// 如果这个类是AbstractBeanDefinition 的子类，则为它设置默认值，比如 lazy,init,destory
 					postProcessBeanDefinition((AbstractBeanDefinition) candidate, beanName);
 				}
 				if (candidate instanceof AnnotatedBeanDefinition) {
+					//检查并且处理常用的注解
+					//这里的处理主要是把常用注解的值设置到AnnotatedBeanDefinition当中
 					AnnotationConfigUtils.processCommonDefinitionAnnotations((AnnotatedBeanDefinition) candidate);
 				}
 				if (checkCandidate(beanName, candidate)) {
@@ -285,6 +288,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 					definitionHolder =
 							AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
 					beanDefinitions.add(definitionHolder);
+					// 加入到当前map
 					registerBeanDefinition(definitionHolder, this.registry);
 				}
 			}
