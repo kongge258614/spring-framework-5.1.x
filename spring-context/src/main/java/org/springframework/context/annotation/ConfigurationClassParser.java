@@ -303,6 +303,21 @@ class ConfigurationClassParser {
 		}
 
 		// Process any @Import annotations
+		/**
+		 * 这里处理的import是需要判断我们的类中是否有@import注解
+		 * 如果有，则把@import当中的值拿出来，是一个类
+		 * 比如@Import(XXX.class),那么这里便把XXX传进去进行解析
+		 * 在解析的过程中如果发现是一个@ImportSelector,那么就会去掉selector的方法
+		 * 返回一个字符串(类名)，通过这个字符串得到一个类
+		 * 继而递归调用本方法来处理这个类
+		 *
+		 * 为什么要单独写这么多注释来说明这个方法？
+		 * 因为selector返回的那个类，严格意义上来讲不符合@Import(XXX.class),因为这个类没有被直接import
+		 * 如果不符合，就不会调用这个方法。getImport(sourceClass)就是得到所有的import类
+		 * 但是注意的是，递归当中是没有getImport(sourceClass)的，意思是直接把selector当中返回的类直接当成一个import的类去解析
+		 * 总之就是一句话，@Import(XXX.class),那么XXX这个类会被解析
+		 * 如果XXX是selector的，那么当中返回的类虽然没有直接加上@Import，但是也会直接解析。
+		 */
 		processImports(configClass, sourceClass, getImports(sourceClass), true);
 
 		// Process any @ImportResource annotations
