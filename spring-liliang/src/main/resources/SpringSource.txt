@@ -1,0 +1,68 @@
+Spring容器的创建过程：
+
+1.AnnotationConfigApplicationContext调用父类(GenericApplicationContext)的构造函数创建DefaultListableBeanFactory工厂
+-----------------------------------------------------------------------------------------------------------------------------
+2.调用构造函数，创建AnnotatedBeanDefinitionReader【注解的BeanDefinition读取器】
+    1)、getOrCreateEnvironment(registry) 【根据传入的registry获得上下文环境】
+    2)、this.conditionEvaluator = new ConditionEvaluator(registry, environment, null)【创建条件计算器】
+    3)、registerAnnotationConfigProcessors()【注册注解配置类的处理程序】
+        ① DefaultListableBeanFactory beanFactory = unwrapDefaultListableBeanFactory(registry);【获取当前的bean工厂】
+        ② 向bean工厂中注入属性    AnnotationAwareOrderComparator();【dependencyComparator】
+                                   ContextAnnotationAutowireCandidateResolver();【autowireCandidateResolver】
+    4)、创建BeanDefinitionHolder的集合   Set<BeanDefinitionHolder> beanDefs = new LinkedHashSet<>(8);
+    5)、向bean工厂中添加组件
+        ① 判断bean工厂(beanDefinitionMap)中是否包含 internalConfigurationAnnotationProcessor,如果不包含则向bean工厂(beanDefinitionMap中添加【ConfigurationClassPostProcessor.class】,
+            向beanDefinitionNames中添加beanName
+        ② 同上(AutowiredAnnotationBeanPostProcessor.class)
+        ③ 同上(CommonAnnotationBeanPostProcessor.class)
+        ④ 同上(PersistenceAnnotationBeanPostProcessor),对JPA的支持。
+        ⑤ 同上(EventListenerMethodProcessor.class)
+        ⑥ 同上(DefaultEventListenerFactory.class)
+        且将组件包装成BeanDefinitionHolder添加到beanDefs集合中
+3.调用构造函数，创建ClassPathBeanDefinitionScanner【spring在扫描包的时候并没有用这个scanner，而是spring重新创建的scanner。此处的scanner存在的意义是，作为开发者调用的一个对象，而非spring调用的对象】
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+4.register(annotatedClasses)
+    1)、doRegisterBean
+        ① AnnotatedGenericBeanDefinition abd = new AnnotatedGenericBeanDefinition(annotatedClass);首先将配置类转换成一个AnnotatedGenericBeanDefinition对象。
+        ② 获取此配置类的ScopeMetadata，解析配置类的名字
+        ③ processCommonDefinitionAnnotations【处理普遍的BeanDefinition注解】
+        ④ BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(abd, beanName);【将该配置类包装成definitionHolder】
+        ⑤ BeanDefinitionReaderUtils.registerBeanDefinition(),将该配置类注册到bean工厂中，如果该配置类有别名，则将别名添加到aliasMap中
+  小结：register的作用是将配置类添加添加到bean工厂中
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+5.refresh()
+    1)、prepareRefresh(); 刷新前的预处理
+        ① initPropertySources()初始化一些属性设置,此方法是一个空方法;子类自定义个性化的属性设置方法；
+        ② earlyApplicationListeners,早期的应用程序监听器     earlyApplicationEvents = new LinkedHashSet<>();创建一个容器，保存早期的事件
+    2)、obtainFreshBeanFactory();从容器中获取工厂
+    3)、prepareBeanFactory(beanFactory);  准备beanfactory
+        ① beanFactory.setBeanClassLoader(getClassLoader()); 设置bean加载器
+        ② beanFactory.setBeanExpressionResolver(new StandardBeanExpressionResolver(beanFactory.getBeanClassLoader()));  配置bean表达式解析器
+        ③ beanFactory.addPropertyEditorRegistrar(new ResourceEditorRegistrar(this, getEnvironment())); 设置bean属性与spring类型的转换器
+
+        ④ 向bean工厂中（beanPostProcessors集合）添加 BeanPostProcessor( ApplicationContextAwareProcessor(this) , ApplicationListenerDetector(this) ,LoadTimeWeaverAwareProcessor(beanFactory))
+        ⑤ 向beanfactory中注册一些默认的环境bean
+
+    4)、postProcessBeanFactory(beanFactory);BeanFactory准备工作完成后进行的后置处理工作，子类通过重写这个方法在BeanFactory创建并预准备完成后做进一步的设置。
+
+    - - - - - - - - - - - - -  - - - -  - -- - - - - - - - 以上是BeanFactory的创建及预备工作 -- - - - -- -- - - - - - - - - -- - - -- - -  -- - - - -
+
+    5)、invokeBeanFactoryPostProcessors(beanFactory); 执行bean工厂的后置处理器
+    BeanFactoryPostProcessor:BeanFactory的后置处理器，在BeanFactory标准初始化之后执行，两个接口：BeanFactoryPostProcessor、BeanDefinitionRegistryPostProcessor
+        ① 首先获取所有的实现了 BeanDefinitionRegistryPostProcessor 接口的bean的名称
+
+
+
+
+
+
+
+
+
+
+
+
+
+
