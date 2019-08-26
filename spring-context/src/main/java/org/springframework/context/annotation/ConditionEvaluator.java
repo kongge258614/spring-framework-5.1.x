@@ -62,6 +62,7 @@ class ConditionEvaluator {
 
 
 	/**
+	 * 根据 @ condition 注释判断是否应该跳过某个项。
 	 * Determine if an item should be skipped based on {@code @Conditional} annotations.
 	 * The {@link ConfigurationPhase} will be deduced from the type of item (i.e. a
 	 * {@code @Configuration} class will be {@link ConfigurationPhase#PARSE_CONFIGURATION})
