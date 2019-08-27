@@ -51,7 +51,31 @@ Spring容器的创建过程：
 
     5)、invokeBeanFactoryPostProcessors(beanFactory); 执行bean工厂的后置处理器
     BeanFactoryPostProcessor:BeanFactory的后置处理器，在BeanFactory标准初始化之后执行，两个接口：BeanFactoryPostProcessor、BeanDefinitionRegistryPostProcessor
-        ① 首先获取所有的实现了 BeanDefinitionRegistryPostProcessor 接口的bean的名称
+        ① 首先处理实现了 BeanDefinitionRegistryPostProcessors 的类.
+            获取所有实现了 BeanDefinitionRegistryPostProcessor 的类，String[] postProcessorNames = beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
+                Ⅰ.在postProcessorNames中，获取实现了PriorityOrdered接口的类，并将其添加到 currentRegistryProcessors 列表中，将类名添加到processedBeans集合中。【观察者模式】处理注册到
+                currentRegistryProcessors列表中的后置处理器。将 currentRegistryProcessors 列表清空。
+
+                Ⅱ.在postProcessorNames中，获取实现了Ordered接口的类，并将其添加到 currentRegistryProcessors 列表中，将类名添加到processedBeans集合中。【观察者模式】处理注册到
+                currentRegistryProcessors列表中的后置处理器。将 currentRegistryProcessors 列表清空。
+
+                Ⅲ.最后处理没有实现 PriorityOrdered 和 Ordered 接口的 BeanDefinitionRegistryPostProcessors.
+        调用invokeBeanFactoryPostProcessors(registryProcessors, beanFactory)和invokeBeanFactoryPostProcessors(regularPostProcessors, beanFactory);
+
+        ② 其次处理实现了 BeanFactoryPostProcessor 接口的类
+
+        总而言之，就是进行beanfactory的后置处理工作。
+
+    6)、registerBeanPostProcessors(beanFactory); 注册bean的后置处理器
+        ① String[] postProcessorNames = beanFactory.getBeanNamesForType(BeanPostProcessor.class, true, false); 在beanfactory中，根据类型获取bean的名字。
+        ② 向beanfactory中添加一个 BeanPostProcessor【BeanPostProcessorChecker】
+        ③ 循环处理 beanfactory中所有的 BeanPostProcessor 。按照是否实现了PriorityOrdered接口和Ordered接口，分别将工厂中的BeanPostProcessor 添加到
+        priorityOrderedPostProcessors、internalPostProcessors、orderedPostProcessorNames、nonOrderedPostProcessorNames列表中。
+
+        ④ 向beanfactory中注册，即 registerBeanPostProcessors(beanFactory, priorityOrderedPostProcessors);【this.beanPostProcessors.add(beanPostProcessor)】
+
+        ⑤ 最后向工厂中注册一个后置处理器，beanFactory.addBeanPostProcessor(new ApplicationListenerDetector(applicationContext));
+
 
 
 
