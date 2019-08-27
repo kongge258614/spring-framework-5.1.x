@@ -21,9 +21,13 @@ import org.springframework.beans.BeansException;
 /**
  * Allows for custom modification of an application context's bean definitions,
  * adapting the bean property values of the context's underlying bean factory.
+ * 允许自定义的修改应用程序上下文的bean的定义。调整上下文的基础bean工厂的bean属性值。
+ * 实现此接口可以获取到整个beanfactory，可以对beanfactory做任意修改。权限相当大。
  *
  * <p>Application contexts can auto-detect BeanFactoryPostProcessor beans in
  * their bean definitions and apply them before any other beans get created.
+ *	应用程序上下文可以自动检测实现了 BeanFactoryPostProcessor 接口的bean，
+ *	并且在其他bean被创建之前应用它们.
  *
  * <p>Useful for custom config files targeted at system administrators that
  * override bean properties configured in the application context.
@@ -36,8 +40,7 @@ import org.springframework.beans.BeansException;
  * instantiation, violating the container and causing unintended side-effects.
  * If bean instance interaction is required, consider implementing
  * {@link BeanPostProcessor} instead.
- *
- * 允许自定义的修改应用程序上下文的bean的定义。调整上下文的基础bean工厂的bean属性值。
+ *	BeanFactoryPostProcessor可以修改bean的 BeanDefinition,但是不能修改bean的实例。
  * spring的扩展点之一，spring允许BeanFactoryPostProcessor在容器实例化任何其他bean之前读取配置元数据，并可以根据需要进行修改。
  * 例如可以把bean的scope从singleton改为prototype，也可以修改property的值。
  *
