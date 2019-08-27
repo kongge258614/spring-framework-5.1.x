@@ -59,6 +59,9 @@ final class PostProcessorRegistrationDelegate {
 
 		if (beanFactory instanceof BeanDefinitionRegistry) {
 			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
+
+			// 此处的BeanFactoryPostProcessor和BeanDefinitionRegistryPostProcessor是继承关系，BeanDefinitionRegistryPostProcessor继承自BeanFactoryPostProcessor。
+			// 为什么在此新建两个list?  分开处理spring内部的和我们自己定义的bean.
 			List<BeanFactoryPostProcessor> regularPostProcessors = new ArrayList<>();   // regular: 正式的、正规的
 			List<BeanDefinitionRegistryPostProcessor> registryProcessors = new ArrayList<>();
 
