@@ -802,8 +802,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 	protected void initApplicationEventMulticaster() {
 		ConfigurableListableBeanFactory beanFactory = getBeanFactory();
 		if (beanFactory.containsLocalBean(APPLICATION_EVENT_MULTICASTER_BEAN_NAME)) {
-			this.applicationEventMulticaster =
-					beanFactory.getBean(APPLICATION_EVENT_MULTICASTER_BEAN_NAME, ApplicationEventMulticaster.class);
+			this.applicationEventMulticaster = beanFactory.getBean(APPLICATION_EVENT_MULTICASTER_BEAN_NAME, ApplicationEventMulticaster.class);
 			if (logger.isTraceEnabled()) {
 				logger.trace("Using ApplicationEventMulticaster [" + this.applicationEventMulticaster + "]");
 			}
@@ -858,6 +857,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 	/**
 	 * Add beans that implement ApplicationListener as listeners.
 	 * Doesn't affect other listeners, which can be added without being beans.
+	 *
+	 * 添加实现ApplicationListener作为侦听器的bean.
+	 * 不影响其他侦听器，可以在不添加bean的情况下添加.
+	 *
 	 */
 	protected void registerListeners() {
 		// Register statically specified listeners first.
@@ -914,7 +917,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 		// Allow for caching all bean definition metadata, not expecting further changes.
 		beanFactory.freezeConfiguration();
 
-		// Instantiate all remaining (non-lazy-init) singletons.
+		// Instantiate all remaining (non-lazy-init) singletons. 实例化所有剩余的非懒加载的单实例bean.
 		beanFactory.preInstantiateSingletons();
 	}
 
