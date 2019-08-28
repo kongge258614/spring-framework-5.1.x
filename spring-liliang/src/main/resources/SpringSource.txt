@@ -75,6 +75,7 @@ Spring容器的创建过程：
         ④ 向beanfactory中注册，即 registerBeanPostProcessors(beanFactory, priorityOrderedPostProcessors);【this.beanPostProcessors.add(beanPostProcessor)】
 
         ⑤ 最后向工厂中注册一个后置处理器，beanFactory.addBeanPostProcessor(new ApplicationListenerDetector(applicationContext));
+    7)、
 
 
 
