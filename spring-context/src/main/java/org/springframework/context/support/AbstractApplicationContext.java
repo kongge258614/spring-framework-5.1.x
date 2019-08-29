@@ -706,6 +706,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 		}
 
 		// Register default environment beans.
+		// 注册默认的环境（单例bean）
 		if (!beanFactory.containsLocalBean(ENVIRONMENT_BEAN_NAME)) {
 			beanFactory.registerSingleton(ENVIRONMENT_BEAN_NAME, getEnvironment());
 		}
