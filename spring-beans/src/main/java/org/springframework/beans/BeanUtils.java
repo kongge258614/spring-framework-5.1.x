@@ -728,6 +728,8 @@ public abstract class BeanUtils {
 
 		/**
 		 * Instantiate a Kotlin class using the provided constructor.
+		 *
+		 * 使用提供的构造函数实例化Kotlin类。
 		 * @param ctor the constructor of the Kotlin class to instantiate
 		 * @param args the constructor arguments to apply
 		 * (use {@code null} for unspecified parameter if needed)
