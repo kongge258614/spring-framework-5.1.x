@@ -727,8 +727,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	@Override
 	public boolean containsLocalBean(String name) {
 		String beanName = transformedBeanName(name);
-		return ((containsSingleton(beanName) || containsBeanDefinition(beanName)) &&
-				(!BeanFactoryUtils.isFactoryDereference(name) || isFactoryBean(beanName)));
+		return ((containsSingleton(beanName) || containsBeanDefinition(beanName)) && (!BeanFactoryUtils.isFactoryDereference(name) || isFactoryBean(beanName)));
 	}
 
 
