@@ -2,7 +2,7 @@ Spring容器的创建过程：
 
 1.AnnotationConfigApplicationContext调用父类(GenericApplicationContext)的构造函数创建DefaultListableBeanFactory工厂
 -----------------------------------------------------------------------------------------------------------------------------
-2.调用构造函数，创建AnnotatedBeanDefinitionReader【注解的BeanDefinition读取器】
+2.调用构造函数，实例化AnnotatedBeanDefinitionReader【注解的BeanDefinition读取器】
     1)、getOrCreateEnvironment(registry) 【根据传入的registry获得上下文环境】
     2)、this.conditionEvaluator = new ConditionEvaluator(registry, environment, null)【创建条件计算器】
     3)、registerAnnotationConfigProcessors()【注册注解配置类的处理程序】
@@ -25,7 +25,7 @@ Spring容器的创建过程：
 4.register(annotatedClasses)
     1)、doRegisterBean
         ① AnnotatedGenericBeanDefinition abd = new AnnotatedGenericBeanDefinition(annotatedClass);首先将配置类转换成一个AnnotatedGenericBeanDefinition对象。
-        ② 获取此配置类的ScopeMetadata，解析配置类的名字
+        ② 获取此配置类的ScopeMetadata，解析配置类的名字（如果有别名解析别名，如果没有别名则使用类的名字，且类名的第一个字母小写）
         ③ processCommonDefinitionAnnotations【处理普遍的BeanDefinition注解】
         ④ BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(abd, beanName);【将该配置类包装成definitionHolder】
         ⑤ BeanDefinitionReaderUtils.registerBeanDefinition(),将该配置类注册到bean工厂中，如果该配置类有别名，则将别名添加到aliasMap中
@@ -36,7 +36,11 @@ Spring容器的创建过程：
     1)、prepareRefresh(); 刷新前的预处理
         ① initPropertySources()初始化一些属性设置,此方法是一个空方法;子类自定义个性化的属性设置方法；
         ② earlyApplicationListeners,早期的应用程序监听器     earlyApplicationEvents = new LinkedHashSet<>();创建一个容器，保存早期的事件
+
+
     2)、obtainFreshBeanFactory();从容器中获取工厂
+
+
     3)、prepareBeanFactory(beanFactory);  准备beanfactory
         ① beanFactory.setBeanClassLoader(getClassLoader()); 设置bean加载器
         ② beanFactory.setBeanExpressionResolver(new StandardBeanExpressionResolver(beanFactory.getBeanClassLoader()));  配置bean表达式解析器
