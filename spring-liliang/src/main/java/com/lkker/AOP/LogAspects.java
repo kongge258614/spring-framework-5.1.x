@@ -1,7 +1,10 @@
 package com.lkker.AOP;
 
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
 
 /**
  * @Author liliang
@@ -17,23 +20,26 @@ public class LogAspects {
 	public void pointCut(){}
 
 	@Before("pointCut()")
-	public void logStart(){
-		System.out.println("除法运行之前.........参数列表是{}");
+	public void logStart(JoinPoint joinPoint){
+		String methodName = joinPoint.getSignature().getName();
+		Object[] args = joinPoint.getArgs();
+		System.out.println(methodName+"运行之前.........参数列表是:"+ Arrays.asList(args));
 	}
 
 	@After("pointCut()")
-	public void logEnd(){
+	public void logEnd(JoinPoint joinPoint){
+		String methodName = joinPoint.getSignature().getName();
 		System.out.println("除法运行结束...........");
 	}
 
-	@AfterReturning("pointCut()")
-	public void logReturn(){
-		System.out.println("除法正常返回........运行结果是{}");
+	@AfterReturning(value = "pointCut()",returning = "result")
+	public void logReturn(Object result){
+		System.out.println("除法正常返回........运行结果是:"+result);
 	}
 
-	@AfterThrowing("pointCut()")
-	public void logException(){
-		System.out.println("除法异常..........");
+	@AfterThrowing(value = "pointCut()",throwing = "exception")
+	public void logException(Exception exception){
+		System.out.println("除法异常..........异常信息:"+exception);
 	}
 
 }
