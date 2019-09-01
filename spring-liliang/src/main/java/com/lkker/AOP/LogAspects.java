@@ -21,7 +21,7 @@ public class LogAspects {
 		System.out.println("除法运行之前.........参数列表是{}");
 	}
 
-	@After("pointCut")
+	@After("pointCut()")
 	public void logEnd(){
 		System.out.println("除法运行结束...........");
 	}

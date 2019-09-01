@@ -1,5 +1,6 @@
 package com.lkker;
 
+import com.lkker.AOP.MathCalculator;
 import com.lkker.config.JavaConfigOfAOP;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -12,6 +13,9 @@ public class TestAOP {
 	public static void main(String[] args) {
 		AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(JavaConfigOfAOP.class);
 
-		applicationContext.getBean("mathCalculator");
+		MathCalculator mathCalculator = (MathCalculator) applicationContext.getBean("mathCalculator");
+
+		mathCalculator.div(6,3);
+
 	}
 }
