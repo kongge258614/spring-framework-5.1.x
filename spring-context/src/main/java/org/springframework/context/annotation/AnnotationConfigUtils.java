@@ -166,6 +166,7 @@ public abstract class AnnotationConfigUtils {
 		Set<BeanDefinitionHolder> beanDefs = new LinkedHashSet<>(8);
 
 		//往 BeanDefinitionMap 注册一个 ConfigurationClassPostProcessor
+		// 将 ConfigurationClassPostProcessor.class 类转换成一个RootBeanDefinition对象，并将此对象注册到 beanDefinitionMap 这个map中，将该对象的名字 添加到 beanDefinitionNames 这个list中
 		if (!registry.containsBeanDefinition(CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME)) {
 			RootBeanDefinition def = new RootBeanDefinition(ConfigurationClassPostProcessor.class);
 			def.setSource(source);
