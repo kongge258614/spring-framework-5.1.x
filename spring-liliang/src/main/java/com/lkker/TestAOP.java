@@ -15,7 +15,7 @@ public class TestAOP {
 
 		MathCalculator mathCalculator = (MathCalculator) applicationContext.getBean("mathCalculator");
 
-		mathCalculator.div(6,3);
+		mathCalculator.div(6,2);
 
 	}
 }

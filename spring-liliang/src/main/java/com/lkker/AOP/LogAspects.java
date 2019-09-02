@@ -38,8 +38,9 @@ public class LogAspects {
 	}
 
 	@AfterThrowing(value = "pointCut()",throwing = "exception")
-	public void logException(Exception exception){
-		System.out.println("除法异常..........异常信息:"+exception);
+	public void logException(JoinPoint joinPoint,Exception exception){
+		String methodName=joinPoint.getSignature().getName();
+		System.out.println(methodName+"除法异常..........异常信息:"+exception);
 	}
 
 }
