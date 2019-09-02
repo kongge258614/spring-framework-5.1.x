@@ -1,4 +1,4 @@
-package com.lkker.config;
+package com.lkker.ioc.config;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;

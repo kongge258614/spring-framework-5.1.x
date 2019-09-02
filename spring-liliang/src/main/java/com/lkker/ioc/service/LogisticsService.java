@@ -1,11 +1,10 @@
-package com.lkker.service;
+package com.lkker.ioc.service;
 
 /**
  * @Author liliang
- * @Date 2019/8/10 16:01
+ * @Date 2019/9/2 17:10
  * @Description
  **/
 public interface LogisticsService {
-
 	void save();
 }

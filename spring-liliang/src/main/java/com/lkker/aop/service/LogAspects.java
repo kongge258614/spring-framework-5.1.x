@@ -1,4 +1,4 @@
-package com.lkker.AOP;
+package com.lkker.aop.service;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -16,7 +16,7 @@ import java.util.Arrays;
 public class LogAspects {
 
 	// 抽取公共的切入点表达式
-	@Pointcut("execution(public int com.lkker.AOP.MathCalculator.*(..))")
+	@Pointcut("execution(public int com.lkker.aop.service.MathCalculator.*(..))")
 	public void pointCut(){}
 
 	@Before("pointCut()")

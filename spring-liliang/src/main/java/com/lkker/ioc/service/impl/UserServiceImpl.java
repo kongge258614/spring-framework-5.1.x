@@ -1,18 +1,17 @@
-package com.lkker.service.impl;
+package com.lkker.ioc.service.impl;
 
-import com.lkker.service.UserService;
+import com.lkker.ioc.service.UserService;
 import org.springframework.stereotype.Service;
 
 /**
  * @Author liliang
- * @Date 2019/8/9 22:59
+ * @Date 2019/9/2 17:10
  * @Description
  **/
-
 @Service
 public class UserServiceImpl implements UserService {
 	@Override
 	public void save() {
-		System.out.println("save user..........");
+		System.out.println("user save.............");
 	}
 }

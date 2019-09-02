@@ -1,7 +1,7 @@
-package com.lkker;
+package com.lkker.aop;
 
-import com.lkker.AOP.MathCalculator;
-import com.lkker.config.JavaConfigOfAOP;
+import com.lkker.aop.config.JavaConfigOfAOP;
+import com.lkker.aop.service.MathCalculator;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**

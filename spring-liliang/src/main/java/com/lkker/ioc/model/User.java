@@ -1,4 +1,4 @@
-package com.lkker.model;
+package com.lkker.ioc.model;
 
 /**
  * @Author liliang

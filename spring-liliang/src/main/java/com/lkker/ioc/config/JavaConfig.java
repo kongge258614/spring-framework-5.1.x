@@ -1,4 +1,4 @@
-package com.lkker.config;
+package com.lkker.ioc.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -10,12 +10,9 @@ import org.springframework.context.annotation.Configuration;
  **/
 
 @Configuration
-@ComponentScan("com.lkker")
+@ComponentScan("com.lkker.ioc")
 public class JavaConfig {
 
-
-
-
-
+	
 
 }
