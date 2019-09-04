@@ -60,6 +60,8 @@ Spring容器的创建过程：
                 Ⅰ.在postProcessorNames中，获取实现了PriorityOrdered接口的类，并将其添加到 currentRegistryProcessors 列表中，将类名添加到processedBeans集合中。【观察者模式】处理注册到
                 currentRegistryProcessors列表中的后置处理器。将 currentRegistryProcessors 列表清空。
 
+                筛选出添加了@Configuration注解的bean来
+
                 Ⅱ.在postProcessorNames中，获取实现了Ordered接口的类，并将其添加到 currentRegistryProcessors 列表中，将类名添加到processedBeans集合中。【观察者模式】处理注册到
                 currentRegistryProcessors列表中的后置处理器。将 currentRegistryProcessors 列表清空。
 
