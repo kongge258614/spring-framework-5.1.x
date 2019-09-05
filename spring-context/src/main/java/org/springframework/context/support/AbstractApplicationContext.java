@@ -669,6 +669,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 	 * such as the context's ClassLoader and post-processors.
 	 * @param beanFactory the BeanFactory to configure
 	 *  配置工厂的标准上下文特征，例如上下文的类加载器和后置处理器
+	 *  调用此方法向工厂中添加了两个重要的BeanPostProcessor(ApplicationContextAwareProcessor、ApplicationListenerDetector)
+	 *  添加了三个单例bean(environment、systemProperties、systemEnvironment)
 	 */
 	protected void prepareBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 		// Tell the internal bean factory to use the context's class loader etc.
@@ -697,6 +699,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 		beanFactory.registerResolvableDependency(ApplicationContext.class, this);
 
 		// Register early post-processor for detecting inner beans as ApplicationListeners.
+		// 将早期后处理器注册为application监听器，用于检测内部bean。
 		beanFactory.addBeanPostProcessor(new ApplicationListenerDetector(this));
 
 		// Detect a LoadTimeWeaver and prepare for weaving, if found.
