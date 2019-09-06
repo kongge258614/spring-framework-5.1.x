@@ -25,6 +25,8 @@ import org.springframework.core.type.AnnotationMetadata;
  * processing @{@link Configuration} classes. Useful when operating at the bean definition
  * level (as opposed to {@code @Bean} method/instance level) is desired or necessary.
  *
+ * 当处理配置类的时候，注册其他的bean definition的接口
+ *
  * <p>Along with {@code @Configuration} and {@link ImportSelector}, classes of this type
  * may be provided to the @{@link Import} annotation (or may also be returned from an
  * {@code ImportSelector}).
