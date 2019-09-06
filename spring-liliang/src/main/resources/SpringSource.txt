@@ -87,7 +87,17 @@ Spring容器的创建过程：
 
 
 
+================================================================================================================================================================================================================
+AOP
 
+@EnableAspectJAutoProxy
+    @Import(AspectJAutoProxyRegistrar.class) -->AspectJAutoProxyRegistrar.class-->ImportBeanDefinitionRegistrar
+
+    将AnnotationAwareAspectJAutoProxyCreator.class注册到beanfactory中。
+        AspectJAwareAdvisorAutoProxyCreator
+            AbstractAdvisorAutoProxyCreator
+                AbstractAutoProxyCreator
+                    implements SmartInstantiationAwareBeanPostProcessor, BeanFactoryAware
 
 
 
