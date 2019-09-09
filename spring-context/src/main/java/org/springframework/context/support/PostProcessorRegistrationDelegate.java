@@ -145,6 +145,7 @@ final class PostProcessorRegistrationDelegate {
 
 			// Now, invoke the postProcessBeanFactory callback of all processors handled so far.
 			// 到目前为止，执行所有的 postProcessBeanFactory 的回调方法
+			// 调用此方法，可以创建JavaConfig的代理类 ！！！！
 			invokeBeanFactoryPostProcessors(registryProcessors, beanFactory);
 			invokeBeanFactoryPostProcessors(regularPostProcessors, beanFactory);
 		}
