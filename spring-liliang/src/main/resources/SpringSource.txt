@@ -101,8 +101,9 @@ AOP
 
 
 
-
-
+==================================================================================================================================================================================================================
+    ConfigurationClassPostProcessor存在的作用：
+    1.首先实例化 ConfigurationClassPostProcessor ，实例化完成后，调用 ConfigurationClassPostProcessor 的 processConfigBeanDefinitions来筛选出 JavaConfig类，解析JavaConfig的注解，扫描包，将ComponentScan下面所有的注解类注册到beanfactory中。
 
 
 
