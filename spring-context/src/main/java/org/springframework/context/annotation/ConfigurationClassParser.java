@@ -284,8 +284,7 @@ class ConfigurationClassParser {
 		if (!componentScans.isEmpty() && !this.conditionEvaluator.shouldSkip(sourceClass.getMetadata(), ConfigurationPhase.REGISTER_BEAN)) {
 			for (AnnotationAttributes componentScan : componentScans) {
 				// The config class is annotated with @ComponentScan -> perform the scan immediately 配置类由@ComponentScan注释——>立即执行扫描
-				Set<BeanDefinitionHolder> scannedBeanDefinitions =
-						this.componentScanParser.parse(componentScan, sourceClass.getMetadata().getClassName());
+				Set<BeanDefinitionHolder> scannedBeanDefinitions = this.componentScanParser.parse(componentScan, sourceClass.getMetadata().getClassName());
 				// Check the set of scanned definitions for any further config classes and parse recursively if needed
 				for (BeanDefinitionHolder holder : scannedBeanDefinitions) {
 					BeanDefinition bdCand = holder.getBeanDefinition().getOriginatingBeanDefinition();
@@ -315,7 +314,7 @@ class ConfigurationClassParser {
 		 * 总之就是一句话，@Import(XXX.class),那么XXX这个类会被解析
 		 * 如果XXX是selector的，那么当中返回的类虽然没有直接加上@Import，但是也会直接解析。
 		 */
-		processImports(configClass, sourceClass, getImports(sourceClass), true);
+		processImports(configClass, sourceClass, getImports(sourceClass), true); //获取import的类!!!
 
 		// Process any @ImportResource annotations
 		AnnotationAttributes importResource = AnnotationConfigUtils.attributesFor(sourceClass.getMetadata(), ImportResource.class);

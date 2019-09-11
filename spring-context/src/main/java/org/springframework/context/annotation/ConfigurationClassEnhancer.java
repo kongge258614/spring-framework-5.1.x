@@ -115,7 +115,7 @@ class ConfigurationClassEnhancer {
 	}
 
 	/**
-	 * Creates a new CGLIB {@link Enhancer} instance.
+	 * Creates a new CGLIB {@link Enhancer} instance. 创建一个CGLIB实例
 	 */
 	private Enhancer newEnhancer(Class<?> configSuperClass, @Nullable ClassLoader classLoader) {
 		Enhancer enhancer = new Enhancer();

@@ -217,6 +217,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 
 	/**
 	 * Derive further bean definitions from the configuration classes in the registry.
+	 * 从注册表中的配置类派生进一步的bean定义。
 	 */
 	@Override
 	public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) {
@@ -332,7 +333,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 				this.reader = new ConfigurationClassBeanDefinitionReader(
 						registry, this.sourceExtractor, this.resourceLoader, this.environment, this.importBeanNameGenerator, parser.getImportRegistry());
 			}
-			this.reader.loadBeanDefinitions(configClasses);
+			this.reader.loadBeanDefinitions(configClasses);  // 此方法的目的是:向工厂中注册用户自定义的BeanDefintion
 			alreadyParsed.addAll(configClasses);
 
 			candidates.clear();
@@ -400,7 +401,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		ConfigurationClassEnhancer enhancer = new ConfigurationClassEnhancer();
 		for (Map.Entry<String, AbstractBeanDefinition> entry : configBeanDefs.entrySet()) {
 			AbstractBeanDefinition beanDef = entry.getValue();
-			// If a @Configuration class gets proxied, always proxy the target class
+			// If a @Configuration class gets proxied, always proxy the target class 如果@Configuration类得到了代理，以后将始终代理目标类
 			beanDef.setAttribute(AutoProxyUtils.PRESERVE_TARGET_CLASS_ATTRIBUTE, Boolean.TRUE);
 			try {
 				// Set enhanced subclass of the user-specified bean class
