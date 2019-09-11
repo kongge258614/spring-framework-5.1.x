@@ -237,7 +237,8 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 
 	/**
 	 * Prepare the Configuration classes for servicing bean requests at runtime
-	 * by replacing them with CGLIB-enhanced subclasses.通过使用cglib增强的子类替换bean请求，准备在运行时为bean请求提供服务的配置类。
+	 * by replacing them with CGLIB-enhanced subclasses.
+	 * 通过使用cglib增强的子类替换bean请求，准备在运行时为bean请求提供服务的配置类。
 	 */
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
@@ -287,6 +288,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		}
 
 		// Return immediately if no @Configuration classes were found
+		// 如果没有找到@Configuration类，则立即返回
 		if (configCandidates.isEmpty()) {
 			return;
 		}
@@ -315,7 +317,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			this.environment = new StandardEnvironment();
 		}
 
-		// Parse each @Configuration class
+		// Parse each @Configuration class   解析每个@Configuration类
 		ConfigurationClassParser parser = new ConfigurationClassParser(
 				this.metadataReaderFactory, this.problemReporter, this.environment, this.resourceLoader, this.componentScanBeanNameGenerator, registry);
 
