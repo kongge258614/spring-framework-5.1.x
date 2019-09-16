@@ -316,7 +316,7 @@ class ConfigurationClassParser {
 		 */
 		processImports(configClass, sourceClass, getImports(sourceClass), true); //获取import的类!!!
 
-		// Process any @ImportResource annotations
+		// Process any @ImportResource annotations 处理任何@ImportResource注释
 		AnnotationAttributes importResource = AnnotationConfigUtils.attributesFor(sourceClass.getMetadata(), ImportResource.class);
 		if (importResource != null) {
 			String[] resources = importResource.getStringArray("locations");
