@@ -106,5 +106,8 @@ AOP
     1.首先实例化 ConfigurationClassPostProcessor ，实例化完成后，调用 ConfigurationClassPostProcessor 的 processConfigBeanDefinitions来筛选出 JavaConfig类，解析JavaConfig的注解，扫描包，将ComponentScan下面所有的注解类注册到beanfactory中。
 
 
+    注意：BeanFactoryAdvisorRetrievalHelper在哪里用到了它
+
+
 
 
