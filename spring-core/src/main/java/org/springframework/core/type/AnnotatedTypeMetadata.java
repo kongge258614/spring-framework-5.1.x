@@ -44,8 +44,11 @@ public interface AnnotatedTypeMetadata {
 	 * <p>If this method returns {@code true}, then
 	 * {@link #getAnnotationAttributes} will return a non-null Map.
 	 * @param annotationName the fully qualified class name of the annotation
-	 * type to look for
-	 * @return whether a matching annotation is defined
+	 * type to look for    注释型注释类名称
+	 * @return whether a matching annotation is defined    是否定义了匹配的注释
+	 *
+	 * 确定基础元素是否定义了给定类型的批注或元批注。如果该方法返回true，则getAnnotationAttributes将会返回一个非空数组
+	 *
 	 */
 	boolean isAnnotated(String annotationName);
 
