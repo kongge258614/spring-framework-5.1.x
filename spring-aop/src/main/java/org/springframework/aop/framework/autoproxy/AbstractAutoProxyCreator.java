@@ -254,9 +254,9 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 			}
 		}
 
-		// Create proxy here if we have a custom TargetSource. 如果我们有自定义的TargetSource，那么在这里创建代理
-		// Suppresses unnecessary default instantiation of the target bean:  抑制目标bean的不必要的默认实例化:
-		// The TargetSource will handle target instances in a custom fashion.  TargetSource将以自定义的方式处理目标实例。
+		// Create proxy here if we have a custom TargetSource.
+		// Suppresses unnecessary default instantiation of the target bean:
+		// The TargetSource will handle target instances in a custom fashion.
 		TargetSource targetSource = getCustomTargetSource(beanClass, beanName);
 		if (targetSource != null) {
 			if (StringUtils.hasLength(beanName)) {
@@ -288,7 +288,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 	/**
 	 * Create a proxy with the configured interceptors if the bean is
-	 * identified as one to proxy by the subclass. 如果bean被子类标识为一个代理，则使用已配置的拦截器创建一个代理。
+	 * identified as one to proxy by the subclass.
 	 * @see #getAdvicesAndAdvisorsForBean
 	 */
 	@Override
@@ -343,7 +343,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 			return bean;
 		}
 
-		// Create proxy if we have advice. 如果我们有advice，创建代理。
+		// Create proxy if we have advice.
 		Object[] specificInterceptors = getAdvicesAndAdvisorsForBean(bean.getClass(), beanName, null);
 		if (specificInterceptors != DO_NOT_PROXY) {
 			this.advisedBeans.put(cacheKey, Boolean.TRUE);
