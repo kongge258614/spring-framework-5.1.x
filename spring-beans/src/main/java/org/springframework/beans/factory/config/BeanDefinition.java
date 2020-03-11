@@ -100,12 +100,14 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 
 	/**
 	 * Return the name of the parent definition of this bean definition, if any.
+	 * 如果当前beandefinition存在父beandefinition，则返回父beandefinition的name
 	 */
 	@Nullable
 	String getParentName();
 
 	/**
 	 * Specify the bean class name of this bean definition.
+	 * 指定此beanDefinition的bean类名。
 	 * <p>The class name can be modified during bean factory post-processing,
 	 * typically replacing the original class name with a parsed variant of it.
 	 * @see #setParentName
@@ -170,6 +172,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 
 	/**
 	 * Set whether this bean is a candidate for getting autowired into some other bean.
+	 * 设置这个bean是否可以被自动装配到其他bean中。
 	 * <p>Note that this flag is designed to only affect type-based autowiring.
 	 * It does not affect explicit references by name, which will get resolved even
 	 * if the specified bean is not marked as an autowire candidate. As a consequence,

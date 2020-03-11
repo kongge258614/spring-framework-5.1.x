@@ -304,6 +304,11 @@ public interface BeanFactory {
 	 * would return an object that is assignable to the specified target type.
 	 * <p>Translates aliases back to the corresponding canonical bean name.
 	 * Will ask the parent factory if the bean cannot be found in this factory instance.
+	 *
+	 * 检查具有给定名称的bean是否与指定的类型匹配。
+	 * 更具体的说，根据参数名称调用getBean方法，是否会返回可分配给指定目标类型的对象
+	 *
+	 *
 	 * @param name the name of the bean to query
 	 * @param typeToMatch the type to match against (as a {@code ResolvableType})
 	 * @return {@code true} if the bean type matches,
@@ -351,6 +356,7 @@ public interface BeanFactory {
 
 	/**
 	 * Return the aliases for the given bean name, if any.
+	 * 返回给定bean名称的别名
 	 * All of those aliases point to the same bean when used in a {@link #getBean} call.
 	 * <p>If the given name is an alias, the corresponding original bean name
 	 * and other aliases (if any) will be returned, with the original bean name
