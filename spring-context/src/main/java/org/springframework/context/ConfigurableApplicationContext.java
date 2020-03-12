@@ -41,7 +41,9 @@ import org.springframework.lang.Nullable;
  * @since 03.11.2003
  */
 public interface ConfigurableApplicationContext extends ApplicationContext, Lifecycle, Closeable {
-
+	/**
+	 * 可配置的 ApplicationContext
+	 */
 	/**
 	 * Any number of these characters are considered delimiters between
 	 * multiple context config paths in a single String value.
