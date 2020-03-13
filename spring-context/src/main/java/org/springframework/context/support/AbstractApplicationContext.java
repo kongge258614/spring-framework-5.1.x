@@ -537,6 +537,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
 			// Prepare the bean factory for use in this context.
 			// 配置bean工厂的上下文信息，如类装载器等
+			// 为bean工厂添加属性，向bean工厂中添加BeanPostProcessor
 			prepareBeanFactory(beanFactory);
 
 			try {
