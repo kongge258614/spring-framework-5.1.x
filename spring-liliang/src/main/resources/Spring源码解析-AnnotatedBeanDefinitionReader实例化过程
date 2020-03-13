@@ -1,0 +1,7 @@
+    Spring容器启动时，首先会实例化AnnotationConfigApplicationContext容器。实例化AnnotationConfigApplicationContext时（由于AnnotationConfigApplicationContext继承自GenericApplicationContex，因此会首先实例化GenericApplicationContex），第一步创建AnnotatedBeanDefinitionReader对象，用于读取注解，详细过程如下：
+    实例化AnnotatedBeanDefinitionReader
+    -->org.springframework.context.annotation.AnnotatedBeanDefinitionReader.AnnotatedBeanDefinitionReader(BeanDefinitionRegistry registry)
+      实例化条件计算器
+      -->org.springframework.context.annotation.ConditionEvaluator.ConditionEvaluator()
+        向registry中注册相关联的后置处理器
+        -->org.springframework.context.annotation.AnnotationConfigUtils.registerAnnotationConfigProcessors(BeanDefinitionRegistry registry, Object obj)
