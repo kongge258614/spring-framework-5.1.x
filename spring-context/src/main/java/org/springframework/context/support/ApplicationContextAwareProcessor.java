@@ -67,9 +67,11 @@ class ApplicationContextAwareProcessor implements BeanPostProcessor {
 
 	/**
 	 * Create a new ApplicationContextAwareProcessor for the given context.   为给定的上下文创建一个新的applicationcontextAwareprocessor。
+	 * aware：意识到、感知到、发现、发觉
 	 */
 	public ApplicationContextAwareProcessor(ConfigurableApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
+		// 嵌入式值解析器
 		this.embeddedValueResolver = new EmbeddedValueResolver(applicationContext.getBeanFactory());
 	}
 

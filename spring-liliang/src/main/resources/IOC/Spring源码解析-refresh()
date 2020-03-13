@@ -1,0 +1,4 @@
+  refresh方法是一切实例化的开始
+
+  配置bean工厂的上下文信息
+  -->prepareBeanFactory(beanFactory)
