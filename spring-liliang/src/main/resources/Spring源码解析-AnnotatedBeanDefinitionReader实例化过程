@@ -3,5 +3,8 @@
     -->org.springframework.context.annotation.AnnotatedBeanDefinitionReader.AnnotatedBeanDefinitionReader(BeanDefinitionRegistry registry)
       实例化条件计算器
       -->org.springframework.context.annotation.ConditionEvaluator.ConditionEvaluator()
-        向registry中注册相关联的后置处理器
+        向registry中注册相关联的后置处理器,获取bean工厂，向工厂中注入属性
         -->org.springframework.context.annotation.AnnotationConfigUtils.registerAnnotationConfigProcessors(BeanDefinitionRegistry registry, Object obj)
+
+
+    小结：伴随着AnnotatedBeanDefinitionReader实例化过程，向容器中设置了两个属性，以及向容器中注入了5个BeanDefinition,但是并没有将这5个BeanDefinition实例化成为对象。
