@@ -1,1 +1,12 @@
     register(annotatedClasses)-->向容器中注册配置类
+
+    -->org.springframework.context.annotation.AnnotationConfigApplicationContext.register()
+      调用reader的registerBean()方法
+      -->org.springframework.context.annotation.AnnotatedBeanDefinitionReader.registerBean(java.lang.Class<?>)
+        将配置类注册到容器中
+        -->org.springframework.beans.factory.support.BeanDefinitionReaderUtils.registerBeanDefinition()
+
+
+
+
+    总结：由于配置类是开发人员外部配置的，所以，spring容器在注册配置bean时，额外增加了一些校验，比如设置用户自定义的Scope、确定配置bean的名称以及别名、以及处理一些关于优先级、lazy之类的注解
