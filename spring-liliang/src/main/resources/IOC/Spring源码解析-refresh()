@@ -13,3 +13,25 @@
             beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
             beanFactory.addBeanPostProcessor(new ApplicationListenerDetector(this));
         3）注册三个容器所需要的单实例bean
+    4.invokeBeanFactoryPostProcessors(beanFactory);  执行BeanFactoryPostProcessor
+        1)invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory, List<BeanFactoryPostProcessor> beanFactoryPostProcessors)  执行beanfactory的后置处理器
+            ①List<BeanFactoryPostProcessor> beanFactoryPostProcessors  还没搞明白
+
+            ② List<BeanFactoryPostProcessor> regularPostProcessors = new ArrayList<>();
+               List<BeanDefinitionRegistryPostProcessor> registryProcessors = new ArrayList<>();
+               BeanDefinitionRegistryPostProcessor继承自BeanFactoryPostProcessor，但是它们两个的执行时机不同，
+               BeanFactoryPostProcessor执行时机：在应用程序上下文的标准初始化之后修改它的内部bean工厂。所有bean定义都已加载，但还没有实例化bean。
+               BeanDefinitionRegistryPostProcessor执行时机：在应用程序上下文的标准初始化之后修改它的内部bean定义注册表。所有常规bean定义都已加载，但还没有实例化任何bean。
+
+            ③ 执行BeanDefinitionRegistryPostProcessor：
+                A、 根据类型获取所有的BeanDefinitionRegistryPostProcessor，首先获取实现了PriorityOrdered优先级的BeanDefinitionRegistryPostProcessor，调用getBean(ppName, BeanDefinitionRegistryPostProcessor.class)
+                方法，创建对象，并将创建好的对象添加到currentRegistryProcessors集合中。
+                B、invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry); 观察者模式，对currentRegistryProcessors集合中的对象统一调用postProcessBeanDefinitionRegistry(registry);
+                    postProcessor.postProcessBeanDefinitionRegistry(registry);   这个方法要好好看看！！！！
+
+                C、获取实现了Ordered接口的BeanDefinitionRegistryPostProcessor，调用getBean(ppName, BeanDefinitionRegistryPostProcessor.class)方法，创建对象，并将创建好的对象添加到currentRegistryProcessors集合中。
+                D、invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry); 观察者模式，对currentRegistryProcessors集合中的对象统一调用postProcessBeanDefinitionRegistry(registry);
+                    postProcessor.postProcessBeanDefinitionRegistry(registry);   这个方法要好好看看！！！！
+                E、处理没有实现PriorityOrdered和Ordered的BeanDefinitionRegistryPostProcessor
+
+            ④invokeBeanFactoryPostProcessors(registryProcessors, beanFactory);
