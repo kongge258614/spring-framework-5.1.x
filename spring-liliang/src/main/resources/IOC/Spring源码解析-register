@@ -1,10 +1,12 @@
     register(annotatedClasses)-->向容器中注册配置类
 
-    -->org.springframework.context.annotation.AnnotationConfigApplicationContext.register()
-      调用reader的registerBean()方法
-      -->org.springframework.context.annotation.AnnotatedBeanDefinitionReader.registerBean(java.lang.Class<?>)
-        将配置类注册到容器中
-        -->org.springframework.beans.factory.support.BeanDefinitionReaderUtils.registerBeanDefinition()
+   1.register(annotatedClasses);
+        1） doRegisterBean（）
+            ①AnnotatedGenericBeanDefinition abd = new AnnotatedGenericBeanDefinition(annotatedClass);  将annotatedClass类转换成AnnotatedGenericBeanDefinition类
+            ②获取bean的作用域
+            ③获取bean的名称
+            ④处理配置类上的常见注解
+            ⑤将配置类的bean注册到beanDefinitionMap和beanDefinitionNames中
 
 
 
