@@ -1,10 +1,18 @@
     Spring容器启动时，首先会实例化AnnotationConfigApplicationContext容器。实例化AnnotationConfigApplicationContext时（由于AnnotationConfigApplicationContext继承自GenericApplicationContex，因此会首先实例化GenericApplicationContex），第一步创建AnnotatedBeanDefinitionReader对象，用于读取注解，详细过程如下：
-    实例化AnnotatedBeanDefinitionReader
-    -->org.springframework.context.annotation.AnnotatedBeanDefinitionReader.AnnotatedBeanDefinitionReader(BeanDefinitionRegistry registry)
-      实例化条件计算器
-      -->org.springframework.context.annotation.ConditionEvaluator.ConditionEvaluator()
-        向registry中注册相关联的后置处理器,获取bean工厂，向工厂中注入属性
-        -->org.springframework.context.annotation.AnnotationConfigUtils.registerAnnotationConfigProcessors(BeanDefinitionRegistry registry, Object obj)
+
+    1.AnnotatedBeanDefinitionReader(BeanDefinitionRegistry registry)   实例化AnnotatedBeanDefinitionReader
+        1）new ConditionEvaluator(registry, environment, null);        实例化条件计算器
+
+        2）registerAnnotationConfigProcessors(BeanDefinitionRegistry registry, @Nullable Object source)  向registry中注册相关联的后置处理器,获取bean工厂，向工厂中注入属性
+            ①DefaultListableBeanFactory beanFactory = unwrapDefaultListableBeanFactory(registry);  获取bean工厂，并给bean工厂的属性赋值
+            ②将internalConfigurationAnnotationProcessor类转换为RootBeanDefinition，并将其注册到beanDefinitionMap和beanDefinitionNames中
+            ③将internalAutowiredAnnotationProcessor类转换为RootBeanDefinition，并将其注册到beanDefinitionMap和beanDefinitionNames中（）
+            ④将internalCommonAnnotationProcessor类转换为RootBeanDefinition，并将其注册到beanDefinitionMap和beanDefinitionNames中
+            ⑤将internalEventListenerProcessor类转换为RootBeanDefinition，并将其注册到beanDefinitionMap和beanDefinitionNames中
+            ⑥将internalEventListenerFactory类转换为RootBeanDefinition，并将其注册到beanDefinitionMap和beanDefinitionNames中
 
 
-    小结：伴随着AnnotatedBeanDefinitionReader实例化过程，向容器中设置了两个属性，以及向容器中注入了5个BeanDefinition,但是并没有将这5个BeanDefinition实例化成为对象。
+
+
+
+    小结：伴随着AnnotatedBeanDefinitionReader实例化过程，向容器中设置了两个属性，以及向容器中注入了5个容器内置的BeanDefinition,但是并没有将这5个BeanDefinition实例化成为对象。
