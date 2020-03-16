@@ -1,4 +1,15 @@
-  refresh方法是一切实例化的开始
+  refresh方法是一切实例化的开始，也是容器实例化的过程中最重要的一步
 
-  配置bean工厂的上下文信息
-  -->prepareBeanFactory(beanFactory)
+    1.prepareRefresh();刷新容器，记录容器启动时间和标记
+
+    2.obtainFreshBeanFactory(); 给工厂设置一个id，并获得该工厂
+
+    3.prepareBeanFactory(beanFactory); beanfactory预准备
+        1) 给beanfactory设置属性值
+            beanFactory.setBeanClassLoader(getClassLoader());
+            beanFactory.setBeanExpressionResolver(new StandardBeanExpressionResolver(beanFactory.getBeanClassLoader()));
+            beanFactory.addPropertyEditorRegistrar(new ResourceEditorRegistrar(this, getEnvironment()));
+        2) 向beanfactory中注册两个后置处理器
+            beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
+            beanFactory.addBeanPostProcessor(new ApplicationListenerDetector(this));
+        3）注册三个容器所需要的单实例bean
