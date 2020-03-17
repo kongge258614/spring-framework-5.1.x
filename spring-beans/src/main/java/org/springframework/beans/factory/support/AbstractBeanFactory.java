@@ -591,7 +591,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				return typeToMatch.isAssignableFrom(targetClass);
 			}
 		}
-
+		// bean 类型推断
 		Class<?> beanType = predictBeanType(beanName, mbd, typesToMatch);
 		if (beanType == null) {
 			return false;

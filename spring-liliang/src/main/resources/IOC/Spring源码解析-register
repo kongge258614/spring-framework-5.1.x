@@ -4,7 +4,13 @@
         1） doRegisterBean（）
             ①AnnotatedGenericBeanDefinition abd = new AnnotatedGenericBeanDefinition(annotatedClass);  将annotatedClass类转换成AnnotatedGenericBeanDefinition类
             ②获取bean的作用域
+              ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(abd);在实例化AnnotatedBeanDefinitionReader时，实例化了scopeMetadataResolver
+              ScopeMetadata metadata = new ScopeMetadata();  创建一个ScopeMetadata对象，默认是单例的
             ③获取bean的名称
+              String beanName = (name != null ? name : this.beanNameGenerator.generateBeanName(abd, this.registry));
+                    String beanName = determineBeanNameFromAnnotation((AnnotatedBeanDefinition) definition);首先从注解中推断出bean的名称
+                    buildDefaultBeanName(definition, registry);如果没有给bean命名的注解，容器通过全类名的方式为bean构建名称
+
             ④处理配置类上的常见注解
             ⑤将配置类的bean注册到beanDefinitionMap和beanDefinitionNames中
 

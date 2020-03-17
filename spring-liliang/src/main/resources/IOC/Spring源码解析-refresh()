@@ -23,6 +23,20 @@
                BeanFactoryPostProcessor执行时机：在应用程序上下文的标准初始化之后修改它的内部bean工厂。所有bean定义都已加载，但还没有实例化bean。
                BeanDefinitionRegistryPostProcessor执行时机：在应用程序上下文的标准初始化之后修改它的内部bean定义注册表。所有常规bean定义都已加载，但还没有实例化任何bean。
 
+            新增1、根据类型获取bean的名称  String[] postProcessorNames = beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
+                String[] getBeanNamesForType()
+                    -->  RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
+                        -->  RootBeanDefinition mbd = this.mergedBeanDefinitions.get(beanName); 一开始 mergedBeanDefinitions 这个list为空
+                        -->  getMergedBeanDefinition(beanName, getBeanDefinition(beanName)); 循环遍历的将AnnotatedBeanDefinitionReader实例化阶段添加的5个RootBeanDefinition和我们的配置类添加到
+                                mergedBeanDefinitions数组中。
+
+
+
+                小结：会循环遍历处理所有的类，如果是spring容器的内部类，则会给内部类设置scope等
+                      到目前为止，容器还未实例化任何beanDefinition，还没有触发getBean()方法。
+                      我们自定义的类，也只有配置类被扫描进了容器，其他类还没有被加载
+
+
             ③ 执行BeanDefinitionRegistryPostProcessor：
                 A、 根据类型获取所有的BeanDefinitionRegistryPostProcessor，首先获取实现了PriorityOrdered优先级的BeanDefinitionRegistryPostProcessor，调用getBean(ppName, BeanDefinitionRegistryPostProcessor.class)
                 方法，创建对象，并将创建好的对象添加到currentRegistryProcessors集合中。

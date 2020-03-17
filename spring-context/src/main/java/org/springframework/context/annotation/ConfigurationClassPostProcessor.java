@@ -85,8 +85,7 @@ import static org.springframework.context.annotation.AnnotationConfigUtils.CONFI
  * @author Phillip Webb
  * @since 3.0
  */
-public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPostProcessor,
-		PriorityOrdered, ResourceLoaderAware, BeanClassLoaderAware, EnvironmentAware {
+public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPostProcessor, PriorityOrdered, ResourceLoaderAware, BeanClassLoaderAware, EnvironmentAware {
 
 	private static final String IMPORT_REGISTRY_BEAN_NAME =
 			ConfigurationClassPostProcessor.class.getName() + ".importRegistry";
@@ -372,7 +371,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	}
 
 	/**
-	 * Post-processes a BeanFactory in search of Configuration class BeanDefinitions;
+	 * Post-processes a BeanFactory in search of Configuration class BeanDefinitions;  对一个BeanFactory进行后处理，以查找配置类beandefinition;
 	 * any candidates are then enhanced by a {@link ConfigurationClassEnhancer}.
 	 * Candidate status is determined by BeanDefinition attribute metadata.
 	 * @see ConfigurationClassEnhancer
