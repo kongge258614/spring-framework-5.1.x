@@ -487,6 +487,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 	@Override
 	public void addBeanFactoryPostProcessor(BeanFactoryPostProcessor postProcessor) {
 		Assert.notNull(postProcessor, "BeanFactoryPostProcessor must not be null");
+		System.out.println("---------addBeanFactoryPostProcessor--------");
 		this.beanFactoryPostProcessors.add(postProcessor);
 	}
 
