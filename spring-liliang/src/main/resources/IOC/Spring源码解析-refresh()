@@ -29,6 +29,41 @@
                         -->  RootBeanDefinition mbd = this.mergedBeanDefinitions.get(beanName); 一开始 mergedBeanDefinitions 这个list为空
                         -->  getMergedBeanDefinition(beanName, getBeanDefinition(beanName)); 循环遍历的将AnnotatedBeanDefinitionReader实例化阶段添加的5个RootBeanDefinition和我们的配置类添加到
                                 mergedBeanDefinitions数组中。
+            新增2、Bean的实例化过程（无循环依赖、无AOP）currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));
+                    A. Object sharedInstance = getSingleton(beanName):如果当前缓存中存在要实例化的bean，则直接返回，如果没有则继续往下执行
+                        A-1.Object singletonObject = this.singletonObjects.get(beanName);首先在缓存中检查是否有实例化好的bean
+                        A-2.if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) 如果缓存中没有实例化完成的bean，再判断是否是当前正在实例化的bean
+                    B.markBeanAsCreated(beanName); 将该bean标记为已经创建的bean，目的是预防在多线程环境下重复创建单例bean，标记的方法使用synchronized修饰
+
+                    C.sharedInstance = getSingleton(beanName, () -> {try {return createBean(beanName, mbd, args);}  开始实例化bean
+                        C-1. mbdToUse.prepareMethodOverrides(); 准备方法重写
+                        C-2. Object bean = resolveBeforeInstantiation(beanName, mbdToUse);让beanpostprocessor有机会返回代理而不是目标bean实例。 没搞懂？？？？？
+                        C-3. Object beanInstance = doCreateBean(beanName, mbdToUse, args);
+                          C-3-1. instanceWrapper = createBeanInstance(beanName, mbd, args);
+                            C-3-1-1. Constructor<?>[] ctors = determineConstructorsFromBeanPostProcessors(beanClass, beanName);  自动装配的候选构造函数
+                            C-3-1-2. instantiateBean(beanName, mbd); 调用无参构造函数实例化
+                              C-3-1-2-1. beanInstance = getInstantiationStrategy().instantiate(mbd, beanName, parent);
+                                 C-3-1-2-1-1.BeanUtils.instantiateClass(constructorToUse); 这一步是真正的实例化
+                              C-3-1-2-2.BeanWrapper bw = new BeanWrapperImpl(beanInstance);  将实例化后的对象包装一下
+
+                          C-3-2.applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName);
+
+                          C-3-3.populateBean(beanName, mbd, instanceWrapper);   为属性赋值
+                          C-3-4.exposedObject = initializeBean(beanName, exposedObject, mbd);  初始化bean，调用其初始化方法
+                            C-3-4-1. wrappedBean = applyBeanPostProcessorsBeforeInitialization(wrappedBean, beanName); 调用init函数前，调用bean的后置处理器
+                            C-3-4-2. invokeInitMethods(beanName, wrappedBean, mbd);
+                            C-3-4-3. wrappedBean = applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);  调用init函数后，调用bean的后置处理器
+
+                            注意：bean实例化后，在调用init方法前后，调用的是BeanPostProcessor
+                       C-4. addSingleton(beanName, singletonObject);
+
+                       小结：到此，bean的实例化过程完成
+
+
+
+
+
+
 
 
 
