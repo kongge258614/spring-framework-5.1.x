@@ -1608,7 +1608,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			synchronized (this.mergedBeanDefinitions) {
 				if (!this.alreadyCreated.contains(beanName)) {
 					// Let the bean definition get re-merged now that we're actually creating
-					// the bean... just in case some of its metadata changed in the meantime.
+					// the bean... just in case some of its metadata changed in the meantime.防止在此期间元数据发生变化
 					clearMergedBeanDefinition(beanName);
 					this.alreadyCreated.add(beanName);
 				}
