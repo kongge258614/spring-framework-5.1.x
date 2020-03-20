@@ -308,7 +308,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 			// 如果不仅仅是做类型检查，标记bean的状态已经创建，即将beanName加入alreadyCreated集合中
 			if (!typeCheckOnly) {
-				markBeanAsCreated(beanName);
+				markBeanAsCreated(beanName); // 在mergedBeanDefinitions中移除指定的bean，等下次使用时再重新创建它，目的是避免bean的元数据发生变化
 			}
 
 			try {

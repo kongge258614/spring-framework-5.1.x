@@ -106,7 +106,7 @@ final class PostProcessorRegistrationDelegate {
 			}
 			sortPostProcessors(currentRegistryProcessors, beanFactory);
 			registryProcessors.addAll(currentRegistryProcessors);
-			// 调用这个方法的意义
+			// 调用这个方法的意义,解析标注了@Configuration注解的配置类，并且将@ComponentScan注解标注的扫描包中的所有添加注解的类加载到容器
 			invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
 			currentRegistryProcessors.clear();
 
