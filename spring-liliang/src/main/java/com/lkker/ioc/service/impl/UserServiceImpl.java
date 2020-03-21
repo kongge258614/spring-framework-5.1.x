@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
 
-//	@Autowired
+	@Autowired
 	private LogisticsServiceImpl logisticsService;
 
 	@Override
@@ -25,11 +25,4 @@ public class UserServiceImpl implements UserService {
 		System.out.println("UserService调用logisticsService............");
 	}
 
-	public LogisticsServiceImpl getLogisticsService() {
-		return logisticsService;
-	}
-
-	public void setLogisticsService(LogisticsServiceImpl logisticsService) {
-		this.logisticsService = logisticsService;
-	}
 }

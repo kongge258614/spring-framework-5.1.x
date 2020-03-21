@@ -12,20 +12,12 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public class LogisticsServiceImpl implements LogisticsService {
-//	@Autowired
+	@Autowired
 	private UserService userService;
 
 	@Override
 	public void save() {
 //		userService.save();
 		System.out.println("logistics save............");
-	}
-
-	public UserService getUserService() {
-		return userService;
-	}
-
-	public void setUserService(UserService userService) {
-		this.userService = userService;
 	}
 }
