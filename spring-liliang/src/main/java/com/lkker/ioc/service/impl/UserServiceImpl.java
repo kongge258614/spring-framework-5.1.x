@@ -1,6 +1,5 @@
 package com.lkker.ioc.service.impl;
 
-import com.lkker.ioc.service.LogisticsService;
 import com.lkker.ioc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,12 +12,24 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
 
-	@Autowired
-	private LogisticsService logisticsService;
+//	@Autowired
+	private LogisticsServiceImpl logisticsService;
 
 	@Override
 	public void save() {
 
+		// Spring如何解决循环依赖
+
 		System.out.println("user save.............");
+		logisticsService.save();
+		System.out.println("UserService调用logisticsService............");
+	}
+
+	public LogisticsServiceImpl getLogisticsService() {
+		return logisticsService;
+	}
+
+	public void setLogisticsService(LogisticsServiceImpl logisticsService) {
+		this.logisticsService = logisticsService;
 	}
 }
