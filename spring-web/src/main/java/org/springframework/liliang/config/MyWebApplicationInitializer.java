@@ -10,7 +10,7 @@ public class MyWebApplicationInitializer extends AbstractAnnotationConfigDispatc
 	 */
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class[0];
+		return new Class[]{RootConfig.class};
 	}
 
 	/**
