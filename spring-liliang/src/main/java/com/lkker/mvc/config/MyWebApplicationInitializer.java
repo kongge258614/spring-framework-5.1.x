@@ -1,4 +1,4 @@
-package org.springframework.liliang.config;
+package com.lkker.mvc.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
