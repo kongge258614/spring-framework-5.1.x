@@ -1,16 +1,12 @@
-package org.springframework.liliang.config;
+package com.lkker.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.util.List;
 
 @Configuration
 @EnableWebMvc
@@ -48,13 +44,13 @@ public class AppConfig implements WebMvcConfigurer {
 //		return resolver;
 //
 //	}
-
-	/**
-	 * 重写消息转换器
-	 * @param converters initially an empty list of converters
-	 */
-	@Override
-	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-		converters.add(new MappingJackson2HttpMessageConverter());
-	}
+//
+//	/**
+//	 * 重写消息转换器
+//	 * @param converters initially an empty list of converters
+//	 */
+//	@Override
+//	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+//		converters.add(new MappingJackson2HttpMessageConverter());
+//	}
 }
