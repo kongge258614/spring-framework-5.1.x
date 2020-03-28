@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 类的描述：IOC 根容器，不扫描Controller的注解
  */
 @Configuration
-@ComponentScan(basePackages = {"org.springframework.liliang"},excludeFilters = {
+@ComponentScan(basePackages = {"com.lkker"},excludeFilters = {
 		@ComponentScan.Filter(type = FilterType.ANNOTATION,value = {RestController.class, Controller.class}),
 		@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE,value = AppConfig.class)
 })
