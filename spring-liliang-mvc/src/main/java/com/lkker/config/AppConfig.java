@@ -22,7 +22,8 @@ import java.util.List;
 		@ComponentScan.Filter(type = FilterType.ANNOTATION,value = {RestController.class, Controller.class})
 },useDefaultFilters = false)
 public class AppConfig implements WebMvcConfigurer {
-
+	public AppConfig() {
+	}
 	/**
 	 * 配置拦截器
 	 */

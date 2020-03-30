@@ -15,7 +15,6 @@ dependencies {
     compile project(':spring-core')
     compile project(':spring-aop')
     compile project(':spring-web')
-//    compile project(':spring-webmvc')
     optional(project(":spring-context"))
     optional(project(":spring-oxm"))
     optional(project(":spring-webmvc"))
