@@ -147,11 +147,9 @@ public class SpringServletContainerInitializer implements ServletContainerInitia
 			for (Class<?> waiClass : webAppInitializerClasses) {
 				// Be defensive: Some servlet containers provide us with invalid classes,
 				// no matter what @HandlesTypes says...
-				if (!waiClass.isInterface() && !Modifier.isAbstract(waiClass.getModifiers()) &&
-						WebApplicationInitializer.class.isAssignableFrom(waiClass)) {
+				if (!waiClass.isInterface() && !Modifier.isAbstract(waiClass.getModifiers()) && WebApplicationInitializer.class.isAssignableFrom(waiClass)) {
 					try {
-						initializers.add((WebApplicationInitializer)
-								ReflectionUtils.accessibleConstructor(waiClass).newInstance());
+						initializers.add((WebApplicationInitializer) ReflectionUtils.accessibleConstructor(waiClass).newInstance());
 					}
 					catch (Throwable ex) {
 						throw new ServletException("Failed to instantiate WebApplicationInitializer class", ex);
