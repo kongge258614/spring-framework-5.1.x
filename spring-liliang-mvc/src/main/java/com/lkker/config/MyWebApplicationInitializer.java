@@ -4,9 +4,6 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 public class MyWebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-	public MyWebApplicationInitializer() {
-	}
-
 	/**
 	 * IOC 父容器的启动类
 	 * @return
