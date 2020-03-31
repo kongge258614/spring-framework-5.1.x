@@ -597,7 +597,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
 			finally {
 				// Reset common introspection caches in Spring's core, since we
-				// might not ever need metadata for singleton beans anymore...
+				// might not ever need metadata for singleton beans anymore... 重置Spring核心中的公共自省缓存，因为我们可能再也不需要单例bean的元数据了……
 				resetCommonCaches();
 			}
 		}
