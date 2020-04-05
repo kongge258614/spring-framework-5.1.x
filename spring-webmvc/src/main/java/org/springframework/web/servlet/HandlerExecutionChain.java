@@ -145,6 +145,7 @@ public class HandlerExecutionChain {
 
 	/**
 	 * Apply postHandle methods of registered interceptors.
+	 * 应用已注册的拦截器后的方法。
 	 */
 	void applyPostHandle(HttpServletRequest request, HttpServletResponse response, @Nullable ModelAndView mv)
 			throws Exception {
