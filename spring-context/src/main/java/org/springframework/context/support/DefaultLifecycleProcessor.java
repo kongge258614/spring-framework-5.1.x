@@ -271,6 +271,7 @@ public class DefaultLifecycleProcessor implements LifecycleProcessor, BeanFactor
 	// overridable hooks
 
 	/**
+	 * 检索所有适用的生命周期bean:所有已经创建的单例，以及所有的SmartLifecycle bean(即使它们被标记为lazy-init)。
 	 * Retrieve all applicable Lifecycle beans: all singletons that have already been created,
 	 * as well as all SmartLifecycle beans (even if they are marked as lazy-init).
 	 * @return the Map of applicable beans, with bean names as keys and bean instances as values
