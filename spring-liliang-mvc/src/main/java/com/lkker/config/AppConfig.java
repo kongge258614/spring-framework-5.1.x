@@ -1,34 +1,25 @@
 package com.lkker.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-
-import java.util.List;
 
 @Configuration
 @ComponentScan(value = {"com.lkker"},includeFilters = {
-		@ComponentScan.Filter(type = FilterType.ANNOTATION,value = {RestController.class, Controller.class, RequestMapping.class})
+		@ComponentScan.Filter(type = FilterType.ANNOTATION,value = {RestController.class, Controller.class})
 },useDefaultFilters = false)
 @EnableWebMvc
 public class AppConfig implements WebMvcConfigurer {
 
-//	/**
-//	 * 配置拦截器
-//	 */
-//
-//
+	/**
+	 * 配置拦截器
+	 */
+
+
 //	/**
 //	 * 配置文件上传下载的组件
 //	 * @return
