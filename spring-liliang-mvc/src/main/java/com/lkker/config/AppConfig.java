@@ -1,12 +1,16 @@
 package com.lkker.config;
 
+import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.List;
 
 @Configuration
 @ComponentScan(value = {"com.lkker"},includeFilters = {
@@ -32,25 +36,13 @@ public class AppConfig implements WebMvcConfigurer {
 //		return multipartResolver;
 //	}
 //
-//	/**
-//	 * 配置视图解析器
-//	 * @return
-//	 */
-//	@Bean
-//	public InternalResourceViewResolver internalResourceViewResolver(){
-//		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-//		resolver.setPrefix("/WEB-INF/jsp");
-//		resolver.setSuffix(".jsp");
-//		return resolver;
-//
-//	}
-//
-//	/**
-//	 * 重写消息转换器
-//	 * @param converters initially an empty list of converters
-//	 */
-//	@Override
-//	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-//		converters.add(new MappingJackson2HttpMessageConverter());
-//	}
+
+	/**
+	 * 重写消息转换器
+	 * @param converters initially an empty list of converters
+	 */
+	@Override
+	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+		converters.add(new FastJsonHttpMessageConverter());
+	}
 }
