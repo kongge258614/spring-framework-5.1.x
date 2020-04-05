@@ -29,6 +29,9 @@ import org.springframework.util.CollectionUtils;
  * both to make it possible for a controller to return both model
  * and view in a single return value.
  *
+ * 在web MVC框架中，模型和视图的Holder。
+ * 注意，它们是完全不同的。这个类只是同时持有模型和视图，使控制器能够在一个单独的返回值中同时返回模型和视图。
+ *
  * <p>Represents a model and view returned by a handler, to be resolved
  * by a DispatcherServlet. The view can take the form of a String
  * view name which will need to be resolved by a ViewResolver object;

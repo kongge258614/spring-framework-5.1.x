@@ -73,7 +73,9 @@ import org.springframework.web.util.WebUtils;
  * Base servlet for Spring's web framework. Provides integration with
  * a Spring application context, in a JavaBean-based overall solution.
  *
- * <p>This class offers the following functionality:
+ * Spring web框架的基本servlet。在基于javabean的整体解决方案中提供与Spring应用程序上下文的集成。
+ *
+ * <p>This class offers the following functionality:  这个类提供了以下功能:
  * <ul>
  * <li>Manages a {@link org.springframework.web.context.WebApplicationContext
  * WebApplicationContext} instance per servlet. The servlet's configuration is determined
@@ -830,7 +832,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	}
 
 	/**
-	 * Callback that receives refresh events from this servlet's WebApplicationContext.
+	 * Callback that receives refresh events from this servlet's WebApplicationContext. 从这个servlet的WebApplicationContext接收刷新事件的回调。
 	 * <p>The default implementation calls {@link #onRefresh},
 	 * triggering a refresh of this servlet's context-dependent state.
 	 * @param event the incoming ApplicationContext event

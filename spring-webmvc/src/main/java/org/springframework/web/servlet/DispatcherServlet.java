@@ -322,11 +322,17 @@ public class DispatcherServlet extends FrameworkServlet {
 	@Nullable
 	private ThemeResolver themeResolver;
 
-	/** List of HandlerMappings used by this servlet. */
+	/**
+	 * List of HandlerMappings used by this servlet.
+	 * 此servlet使用的HandlerMappings列表。
+	 * */
 	@Nullable
 	private List<HandlerMapping> handlerMappings;
 
-	/** List of HandlerAdapters used by this servlet. */
+	/**
+	 * List of HandlerAdapters used by this servlet.
+	 * 此servlet使用的handleradapter列表。
+	 * */
 	@Nullable
 	private List<HandlerAdapter> handlerAdapters;
 
@@ -1012,6 +1018,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				multipartRequestParsed = (processedRequest != request);
 
 				// Determine handler for the current request.
+				// 确定当前请求的处理程序。
 				mappedHandler = getHandler(processedRequest);
 				if (mappedHandler == null) {
 					noHandlerFound(processedRequest, response);
@@ -1221,7 +1228,8 @@ public class DispatcherServlet extends FrameworkServlet {
 
 	/**
 	 * Return the HandlerExecutionChain for this request.
-	 * <p>Tries all handler mappings in order.
+	 * 返回此请求的HandlerExecutionChain。
+	 * <p>Tries all handler mappings in order.  按顺序尝试所有处理程序映射。
 	 * @param request current HTTP request
 	 * @return the HandlerExecutionChain, or {@code null} if no handler could be found
 	 */
