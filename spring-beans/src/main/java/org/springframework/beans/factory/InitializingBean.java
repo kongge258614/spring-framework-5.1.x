@@ -36,6 +36,8 @@ public interface InitializingBean {
 	/**
 	 * Invoked by the containing {@code BeanFactory} after it has set all bean properties
 	 * and satisfied {@link BeanFactoryAware}, {@code ApplicationContextAware} etc.
+	 * beanfactory设置了所有的bean属性，满足了 BeanFactoryAware 、ApplicationContextAware 后调用该方法
+	 *
 	 * <p>This method allows the bean instance to perform validation of its overall
 	 * configuration and final initialization when all bean properties have been set.
 	 * @throws Exception in the event of misconfiguration (such as failure to set an
