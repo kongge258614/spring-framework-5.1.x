@@ -29,6 +29,8 @@ import org.springframework.lang.Nullable;
  * into a target object of a specified generic type and a source object of a specified
  * generic type into an HTTP response.
  *
+ * {@link HttpMessageConverter}的专门化，它可以将HTTP请求转换为指定泛型类型的目标对象，将指定泛型类型的源对象转换为HTTP响应。
+ *
  * @author Arjen Poutsma
  * @author Rossen Stoyanchev
  * @author Sebastien Deleuze

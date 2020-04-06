@@ -92,7 +92,7 @@ public abstract class AbstractMessageConverterMethodArgumentResolver implements 
 	}
 
 	/**
-	 * Constructor with converters and {@code Request~} and {@code ResponseBodyAdvice}.
+	 * Constructor with converters and {@code Request~} and {@code ResponseBodyAdvice}. 转换器的构造函数，入参是用户自定义的转换器
 	 * @since 4.2
 	 */
 	public AbstractMessageConverterMethodArgumentResolver(List<HttpMessageConverter<?>> converters,
