@@ -566,7 +566,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 		}
 
 		/**
-		 * Acquire the read lock when using getMappings and getMappingsByUrl.
+		 * Acquire the read lock when using getMappings and getMappingsByUrl. 在使用getMappings和getMappingsByUrl时获取读锁。
 		 */
 		public void acquireReadLock() {
 			this.readWriteLock.readLock().lock();
@@ -579,6 +579,9 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 			this.readWriteLock.readLock().unlock();
 		}
 
+		/**
+		 * 将url和方法绑定
+		 */
 		public void register(T mapping, Object handler, Method method) {
 			this.readWriteLock.writeLock().lock();
 			try {

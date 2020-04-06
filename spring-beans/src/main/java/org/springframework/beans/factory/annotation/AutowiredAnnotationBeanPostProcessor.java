@@ -602,8 +602,7 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 							registerDependentBeans(beanName, autowiredBeanNames);
 							if (autowiredBeanNames.size() == 1) {
 								String autowiredBeanName = autowiredBeanNames.iterator().next();
-								if (beanFactory.containsBean(autowiredBeanName) &&
-										beanFactory.isTypeMatch(autowiredBeanName, field.getType())) {
+								if (beanFactory.containsBean(autowiredBeanName) && beanFactory.isTypeMatch(autowiredBeanName, field.getType())) {
 									this.cachedFieldValue = new ShortcutDependencyDescriptor(
 											desc, autowiredBeanName, field.getType());
 								}
