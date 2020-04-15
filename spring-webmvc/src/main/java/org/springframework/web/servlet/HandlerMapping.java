@@ -23,6 +23,7 @@ import org.springframework.lang.Nullable;
 /**
  * Interface to be implemented by objects that define a mapping between
  * requests and handler objects.
+ * 定义了一个请求和处理程序对象之间的映射。
  *
  * <p>This class can be implemented by application developers, although this is not
  * necessary, as {@link org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping}
@@ -127,6 +128,10 @@ public interface HandlerMapping {
 	 * even a tag interface, so that handlers are not constrained in any way.
 	 * For example, a HandlerAdapter could be written to allow another framework's
 	 * handler objects to be used.
+	 * 返回此请求的处理程序和任何拦截器。可以根据请求URL、会话状态或实现类选择的任何因素进行选择。
+	 * 返回的HandlerExecutionChain包含一个处理程序对象，而不是标记接口，因此处理程序不受任何约束。
+	 *
+	 *
 	 * <p>Returns {@code null} if no match was found. This is not an error.
 	 * The DispatcherServlet will query all registered HandlerMapping beans to find
 	 * a match, and only decide there is an error if none can find a handler.
