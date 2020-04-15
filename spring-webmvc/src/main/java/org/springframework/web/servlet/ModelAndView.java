@@ -38,6 +38,10 @@ import org.springframework.util.CollectionUtils;
  * alternatively a View object can be specified directly. The model
  * is a Map, allowing the use of multiple objects keyed by name.
  *
+ * 表示处理程序返回的模型和视图，由DispatcherServlet解析。
+ * 视图可以采用字符串视图名称的形式，需要通过ViewResolver对象解析;
+ * 或者，可以直接指定视图对象。该模型是一个映射，允许使用多个按名称键控的对象。
+ *
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @author Rob Harrop
