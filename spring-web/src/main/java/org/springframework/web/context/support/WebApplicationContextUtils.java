@@ -244,8 +244,7 @@ public abstract class WebApplicationContextUtils {
 					parameterMap.put(paramName, servletConfig.getInitParameter(paramName));
 				}
 			}
-			bf.registerSingleton(WebApplicationContext.CONTEXT_PARAMETERS_BEAN_NAME,
-					Collections.unmodifiableMap(parameterMap));
+			bf.registerSingleton(WebApplicationContext.CONTEXT_PARAMETERS_BEAN_NAME, Collections.unmodifiableMap(parameterMap));
 		}
 
 		if (!bf.containsBean(WebApplicationContext.CONTEXT_ATTRIBUTES_BEAN_NAME)) {
@@ -257,8 +256,7 @@ public abstract class WebApplicationContextUtils {
 					attributeMap.put(attrName, servletContext.getAttribute(attrName));
 				}
 			}
-			bf.registerSingleton(WebApplicationContext.CONTEXT_ATTRIBUTES_BEAN_NAME,
-					Collections.unmodifiableMap(attributeMap));
+			bf.registerSingleton(WebApplicationContext.CONTEXT_ATTRIBUTES_BEAN_NAME, Collections.unmodifiableMap(attributeMap));
 		}
 	}
 
