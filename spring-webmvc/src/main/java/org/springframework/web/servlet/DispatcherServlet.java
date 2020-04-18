@@ -523,6 +523,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	/**
 	 * Initialize the strategy objects that this servlet uses.
 	 * <p>May be overridden in subclasses in order to initialize further strategy objects.
+	 * 初始化这个servlet使用的策略对象。为了进一步初始化策略对象，可以在子类中重写。
 	 */
 	protected void initStrategies(ApplicationContext context) {
 		initMultipartResolver(context);
