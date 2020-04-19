@@ -49,6 +49,7 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMappi
 
 /**
  * Creates {@link RequestMappingInfo} instances from type and method-level
+ * 从类型和方法级别创建{@link RequestMappingInfo}实例
  * {@link RequestMapping @RequestMapping} annotations in
  * {@link Controller @Controller} classes.
  *

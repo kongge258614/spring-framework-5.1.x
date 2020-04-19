@@ -515,6 +515,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	/**
 	 * A registry that maintains all mappings to handler methods, exposing methods
 	 * to perform lookups and providing concurrent access.
+	 * 维护所有到处理程序方法的映射的注册表，公开用于执行查找的方法并提供并发访问。
 	 * <p>Package-private for testing purposes.
 	 */
 	class MappingRegistry {
