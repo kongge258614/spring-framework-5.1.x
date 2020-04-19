@@ -36,6 +36,8 @@ import org.springframework.util.ReflectionUtils;
  * SPI as opposed to (or possibly in combination with) the traditional
  * {@code web.xml}-based approach.
  *
+ * Servlet 3.0 {@link ServletContainerInitializer}旨在使用Spring的{@link WebApplicationInitializer} SPI来支持Servlet容器的基于代码的配置
+ *
  * <h2>Mechanism of Operation</h2>
  * This class will be loaded and instantiated and have its {@link #onStartup}
  * method invoked by any Servlet 3.0-compliant container during container startup assuming
@@ -46,6 +48,11 @@ import org.springframework.util.ReflectionUtils;
  * <a href="https://download.oracle.com/javase/6/docs/technotes/guides/jar/jar.html#Service%20Provider">
  * JAR Services API documentation</a> as well as section <em>8.2.4</em> of the Servlet 3.0
  * Final Draft specification for complete details.
+ *
+ * 运作机制
+ * 如果类路径中存在{@code spring-web}模块JAR，则该类将被加载和实例化，并且在容器启动期间，
+ * 任何与Servlet 3.0兼容的容器都会调用它的{@link #onStartup}方法。
+ *
  *
  * <h3>In combination with {@code web.xml}</h3>
  * A web application can choose to limit the amount of classpath scanning the Servlet
@@ -75,12 +82,23 @@ import org.springframework.util.ReflectionUtils;
  * {@code ServletContext}. The exact process of delegation is described in detail in the
  * {@link #onStartup onStartup} documentation below.
  *
+ * 与Spring的{@code WebApplicationInitializer的关系
+ * Spring的{@code WebApplicationInitializer} SPI只包含一个方法:{@link WebApplicationInitializer#onStartup(ServletContext)}。
+ * 该签名有意与{@link ServletContainerInitializer#onStartup(Set, ServletContext)}非常相似:
+ * 简单地说，{@code SpringServletContainerInitializer}负责将{@code ServletContext}实例化并委托给任何用户定义的{@code WebApplicationInitializer}实现。
+ * 然后，每个{@code WebApplicationInitializer}负责执行初始化{@code ServletContext}的实际工作。
+ * 下面的{@link #onStartup onStartup}文档详细描述了委托的具体过程。
+ *
  * <h2>General Notes</h2>
  * In general, this class should be viewed as <em>supporting infrastructure</em> for
  * the more important and user-facing {@code WebApplicationInitializer} SPI. Taking
  * advantage of this container initializer is also completely <em>optional</em>: while
  * it is true that this initializer will be loaded and invoked under all Servlet 3.0+
  * runtimes, it remains the user's choice whether to make any
+ *
+ * 一般来说，这个类应该被视为支持的基础架构，用于更重要的面向用户的{@code WebApplicationInitializer} SPI。
+ * 利用这个容器初始化器也完全是可选的:虽然这个初始化器将在所有Servlet 3.0+运行时下加载和调用，但是是否加载和调用它仍然是用户的选择
+ *
  * {@code WebApplicationInitializer} implementations available on the classpath. If no
  * {@code WebApplicationInitializer} types are detected, this container initializer will
  * have no effect.
