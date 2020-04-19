@@ -288,7 +288,7 @@ public class ContextLoader {
 						ApplicationContext parent = loadParentContext(servletContext);
 						cwac.setParent(parent);
 					}
-					configureAndRefreshWebApplicationContext(cwac, servletContext); //
+					configureAndRefreshWebApplicationContext(cwac, servletContext); //实例化父容器
 				}
 			}
 			servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, this.context);
