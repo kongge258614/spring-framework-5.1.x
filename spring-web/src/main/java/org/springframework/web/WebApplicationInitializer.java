@@ -180,7 +180,10 @@ public interface WebApplicationInitializer {
 	 * Configure the given {@link ServletContext} with any servlets, filters, listeners
 	 * context-params and attributes necessary for initializing this web application. See
 	 * examples {@linkplain WebApplicationInitializer above}.
+	 * 使用任何servlet、过滤器、侦听器上下文参数和初始化此web应用程序所需的属性来配置给定的{@link ServletContext}。
+	 *
 	 * @param servletContext the {@code ServletContext} to initialize
+	 *                       初始化 ServletContext ，该ServletContext是tomcat创建并传递过来的
 	 * @throws ServletException if any call against the given {@code ServletContext}
 	 * throws a {@code ServletException}
 	 */
