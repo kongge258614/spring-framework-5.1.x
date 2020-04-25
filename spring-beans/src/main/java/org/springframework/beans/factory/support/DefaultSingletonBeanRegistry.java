@@ -189,11 +189,21 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 */
 	@Nullable
 	protected Object getSingleton(String beanName, boolean allowEarlyReference) {
-		// 检查缓存中是否存在实例
+		/**
+		 * 我们尝试从一级缓存(单例缓存池)中去获取对象
+		 */
 		Object singletonObject = this.singletonObjects.get(beanName);
+		/**
+		 * 判断一级缓存中没有获取到该对象，并且判断singletonsCurrentlyInCreation这个list中有没有包含该beanName。
+		 * 一般情况下，只有当该bean实例化完之后，才会向singletonsCurrentlyInCreation中添加该beanName，也就是说，当某个bean
+		 * 第一次实例化时，singletonsCurrentlyInCreation 中不包含该beanName。
+		 * 此方法是为解决循环依赖准备的！！
+		 */
 		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
-			// 如果为空，则锁定全局变量并进行处理
 			synchronized (this.singletonObjects) {
+				/**
+				 * 尝试从二级缓存中获取对象（二级缓存中是一个早期的对象，即一个尚未实例化完成的对象，当一个bean彻底实例化完成后，会将bean从二级缓存中移除）
+				 */
 				singletonObject = this.earlySingletonObjects.get(beanName);    //earlySingletonObjects以beanName为key存储bean实例（这里的实例还处于创建中）
 				/**
 				 * singletonObjects 和 earlySingletonObjects 的区别
@@ -202,6 +212,10 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 				 */
 				if (singletonObject == null && allowEarlyReference) {
 					// 当某些方法需要提前初始化的时候，会调用addSingletonFactory将对应的objectFactory初始化策略存储在singletonFactories中
+					/**
+					 * 当二级缓存中也没有获取到对象时，直接从三级缓存(即singletonFactories 中获取对象)，这个三级缓存就是spring 解决循环依赖的关键所在。
+					 * 在 beanfactory 实例化bean时，调用了bean的构造方法，尚未给对象属性赋值时，将对象包装成一个ObjectFactory 暴露到缓存中。
+					 */
 					ObjectFactory<?> singletonFactory = this.singletonFactories.get(beanName);  // singletonFactories以beanName为key存储创建bean的工厂
 					if (singletonFactory != null) {
 						// 调用预先设定的getObject()方法
