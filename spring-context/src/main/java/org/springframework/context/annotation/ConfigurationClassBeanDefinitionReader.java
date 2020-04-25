@@ -169,7 +169,7 @@ class ConfigurationClassBeanDefinitionReader {
 
 	/**
 	 * Read the given {@link BeanMethod}, registering bean definitions
-	 * with the BeanDefinitionRegistry based on its contents.
+	 * with the BeanDefinitionRegistry based on its contents.读取给定的{@link BeanMethod}，根据其内容向BeanDefinitionRegistry注册bean定义。
 	 */
 	@SuppressWarnings("deprecation")  // for RequiredAnnotationBeanPostProcessor.SKIP_REQUIRED_CHECK_ATTRIBUTE
 	private void loadBeanDefinitionsForBeanMethod(BeanMethod beanMethod) {
