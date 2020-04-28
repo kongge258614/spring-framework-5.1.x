@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-	public UserInfo getUserInfo(){
+	public UserInfo getUserInfo(String userId){
 		UserInfo userInfo = new UserInfo();
-		userInfo.setId("LX3615");
+		userInfo.setId(userId);
 		userInfo.setName("liliang");
 		userInfo.setAge(18);
 
