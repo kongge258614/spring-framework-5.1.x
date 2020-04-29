@@ -442,7 +442,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 
 	/**
 	 * Set whether this servlet should dispatch an HTTP OPTIONS request to
-	 * the {@link #doService} method.
+	 * the {@link #doService} method. 设置此servlet是否应该将HTTP选项请求发送到{@link #doService}方法。
 	 * <p>Default in the {@code FrameworkServlet} is "false", applying
 	 * {@link javax.servlet.http.HttpServlet}'s default behavior (i.e.enumerating
 	 * all standard HTTP request methods as a response to the OPTIONS request).
