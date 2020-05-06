@@ -1,7 +1,6 @@
 package com.lkker.config;
 
 
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -13,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
  * @Date 2020/5/6 17:10
  * @Description
  **/
-@Component
 public class LkkerInterceptor implements HandlerInterceptor {
 
 	@Override

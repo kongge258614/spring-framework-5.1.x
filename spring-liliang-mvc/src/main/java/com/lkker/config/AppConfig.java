@@ -8,6 +8,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
@@ -17,25 +18,16 @@ import java.util.List;
 		@ComponentScan.Filter(type = FilterType.ANNOTATION,value = {RestController.class, Controller.class})
 },useDefaultFilters = false)
 @EnableWebMvc
-public class AppConfig implements WebMvcConfigurer {
+public class AppConfig  implements WebMvcConfigurer{
 
 	/**
 	 * 配置拦截器
 	 */
-
-
-//	/**
-//	 * 配置文件上传下载的组件
-//	 * @return
-//	 */
-//	@Bean
-//	public MultipartResolver multipartResolver(){
-//		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-//		multipartResolver.setDefaultEncoding("UTF-8");
-//		multipartResolver.setMaxUploadSize(1024*1024*10);
-//		return multipartResolver;
-//	}
-//
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		LkkerInterceptor lkkerInterceptor = new LkkerInterceptor();
+		registry.addInterceptor(lkkerInterceptor).addPathPatterns("");
+	}
 
 	/**
 	 * 重写消息转换器
@@ -45,4 +37,6 @@ public class AppConfig implements WebMvcConfigurer {
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
 		converters.add(new FastJsonHttpMessageConverter());
 	}
+
+
 }
