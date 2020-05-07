@@ -26,7 +26,7 @@ public class AppConfig  implements WebMvcConfigurer{
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		LkkerInterceptor lkkerInterceptor = new LkkerInterceptor();
-		registry.addInterceptor(lkkerInterceptor).addPathPatterns("");
+		registry.addInterceptor(lkkerInterceptor).addPathPatterns("/**");
 	}
 
 	/**
