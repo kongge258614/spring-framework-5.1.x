@@ -119,8 +119,7 @@ public class ServletInvocableHandlerMethod extends InvocableHandlerMethod {
 		mavContainer.setRequestHandled(false);
 		Assert.state(this.returnValueHandlers != null, "No return value handlers");
 		try {
-			this.returnValueHandlers.handleReturnValue(
-					returnValue, getReturnValueType(returnValue), mavContainer, webRequest);
+			this.returnValueHandlers.handleReturnValue(returnValue, getReturnValueType(returnValue), mavContainer, webRequest);
 		}
 		catch (Exception ex) {
 			if (logger.isTraceEnabled()) {
