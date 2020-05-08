@@ -121,7 +121,7 @@ public abstract class RequestMappingInfoHandlerMapping extends AbstractHandlerMe
 		}
 		else {
 			bestPattern = patterns.iterator().next();
-			uriVariables = getPathMatcher().extractUriTemplateVariables(bestPattern, lookupPath);
+			uriVariables = getPathMatcher().extractUriTemplateVariables(bestPattern, lookupPath); //给定模式和完整路径，提取URI模板变量。
 		}
 
 		request.setAttribute(BEST_MATCHING_PATTERN_ATTRIBUTE, bestPattern);

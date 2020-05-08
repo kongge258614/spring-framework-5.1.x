@@ -92,7 +92,7 @@ public interface PathMatcher {
 
 	/**
 	 * Given a pattern and a full path, extract the URI template variables. URI template
-	 * variables are expressed through curly brackets ('{' and '}').
+	 * variables are expressed through curly brackets ('{' and '}'). 给定模式和完整路径，提取URI模板变量。
 	 * <p>For example: For pattern "/hotels/{hotel}" and path "/hotels/1", this method will
 	 * return a map containing "hotel"->"1".
 	 * @param pattern the path pattern, possibly containing URI templates
