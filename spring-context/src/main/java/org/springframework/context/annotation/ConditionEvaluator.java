@@ -81,10 +81,12 @@ class ConditionEvaluator {
 	 */
 	public boolean shouldSkip(@Nullable AnnotatedTypeMetadata metadata, @Nullable ConfigurationPhase phase) {
 		if (metadata == null || !metadata.isAnnotated(Conditional.class.getName())) {
+			// 如果没有元信息，或者注解类中不包含Conditional类，就直接返回false，表示不能跳过，注解类Conditional的用途就在这里了！！！！
 			return false;
 		}
 
 		if (phase == null) {
+			// 默认传递的phase是ConfigurationPhase.REGISTER_BEAN
 			if (metadata instanceof AnnotationMetadata &&
 					ConfigurationClassUtils.isConfigurationCandidate((AnnotationMetadata) metadata)) {
 				return shouldSkip(metadata, ConfigurationPhase.PARSE_CONFIGURATION);
