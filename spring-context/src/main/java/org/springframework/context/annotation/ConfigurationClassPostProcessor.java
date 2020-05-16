@@ -276,11 +276,6 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 					logger.debug("Bean definition has already been processed as a configuration class: " + beanDef);
 				}
 			}
-			// 理解是否是Configuration类，如果加了Configuration，下面的这几个注解就不用再判断了
-//			candidateIndicators.add(Component.class.getName());
-//			candidateIndicators.add(ComponentScan.class.getName());
-//			candidateIndicators.add(Import.class.getName());
-//			candidateIndicators.add(ImportResource.class.getName());
 			else if (ConfigurationClassUtils.checkConfigurationClassCandidate(beanDef, this.metadataReaderFactory)) {
 				configCandidates.add(new BeanDefinitionHolder(beanDef, beanName));
 			}
