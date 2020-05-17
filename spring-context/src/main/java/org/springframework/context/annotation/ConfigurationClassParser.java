@@ -219,8 +219,6 @@ class ConfigurationClassParser {
 			return;
 		}
 
-		//处理Imported的情况
-		//就是当前这个注解类有没有被别的类import
 		ConfigurationClass existingClass = this.configurationClasses.get(configClass);
 		if (existingClass != null) {
 			if (configClass.isImported()) {
