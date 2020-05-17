@@ -1,5 +1,7 @@
 package com.lkker.ioc.config;
 
+import com.lkker.ioc.model.Logistics;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,6 +15,10 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan("com.lkker.ioc")
 public class JavaConfig {
 
+	@Bean
+	public Logistics getLogistics(){
+		return new Logistics();
+	}
 	
 
 }

@@ -1,11 +1,11 @@
-/*package com.lkker.ioc.config;
+package com.lkker.ioc.config;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class MyBeanPostProcessor implements BeanPostProcessor {
 
 	@Override
@@ -18,7 +18,7 @@ public class MyBeanPostProcessor implements BeanPostProcessor {
 		}
 		return null;
 	}
-}*/
+}
 
 /*
 Caused by: java.lang.ClassCastException: com.lkker.ioc.config.JavaConfig$$EnhancerBySpringCGLIB$$7e41916f cannot be cast to org.springframework.beans.factory.config.BeanDefinition
