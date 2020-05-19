@@ -1231,7 +1231,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	/**
 	 * Overridden in order to implicitly register the currently created bean as
 	 * dependent on further beans getting programmatically retrieved during a
-	 * {@link Supplier} callback.
+	 * {@link Supplier} callback. 为了隐式地将当前创建的bean注册为依赖于在{@link Supplier}回调期间以编程方式检索的其他bean。
 	 * @since 5.0
 	 * @see #obtainFromSupplier
 	 */

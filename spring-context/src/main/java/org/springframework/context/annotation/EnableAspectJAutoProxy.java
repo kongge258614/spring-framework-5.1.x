@@ -133,6 +133,7 @@ public @interface EnableAspectJAutoProxy {
 	/**
 	 * Indicate that the proxy should be exposed by the AOP framework as a {@code ThreadLocal}
 	 * for retrieval via the {@link org.springframework.aop.framework.AopContext} class.
+	 * 指出AOP框架应该将代理公开为{@code ThreadLocal}，以便通过{@link org.springframework.aop.framework.AopContext}类检索。
 	 * Off by default, i.e. no guarantees that {@code AopContext} access will work.
 	 * @since 4.3.1
 	 */

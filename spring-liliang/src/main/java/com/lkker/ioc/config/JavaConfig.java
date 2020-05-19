@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Import;
 public class JavaConfig {
 
 	@Bean
-	public Logistics getLogistics(){
+	public Logistics logistics(){
 		return new Logistics();
 	}
 	
