@@ -1,10 +1,7 @@
 package com.lkker.ioc;
 
 import com.lkker.ioc.config.JavaConfig;
-import com.lkker.ioc.service.LogisticsService;
-import com.lkker.ioc.service.UserService;
-import com.lkker.ioc.service.impl.LogisticsServiceImpl;
-import com.lkker.ioc.service.impl.UserServiceImpl;
+import com.lkker.ioc.service.impl.UserService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
@@ -17,7 +14,7 @@ public class TestIOC {
 	public static void main(String[] args) {
 		AnnotationConfigApplicationContext atx = new AnnotationConfigApplicationContext(JavaConfig.class);
 
-		UserServiceImpl bean = (UserServiceImpl) atx.getBean("userServiceImpl");
+		UserService bean = (UserService) atx.getBean("userService");
 
 		bean.save();
 

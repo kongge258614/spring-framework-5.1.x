@@ -1,7 +1,5 @@
 package com.lkker.ioc.service.impl;
 
-import com.lkker.ioc.service.LogisticsService;
-import com.lkker.ioc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,11 +9,10 @@ import org.springframework.stereotype.Service;
  * @Description
  **/
 @Service
-public class LogisticsServiceImpl implements LogisticsService {
+public class LogisticsService {
 	@Autowired
 	private UserService userService;
 
-	@Override
 	public void save() {
 //		userService.save();
 		System.out.println("logistics save............");
