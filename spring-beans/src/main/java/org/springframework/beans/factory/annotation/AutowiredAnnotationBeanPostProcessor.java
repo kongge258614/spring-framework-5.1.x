@@ -161,6 +161,8 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 	/**
 	 * Set the 'autowired' annotation type, to be used on constructors, fields,
 	 * setter methods and arbitrary config methods.
+	 * 设置“autowired”注释类型，用于构造函数、字段、setter方法和任意配置方法。
+	 *
 	 * <p>The default autowired annotation type is the Spring-provided {@link Autowired}
 	 * annotation, as well as {@link Value}.
 	 * <p>This setter property exists so that developers can provide their own
