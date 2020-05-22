@@ -211,7 +211,7 @@ public abstract class AopUtils {
 	}
 
 	/**
-	 * Can the given pointcut apply at all on the given class?
+	 * Can the given pointcut apply at all on the given class?    给定的切入点是否可以应用于给定的类?
 	 * <p>This is an important test as it can be used to optimize
 	 * out a pointcut for a class.
 	 * @param pc the static or dynamic pointcut to check
