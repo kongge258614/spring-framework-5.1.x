@@ -359,7 +359,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 	/**
 	 * Return whether the given bean class represents an infrastructure class
-	 * that should never be proxied.
+	 * that should never be proxied. 返回给定的bean类是否表示永远不应该代理的基础设施类。
 	 * <p>The default implementation considers Advices, Advisors and
 	 * AopInfrastructureBeans as infrastructure classes.
 	 * @param beanClass the class of the bean
