@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 /**
  * @Author liliang
  * @Date 2020/5/29 10:59
@@ -20,6 +22,9 @@ public class BussniessServiceImpl implements BussniessService {
 
 	@Override
 	public Storage getStorage(String id) {
+		String sql = "SELECT * FROM `storage` WHERE id=?;";
+		Map<String, Object> map = jdbcTemplate.queryForMap(sql, "1001");
+		System.out.println(map);
 		return null;
 	}
 

@@ -34,8 +34,8 @@ import org.springframework.aop.support.Pointcuts;
 import org.springframework.lang.Nullable;
 
 /**
- * Internal implementation of AspectJPointcutAdvisor.
- * Note that there will be one instance of this advisor for each target method.
+ * Internal implementation of AspectJPointcutAdvisor. AspectJPointcutAdvisor的内部实现。
+ * Note that there will be one instance of this advisor for each target method.  注意，对于每个目标方法，都有一个advisor的实例。
  *
  * @author Rod Johnson
  * @author Juergen Hoeller

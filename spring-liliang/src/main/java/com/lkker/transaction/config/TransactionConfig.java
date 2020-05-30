@@ -4,6 +4,7 @@ package com.lkker.transaction.config;
 import com.alibaba.druid.pool.DruidDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
@@ -17,10 +18,15 @@ public class TransactionConfig {
 		DruidDataSource dataSource = new DruidDataSource();
 		dataSource.setUsername("root");
 		dataSource.setPassword("123456");
-		dataSource.setUrl("");
-		dataSource.setDriverClassName("");
+		dataSource.setUrl("jdbc:mysql://localhost:3306/transaction?serverTimezone=UTC");
+		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 
 		return dataSource;
+	}
+
+	@Bean
+	public JdbcTemplate jdbcTemplate(DataSource dataSource){
+		return new JdbcTemplate(dataSource);
 	}
 
 }
