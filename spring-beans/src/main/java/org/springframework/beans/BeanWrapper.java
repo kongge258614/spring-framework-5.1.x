@@ -53,23 +53,27 @@ public interface BeanWrapper extends ConfigurablePropertyAccessor {
 	/**
 	 * Specify a limit for array and collection auto-growing.
 	 * <p>Default is unlimited on a plain BeanWrapper.
+	 * 指定数组和集合自动增长的限制。普通BeanWrapper的默认值是无限的。
 	 * @since 4.1
 	 */
 	void setAutoGrowCollectionLimit(int autoGrowCollectionLimit);
 
 	/**
 	 * Return the limit for array and collection auto-growing.
+	 * 返回数组和集合自动增长的限制。
 	 * @since 4.1
 	 */
 	int getAutoGrowCollectionLimit();
 
 	/**
 	 * Return the bean instance wrapped by this object.
+	 * 返回这个对象包装的bean实例。
 	 */
 	Object getWrappedInstance();
 
 	/**
 	 * Return the type of the wrapped bean instance.
+	 * 返回包装的bean实例的类型。
 	 */
 	Class<?> getWrappedClass();
 
@@ -82,7 +86,7 @@ public interface BeanWrapper extends ConfigurablePropertyAccessor {
 
 	/**
 	 * Obtain the property descriptor for a specific property
-	 * of the wrapped object.
+	 * of the wrapped object. 获取包装对象的特定属性的属性描述符。
 	 * @param propertyName the property to obtain the descriptor for
 	 * (may be a nested path, but no indexed/mapped property)
 	 * @return the property descriptor for the specified property
