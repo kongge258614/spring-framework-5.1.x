@@ -5,6 +5,7 @@ import com.lkker.transaction.entity.Storage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -41,6 +42,7 @@ public class BussniessServiceImpl implements BussniessService {
 
 	}
 
+	@Transactional
 	@Override
 	public void deduct(String commoditycodeid, int count) {
 		String sql = "UPDATE `storage` SET count = count-? WHERE  id= ?;";
