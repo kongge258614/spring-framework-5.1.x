@@ -661,7 +661,7 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 	}
 
 	/**
-	 * Get the current join point match at the join point we are being dispatched on.
+	 * Get the current join point match at the join point we are being dispatched on.  在被分派到的连接点上获取当前连接点匹配。
 	 */
 	@Nullable
 	protected JoinPointMatch getJoinPointMatch() {
