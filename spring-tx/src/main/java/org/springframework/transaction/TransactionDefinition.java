@@ -50,6 +50,8 @@ public interface TransactionDefinition {
 	 * Analogous to the EJB transaction attribute of the same name.
 	 * <p>This is typically the default setting of a transaction definition,
 	 * and typically defines a transaction synchronization scope.
+	 *
+	 * 支持当前事务，若当前没有事务就创建一个事务
 	 */
 	int PROPAGATION_REQUIRED = 0;
 
@@ -71,6 +73,8 @@ public interface TransactionDefinition {
 	 * "synchronization on actual transaction").
 	 * @see org.springframework.transaction.support.AbstractPlatformTransactionManager#setTransactionSynchronization
 	 * @see org.springframework.transaction.support.AbstractPlatformTransactionManager#SYNCHRONIZATION_ON_ACTUAL_TRANSACTION
+	 *
+	 * 如果当前存在事务，则加入该事务，如果当前没有事务，则以非事务的方式继续运行
 	 */
 	int PROPAGATION_SUPPORTS = 1;
 
@@ -79,6 +83,8 @@ public interface TransactionDefinition {
 	 * exists. Analogous to the EJB transaction attribute of the same name.
 	 * <p>Note that transaction synchronization within a {@code PROPAGATION_MANDATORY}
 	 * scope will always be driven by the surrounding transaction.
+	 *
+	 * 如果当前存在事务，则加入该事务，如果当前没有事务，则抛出异常
 	 */
 	int PROPAGATION_MANDATORY = 2;
 
@@ -94,6 +100,8 @@ public interface TransactionDefinition {
 	 * transaction synchronizations. Existing synchronizations will be suspended
 	 * and resumed appropriately.
 	 * @see org.springframework.transaction.jta.JtaTransactionManager#setTransactionManager
+	 *
+	 * 创建一个新的事务，如果当前存在事务，则把当前事务挂起
 	 */
 	int PROPAGATION_REQUIRES_NEW = 3;
 
@@ -109,6 +117,8 @@ public interface TransactionDefinition {
 	 * {@code PROPAGATION_NOT_SUPPORTED} scope. Existing synchronizations
 	 * will be suspended and resumed appropriately.
 	 * @see org.springframework.transaction.jta.JtaTransactionManager#setTransactionManager
+	 *
+	 * 以非事务方式运行，如果当前存在事务，则把当前事务挂起
 	 */
 	int PROPAGATION_NOT_SUPPORTED = 4;
 
@@ -117,6 +127,8 @@ public interface TransactionDefinition {
 	 * exists. Analogous to the EJB transaction attribute of the same name.
 	 * <p>Note that transaction synchronization is <i>not</i> available within a
 	 * {@code PROPAGATION_NEVER} scope.
+	 *
+	 * 以非事务方式运行，如果当前存在事务，则抛出异常
 	 */
 	int PROPAGATION_NEVER = 5;
 
@@ -130,6 +142,11 @@ public interface TransactionDefinition {
 	 * when working on a JDBC 3.0 driver. Some JTA providers might support
 	 * nested transactions as well.
 	 * @see org.springframework.jdbc.datasource.DataSourceTransactionManager
+	 *
+	 * 表示当前如果正有一个事务在运行中，则该方法应该运行在一个嵌套的事务中，被嵌套的事务可以独立于封装事务
+	 * 进行独立提交或回滚，如果封装事务不存在，行为就像 PROPAGATION_REQUIRES_NEW
+	 *
+	 *
 	 */
 	int PROPAGATION_NESTED = 6;
 
