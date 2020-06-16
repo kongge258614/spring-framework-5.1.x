@@ -29,7 +29,7 @@ public class LogAspects {
 	@After("pointCut()")
 	public void logEnd(JoinPoint joinPoint){
 		String methodName = joinPoint.getSignature().getName();
-		System.out.println("除法运行结束...........");
+		System.out.println(methodName+"运行结束...........");
 	}
 
 	@AfterReturning(value = "pointCut()",returning = "result")

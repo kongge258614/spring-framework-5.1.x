@@ -34,6 +34,7 @@ public class BussniessServiceImpl implements BussniessService {
 		return storage;
 	}
 
+	@Transactional
 	@Override
 	public void createOrder(Order order) {
 		String sql ="insert into `order` (id,commoditycodeid,purchasequantity,commodityPrice) VALUES (?,?,?,?)";
