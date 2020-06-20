@@ -36,7 +36,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
  *
  **/
 @Configuration
-@EnableAspectJAutoProxy()
+@EnableAspectJAutoProxy(exposeProxy = true)
 @ComponentScan("com.lkker.aop")
 public class JavaConfigOfAOP {
 

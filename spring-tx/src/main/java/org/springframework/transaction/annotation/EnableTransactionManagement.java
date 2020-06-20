@@ -166,6 +166,11 @@ public @interface EnableTransactionManagement {
 	 * {@code @Async} annotation will be upgraded to subclass proxying at the same
 	 * time. This approach has no negative impact in practice unless one is explicitly
 	 * expecting one type of proxy vs another, e.g. in tests.
+	 *
+	 * 指示是否要创建基于子类(CGLIB)的代理({@code true})，而不是创建基于标准Java接口的代理({@code false})。
+	 * <strong>只适用于{@link #mode()}被设置为{@link AdviceMode#PROXY}</strong>。
+	 * 注意，将此属性设置为true将影响所有需要代理的spring托管bean，而不仅仅是标记为true的那些
+	 * {@code @ transactional}。
 	 */
 	boolean proxyTargetClass() default false;
 
@@ -178,6 +183,11 @@ public @interface EnableTransactionManagement {
 	 * ignored since Spring's interceptor does not even kick in for such a runtime
 	 * scenario. For a more advanced mode of interception, consider switching this to
 	 * {@link AdviceMode#ASPECTJ}.
+	 *
+	 * 指示应如何应用事务通知。默认值是{@link AdviceMode#PROXY}。
+	 * 请注意，代理模式只允许通过代理拦截调用。同一个类内的本地调用不能被拦截;一个
+	 * {@link Transactional}在本地调用中对这样一个方法的注释将被忽略，因为Spring的拦截器甚至不会在这样的运行时场景中起作用。
+	 * 对于更高级的拦截模式，可以考虑将其切换到{@link AdviceMode # ASPECTJ}。
 	 */
 	AdviceMode mode() default AdviceMode.PROXY;
 
@@ -185,6 +195,8 @@ public @interface EnableTransactionManagement {
 	 * Indicate the ordering of the execution of the transaction advisor
 	 * when multiple advices are applied at a specific joinpoint.
 	 * <p>The default is {@link Ordered#LOWEST_PRECEDENCE}.
+	 *
+	 * 当多个通知应用于特定连接点时，指示事务advisor工具的执行顺序。
 	 */
 	int order() default Ordered.LOWEST_PRECEDENCE;
 
