@@ -20,10 +20,10 @@ public class MathCalculator {
 	// 计算
 	public int calculate(int i,int j){
 		System.out.println("calculate...............");
-/*		MathCalculator mathCalculator = (MathCalculator) AopContext.currentProxy();
-		int div = mathCalculator.div(i, j);*/
+		MathCalculator mathCalculator = (MathCalculator) AopContext.currentProxy();
+		int div = mathCalculator.div(i, j);
 
-		int div = this.div(i, j);
+//		int div = this.div(i, j);
 		return div;
 
 	}
