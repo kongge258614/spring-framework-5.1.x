@@ -22,6 +22,8 @@ import org.springframework.lang.Nullable;
 
 /**
  * Interface that defines Spring-compliant transaction properties.
+ * 定义符合spring的事务属性的接口。
+ *
  * Based on the propagation behavior definitions analogous to EJB CMT attributes.
  *
  * <p>Note that isolation level and timeout settings will not get applied unless
@@ -31,6 +33,11 @@ import org.springframework.lang.Nullable;
  * Furthermore, be aware that not all transaction managers will support those
  * advanced features and thus might throw corresponding exceptions when given
  * non-default values.
+ *
+ * 注意，除非启动了实际的新事务，否则不会应用隔离级别和超时设置。
+ * 因为只有{@link #PROPAGATION_REQUIRED}、{@link #PROPAGATION_REQUIRES_NEW}和
+ * {@link #PROPAGATION_NESTED}可以导致这种情况，所以在其他情况下指定这些设置通常没有意义。
+ * 此外，请注意，并非所有事务管理器都支持这些高级特性，因此在给定非默认值时可能会抛出相应的异常。
  *
  * <p>The {@link #isReadOnly() read-only flag} applies to any transaction context,
  * whether backed by an actual resource transaction or operating non-transactionally
@@ -211,7 +218,7 @@ public interface TransactionDefinition {
 
 
 	/**
-	 * Return the propagation behavior.
+	 * Return the propagation behavior. 返回传播行为。
 	 * <p>Must return one of the {@code PROPAGATION_XXX} constants
 	 * defined on {@link TransactionDefinition this interface}.
 	 * @return the propagation behavior
@@ -221,7 +228,7 @@ public interface TransactionDefinition {
 	int getPropagationBehavior();
 
 	/**
-	 * Return the isolation level.
+	 * Return the isolation level. 返回隔离级别。
 	 * <p>Must return one of the {@code ISOLATION_XXX} constants defined on
 	 * {@link TransactionDefinition this interface}. Those constants are designed
 	 * to match the values of the same constants on {@link java.sql.Connection}.

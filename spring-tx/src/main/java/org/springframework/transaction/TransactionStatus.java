@@ -20,6 +20,7 @@ import java.io.Flushable;
 
 /**
  * Representation of the status of a transaction.
+ * 事务状态的表示。
  *
  * <p>Transactional code can use this to retrieve status information,
  * and to programmatically request a rollback (instead of throwing
@@ -42,6 +43,8 @@ public interface TransactionStatus extends SavepointManager, Flushable {
 	 * Return whether the present transaction is new; otherwise participating
 	 * in an existing transaction, or potentially not running in an actual
 	 * transaction in the first place.
+	 * 返回当前事务是否为新事务;
+	 * 否则将参与现有事务，或可能首先不在实际事务中运行。
 	 */
 	boolean isNewTransaction();
 

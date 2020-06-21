@@ -23,6 +23,9 @@ import org.springframework.lang.Nullable;
  * Applications can use this directly, but it is not primarily meant as API:
  * Typically, applications will work with either TransactionTemplate or
  * declarative transaction demarcation through AOP.
+ * 这是Spring事务基础结构中的中心接口。
+ * 应用程序可以直接使用它，但它主要不是作为API:
+ * 通常，应用程序将通过AOP处理TransactionTemplate或声明性事务界定。
  *
  * <p>For implementors, it is recommended to derive from the provided
  * {@link org.springframework.transaction.support.AbstractPlatformTransactionManager}
