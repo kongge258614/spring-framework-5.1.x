@@ -21,19 +21,10 @@ public class BussniessServiceImpl implements BussniessService {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-
-	@Override
-	public Storage getStorage(String name) {
-		String sql = "SELECT * FROM `storage` WHERE name = ?; ";
-		Map<String, Object> map = jdbcTemplate.queryForMap(sql, name);
-
-		Storage storage = new Storage();
-		storage.setId((String) map.get("id"));
-		storage.setName((String) map.get("name"));
-		storage.setCount((Integer) map.get("count"));
-		return storage;
-	}
-
+	/**
+	 * 创建订单
+	 * @param order
+	 */
 	@Transactional
 	@Override
 	public void createOrder(Order order) {
@@ -43,28 +34,16 @@ public class BussniessServiceImpl implements BussniessService {
 
 	}
 
+	/**
+	 * 减库存
+	 * @param commoditycodeid
+	 * @param count
+	 */
 	@Transactional
 	@Override
 	public void deduct(String commoditycodeid, int count) {
 		String sql = "UPDATE `storage` SET count = count-? WHERE  id= ?;";
 		int result = jdbcTemplate.update(sql, count, commoditycodeid);
 		System.out.println("result:"+result);
-	}
-
-	@Override
-	public Order getOrder(String id) {
-		return null;
-	}
-
-	@Override
-	public void purchase(String name, int purchasequantity, BigDecimal commodityPrice) {
-
-		// 根据商品名称，查询出商品id
-		Storage storage = getStorage(name);
-
-		// 根据商品id，采购单价，采购数量创建订单表
-
-		// 减库存
-
 	}
 }

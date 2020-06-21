@@ -13,18 +13,16 @@ public class TestTransaction {
 	public static void main(String[] args) {
 		AnnotationConfigApplicationContext atx = new AnnotationConfigApplicationContext(TransactionConfig.class);
 		BussniessService bean = (BussniessService) atx.getBean("bussniessServiceImpl");
-/*		Storage storage = bean.getStorage("1001");
-		System.out.println("storage:"+storage);*/
 
 
-/*		Order order = new Order();
-		order.setId("2002");
-		order.setCommoditycodeid("1001");
+		Order order = new Order();
+		order.setId("LX1001");
+		order.setCommoditycodeid("1002");
 		order.setPurchasequantity(1);
 		order.setCommodityPrice(new BigDecimal("4999"));
-		bean.createOrder(order);*/
+		bean.createOrder(order);
 
-		bean.deduct("1001",2);
+//		bean.deduct("1001",1);
 
 
 	}
