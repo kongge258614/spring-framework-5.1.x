@@ -16,8 +16,8 @@ public class TestTransaction {
 
 
 		Order order = new Order();
-		order.setId("LX1001");
-		order.setCommoditycodeid("1002");
+		order.setId("LX1002");
+		order.setCommoditycodeid("1001");
 		order.setPurchasequantity(1);
 		order.setCommodityPrice(new BigDecimal("4999"));
 		bean.createOrder(order);

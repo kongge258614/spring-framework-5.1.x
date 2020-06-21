@@ -1,14 +1,10 @@
 package com.lkker.transaction.service;
 
 import com.lkker.transaction.entity.Order;
-import com.lkker.transaction.entity.Storage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
-import java.util.Map;
 
 /**
  * @Author liliang
@@ -31,6 +27,13 @@ public class BussniessServiceImpl implements BussniessService {
 		String sql ="insert into `order` (id,commoditycodeid,purchasequantity,commodityPrice) VALUES (?,?,?,?)";
 		int result = jdbcTemplate.update(sql, order.getId(), order.getCommoditycodeid(), order.getPurchasequantity(), order.getCommodityPrice());
 		System.out.println("result:"+result);
+
+//		BussniessService b = (BussniessService) AopContext.currentProxy();
+//
+//		b.deduct(order.getCommoditycodeid(),order.getPurchasequantity());
+		deduct(order.getCommoditycodeid(),order.getPurchasequantity());
+
+		System.out.println("deduct............");
 
 	}
 
