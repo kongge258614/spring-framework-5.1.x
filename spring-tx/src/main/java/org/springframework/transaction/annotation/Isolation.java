@@ -32,6 +32,8 @@ public enum Isolation {
 	/**
 	 * Use the default isolation level of the underlying datastore.
 	 * All other levels correspond to the JDBC isolation levels.
+	 * 使用底层数据存储的默认隔离级别。
+	 * 所有其他级别都对应于JDBC隔离级别。
 	 * @see java.sql.Connection
 	 */
 	DEFAULT(TransactionDefinition.ISOLATION_DEFAULT),
@@ -42,6 +44,10 @@ public enum Isolation {
 	 * another transaction before any changes in that row have been committed
 	 * (a "dirty read"). If any of the changes are rolled back, the second
 	 * transaction will have retrieved an invalid row.
+	 * 指示可能发生脏读、不可重复读和幻像读的常数。
+	 * 这个级别允许由一个事务更改的行在提交对该行的任何更改之前被另一个事务读取(“脏读”)。
+	 * 如果任何更改被回滚，第二个事务将检索到无效的行。
+	 *
 	 * @see java.sql.Connection#TRANSACTION_READ_UNCOMMITTED
 	 */
 	READ_UNCOMMITTED(TransactionDefinition.ISOLATION_READ_UNCOMMITTED),
