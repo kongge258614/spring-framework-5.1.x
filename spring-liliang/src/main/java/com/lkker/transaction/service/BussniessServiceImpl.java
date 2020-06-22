@@ -1,9 +1,11 @@
 package com.lkker.transaction.service;
 
 import com.lkker.transaction.entity.Order;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -28,12 +30,13 @@ public class BussniessServiceImpl implements BussniessService {
 		int result = jdbcTemplate.update(sql, order.getId(), order.getCommoditycodeid(), order.getPurchasequantity(), order.getCommodityPrice());
 		System.out.println("result:"+result);
 
-//		BussniessService b = (BussniessService) AopContext.currentProxy();
-//
-//		b.deduct(order.getCommoditycodeid(),order.getPurchasequantity());
-		deduct(order.getCommoditycodeid(),order.getPurchasequantity());
+		BussniessService b = (BussniessService) AopContext.currentProxy();
 
-		System.out.println("deduct............");
+		b.deduct(order.getCommoditycodeid(),order.getPurchasequantity());
+//		deduct(order.getCommoditycodeid(),order.getPurchasequantity());
+
+		result = 3/0;
+		System.out.println("deduct.....error.......");
 
 	}
 
@@ -42,7 +45,7 @@ public class BussniessServiceImpl implements BussniessService {
 	 * @param commoditycodeid
 	 * @param count
 	 */
-	@Transactional
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	@Override
 	public void deduct(String commoditycodeid, int count) {
 		String sql = "UPDATE `storage` SET count = count-? WHERE  id= ?;";
