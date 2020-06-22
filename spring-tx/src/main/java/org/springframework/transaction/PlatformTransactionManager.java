@@ -76,6 +76,7 @@ public interface PlatformTransactionManager {
 	/**
 	 * Commit the given transaction, with regard to its status. If the transaction
 	 * has been marked rollback-only programmatically, perform a rollback.
+	 * 提交给定事务的状态。如果事务以编程方式标记为仅回滚，则执行回滚。
 	 * <p>If the transaction wasn't a new one, omit the commit for proper
 	 * participation in the surrounding transaction. If a previous transaction
 	 * has been suspended to be able to create a new one, resume the previous

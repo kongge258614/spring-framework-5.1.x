@@ -595,6 +595,8 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 	/**
 	 * Opaque object used to hold transaction information. Subclasses
 	 * must pass it back to methods on this class, but not see its internals.
+	 * 用于保存事务信息的不透明对象。
+	 * 子类必须将其传递回类中的方法，但不能看到其内部。
 	 */
 	protected final class TransactionInfo {
 

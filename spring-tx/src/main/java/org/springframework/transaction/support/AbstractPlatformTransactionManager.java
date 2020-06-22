@@ -40,6 +40,8 @@ import org.springframework.transaction.UnexpectedRollbackException;
  * Abstract base class that implements Spring's standard transaction workflow,
  * serving as basis for concrete platform transaction managers like
  * {@link org.springframework.transaction.jta.JtaTransactionManager}.
+ * 实现Spring标准事务工作流的抽象基类，作为具体平台事务管理器的基础，
+ * 如{@link org.springframework.transaction.jta.JtaTransactionManager}。
  *
  * <p>This base class provides the following workflow handling:
  * <ul>
@@ -52,11 +54,33 @@ import org.springframework.transaction.UnexpectedRollbackException;
  * <li>triggers registered synchronization callbacks
  * (if transaction synchronization is active).
  * </ul>
+ * *
+ * 这个基类提供了以下工作流处理:
+ * * < ul >
+ * *
+ * 确定是否存在现有事务;
+ * *
+ * 应用合适的传播行为;
+ * *
+ * 在必要时暂停和恢复事务;
+ * *
+ * 在提交时检查只回滚标志;
+ * *
+ * 对回滚应用适当的修改
+ * *(实际回滚或仅设置回滚);
+ * *
+ * 触发注册的同步回调
+ * *(如果事务同步是活动的)。
+ * * < / ul >
  *
  * <p>Subclasses have to implement specific template methods for specific
  * states of a transaction, e.g.: begin, suspend, resume, commit, rollback.
  * The most important of them are abstract and must be provided by a concrete
  * implementation; for the rest, defaults are provided, so overriding is optional.
+ * 子类必须为特定的模板实现特定的方法
+ * 事务的状态，例如:开始、暂停、恢复、提交、回滚。
+ * 其中最重要的是抽象的，必须由具体的内容来提供
+ * 执行;对于其余部分，提供默认值，因此覆盖是可选的。
  *
  * <p>Transaction synchronization is a generic mechanism for registering callbacks
  * that get invoked at transaction completion time. This is mainly used internally
@@ -65,6 +89,10 @@ import org.springframework.transaction.UnexpectedRollbackException;
  * transaction for closing at transaction completion time, allowing e.g. for reuse
  * of the same Hibernate Session within the transaction. The same mechanism can
  * also be leveraged for custom synchronization needs in an application.
+ * 事务同步是注册在事务完成时调用的回调的通用机制。
+ * 这主要由运行在JTA事务中的JDBC、Hibernate、JPA等的数据访问支持类在内部使用:它们注册事务中打开的资源，
+ * 以便在事务完成时关闭，允许在事务中重用相同的Hibernate会话。
+ * 同样的机制也可以用于应用程序中的自定义同步需求。
  *
  * <p>The state of this class is serializable, to allow for serializing the
  * transaction strategy along with proxies that carry a transaction interceptor.
@@ -85,6 +113,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 	/**
 	 * Always activate transaction synchronization, even for "empty" transactions
 	 * that result from PROPAGATION_SUPPORTS with no existing backend transaction.
+	 * 始终激活事务同步，即使是由于PROPAGATION_SUPPORTS而没有现有后端事务的“空”事务。
 	 * @see org.springframework.transaction.TransactionDefinition#PROPAGATION_SUPPORTS
 	 * @see org.springframework.transaction.TransactionDefinition#PROPAGATION_NOT_SUPPORTED
 	 * @see org.springframework.transaction.TransactionDefinition#PROPAGATION_NEVER
@@ -95,6 +124,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 	 * Activate transaction synchronization only for actual transactions,
 	 * that is, not for empty ones that result from PROPAGATION_SUPPORTS with
 	 * no existing backend transaction.
+	 * 仅为实际事务激活事务同步，也就是说，对于没有现有后端事务的PROPAGATION_SUPPORTS导致的空事务，则不适用。
 	 * @see org.springframework.transaction.TransactionDefinition#PROPAGATION_REQUIRED
 	 * @see org.springframework.transaction.TransactionDefinition#PROPAGATION_MANDATORY
 	 * @see org.springframework.transaction.TransactionDefinition#PROPAGATION_REQUIRES_NEW
@@ -103,6 +133,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 
 	/**
 	 * Never active transaction synchronization, not even for actual transactions.
+	 * 绝不要主动事务同步，即使是实际事务也不行。
 	 */
 	public static final int SYNCHRONIZATION_NEVER = 2;
 
@@ -557,7 +588,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 	}
 
 
-	/**
+	/** 暂停给定的事务。首先挂起事务同步，然后委托给{@code doSuspend}模板方法。
 	 * Suspend the given transaction. Suspends transaction synchronization first,
 	 * then delegates to the {@code doSuspend} template method.
 	 * @param transaction the current transaction object
