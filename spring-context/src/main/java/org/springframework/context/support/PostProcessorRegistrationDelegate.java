@@ -43,6 +43,7 @@ import org.springframework.lang.Nullable;
 /**
  * Delegate for AbstractApplicationContext's post-processor handling.
  * 委托AbstractApplicationContext的后处理器处理。
+ * PostProcessorRegistrationDelegate是AbstractApplicationContext委托执行post processors任务的工具类
  * @author Juergen Hoeller
  * @since 4.0
  */
@@ -62,10 +63,13 @@ final class PostProcessorRegistrationDelegate {
 			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
 
 			// 此处的BeanFactoryPostProcessor和BeanDefinitionRegistryPostProcessor是继承关系，BeanDefinitionRegistryPostProcessor继承自BeanFactoryPostProcessor。
-			// 为什么在此新建两个list?  分开处理spring内部的和我们自己定义的bean.
 			List<BeanFactoryPostProcessor> regularPostProcessors = new ArrayList<>();   // regular: 正式的、正规的
 			List<BeanDefinitionRegistryPostProcessor> registryProcessors = new ArrayList<>();
 
+			// 遍历所有参数传递进来的 BeanFactoryPostProcessor(它们并没有作为bean注册在容器中)
+			// 将所有参数传入的 BeanFactoryPostProcessor 分成两组 : BeanDefinitionRegistryPostProcessor 和常规 BeanFactoryPostProcessor
+			// 1.如果是BeanDefinitionRegistryPostProcessor，现在执行postProcessBeanDefinitionRegistry()
+			// 2.否则记录为一个常规 BeanFactoryPostProcessor，现在不执行处理
 			for (BeanFactoryPostProcessor postProcessor : beanFactoryPostProcessors) {
 				if (postProcessor instanceof BeanDefinitionRegistryPostProcessor) {
 					BeanDefinitionRegistryPostProcessor registryProcessor = (BeanDefinitionRegistryPostProcessor) postProcessor;
@@ -85,19 +89,10 @@ final class PostProcessorRegistrationDelegate {
 			List<BeanDefinitionRegistryPostProcessor> currentRegistryProcessors = new ArrayList<>();
 
 			// First, invoke the BeanDefinitionRegistryPostProcessors that implement PriorityOrdered.
-			// 首先处理实现了PriorityOrdered 的 BeanDefinitionRegistryPostProcessors
+			// 从beanfactory中查询出所有的 BeanDefinitionRegistryPostProcessor类。
 			String[] postProcessorNames = beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
 
-			/**
-			 * 这个地方可以得到一个 BeanFactoryPostProcessor ，因为是spring默认在最开始自己注册的
-			 * 为什么要在最开始注册这个呢？
-			 * 因为spring的工厂需要解析、扫描等等功能
-			 * 而这些功能都是需要在spring工厂初始化完成之前执行
-			 * 要么在工厂最开始的时候，要么在工厂初始化之中，反正不能在初始化之后，因为如果在之后就没有了意义，因为那个时候已经需要使用工厂了。
-			 * 所以这里spring在一开始就注册了一个 BeanFactoryPostProcessor ，用来查收springfactory的实例化过程。
-			 *
-			 */
-
+			// 遍历查询出的 BeanDefinitionRegistryPostProcessor类，筛选出实现了 PriorityOrdered接口的类
 			for (String ppName : postProcessorNames) {
 				if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
 					currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));
