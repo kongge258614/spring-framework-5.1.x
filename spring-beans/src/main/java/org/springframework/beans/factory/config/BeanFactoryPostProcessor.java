@@ -21,13 +21,13 @@ import org.springframework.beans.BeansException;
 /**
  * Allows for custom modification of an application context's bean definitions,
  * adapting the bean property values of the context's underlying bean factory.
- * 允许自定义的修改应用程序上下文的bean的定义。调整上下文的基础bean工厂的bean属性值。
- * 实现此接口可以获取到整个beanfactory，可以对beanfactory做任意修改。权限相当大。
+ * 允许自定义的修改应用程序上下文的bean的定义。调整上下文的内部 bean factory的bean属性值。
+ * 实现此接口可以获取到整个bean factory，可以对bean factory做任意修改。权限相当大。
  *
  * <p>Application contexts can auto-detect BeanFactoryPostProcessor beans in
  * their bean definitions and apply them before any other beans get created.
  *	应用程序上下文可以自动检测实现了 BeanFactoryPostProcessor 接口的bean，
- *	并且在其他bean被创建之前应用它们.
+ *	并且在其他bean被创建之前应用这些BeanFactoryPostProcessor.
  *
  * <p>Useful for custom config files targeted at system administrators that
  * override bean properties configured in the application context.
