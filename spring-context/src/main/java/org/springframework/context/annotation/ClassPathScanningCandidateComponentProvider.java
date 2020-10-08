@@ -85,6 +85,7 @@ import org.springframework.util.ClassUtils;
  * @see ScannedGenericBeanDefinition
  * @see CandidateComponentsIndex
  */
+//ClassPathScanningCandidateComponentProvider是Spring提供的工具，可以按自定义的类型，查找classpath下符合要求的class文件
 public class ClassPathScanningCandidateComponentProvider implements EnvironmentCapable, ResourceLoaderAware {
 
 	static final String DEFAULT_RESOURCE_PATTERN = "**/*.class";
@@ -204,8 +205,12 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	 */
 	@SuppressWarnings("unchecked")
 	protected void registerDefaultFilters() {
+		// 这里需要注意，默认情况下都是添加了@Component这个注解的
+		//（相当于@Service @Controller @Respository等都会扫描，因为这些注解都属于@Component）  另外@Configuration也属于哦
 		this.includeFilters.add(new AnnotationTypeFilter(Component.class));
 		ClassLoader cl = ClassPathScanningCandidateComponentProvider.class.getClassLoader();
+
+		//下面两个 是兼容JSR-250的@ManagedBean和330的@Named注解
 		try {
 			this.includeFilters.add(new AnnotationTypeFilter(
 					((Class<? extends Annotation>) ClassUtils.forName("javax.annotation.ManagedBean", cl)), false));
@@ -222,6 +227,8 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 		catch (ClassNotFoundException ex) {
 			// JSR-330 API not available - simply skip.
 		}
+
+		// 所以，如果你想Spring连你自定义的注解都扫描，自己实现一个AnnotationTypeFilter就可以啦
 	}
 
 	/**

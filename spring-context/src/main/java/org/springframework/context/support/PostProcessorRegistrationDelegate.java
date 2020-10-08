@@ -202,6 +202,7 @@ final class PostProcessorRegistrationDelegate {
 
 	public static void registerBeanPostProcessors(ConfigurableListableBeanFactory beanFactory, AbstractApplicationContext applicationContext) {
 
+		// 找到所有注册到容器的 BeanPostProcessor 的名字
 		String[] postProcessorNames = beanFactory.getBeanNamesForType(BeanPostProcessor.class, true, false);
 
 		// Register BeanPostProcessorChecker that logs an info message when
@@ -214,6 +215,7 @@ final class PostProcessorRegistrationDelegate {
 
 		// Separate between BeanPostProcessors that implement PriorityOrdered,
 		// Ordered, and the rest.
+		// 将 BeanPostProcessor 分成三类处理 : PriorityOrdered, Ordered 和 其它。
 		List<BeanPostProcessor> priorityOrderedPostProcessors = new ArrayList<>();
 		List<BeanPostProcessor> internalPostProcessors = new ArrayList<>();   //internalPostProcessors : 内置的后置处理器
 		List<String> orderedPostProcessorNames = new ArrayList<>();

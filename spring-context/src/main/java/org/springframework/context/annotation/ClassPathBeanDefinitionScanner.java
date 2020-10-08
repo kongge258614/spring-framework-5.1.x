@@ -159,6 +159,8 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		Assert.notNull(registry, "BeanDefinitionRegistry must not be null");
 		this.registry = registry;
 
+		//useDefaultFilters为true，所以此处一般都会执行
+		// 当然我们也可以设置为false，比如@ComponentScan里就可以设置为false，只扫描指定的注解/类等等
 		if (useDefaultFilters) {
 			registerDefaultFilters();
 		}
@@ -267,12 +269,16 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	 */
 	protected Set<BeanDefinitionHolder> doScan(String... basePackages) {
 		Assert.notEmpty(basePackages, "At least one base package must be specified");
+		// 装载扫描到的Bean
 		Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<>();
 		for (String basePackage : basePackages) {
+			// 这个方法是最重点，把扫描到的Bean就放进来了
 			Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
 			for (BeanDefinition candidate : candidates) {
+				// 拿到Scope元数据：此处为singleton
 				ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(candidate);
 				candidate.setScope(scopeMetadata.getScopeName());
+				// 生成Bean的名称，默认为首字母小写。
 				String beanName = this.beanNameGenerator.generateBeanName(candidate, this.registry);
 				if (candidate instanceof AbstractBeanDefinition) {
 					// 如果这个类是AbstractBeanDefinition 的子类，则为它设置默认值，比如 lazy,init,destory
