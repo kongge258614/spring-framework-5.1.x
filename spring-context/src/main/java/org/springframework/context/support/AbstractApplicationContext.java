@@ -701,7 +701,6 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 		beanFactory.registerResolvableDependency(ApplicationContext.class, this);
 
 		// Register early post-processor for detecting inner beans as ApplicationListeners.
-		// 将早期后处理器注册为application监听器，用于检测内部bean。
 		beanFactory.addBeanPostProcessor(new ApplicationListenerDetector(this));
 
 		// Detect a LoadTimeWeaver and prepare for weaving, if found.
