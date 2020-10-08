@@ -117,6 +117,12 @@ class ApplicationListenerDetector implements DestructionAwareBeanPostProcessor, 
 		}
 	}
 
+	/**
+	 *  DestructionAwareBeanPostProcessor 接口定义的方法,用于检测对于某个 bean 是否要调用 postProcessBeforeDestruction 方法。
+	 *  该实现表明仅在 bean 是一个 ApplicationListener 时才调用上面的postProcessBeforeDestruction
+	 * @param bean the bean instance to check
+	 * @return
+	 */
 	@Override
 	public boolean requiresDestruction(Object bean) {
 		return (bean instanceof ApplicationListener);
