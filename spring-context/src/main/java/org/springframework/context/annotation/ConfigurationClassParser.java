@@ -104,6 +104,8 @@ import org.springframework.util.StringUtils;
  * @author Stephane Nicoll
  * @since 3.0
  * @see ConfigurationClassBeanDefinitionReader
+ *
+ * Spring的工具类ConfigurationClassParser用于分析@Configuration注解的配置类，产生一组ConfigurationClass对象。
  */
 class ConfigurationClassParser {
 
