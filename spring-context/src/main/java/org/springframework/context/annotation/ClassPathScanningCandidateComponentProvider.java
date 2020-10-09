@@ -84,8 +84,9 @@ import org.springframework.util.ClassUtils;
  * @see org.springframework.core.type.AnnotationMetadata
  * @see ScannedGenericBeanDefinition
  * @see CandidateComponentsIndex
+ *
+ * ClassPathScanningCandidateComponentProvider是Spring提供的工具，可以按自定义的类型，查找classpath下符合要求的class文件
  */
-//ClassPathScanningCandidateComponentProvider是Spring提供的工具，可以按自定义的类型，查找classpath下符合要求的class文件
 public class ClassPathScanningCandidateComponentProvider implements EnvironmentCapable, ResourceLoaderAware {
 
 	static final String DEFAULT_RESOURCE_PATTERN = "**/*.class";
@@ -105,9 +106,15 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	@Nullable
 	private ConditionEvaluator conditionEvaluator;
 
+	/**
+	 * 资源路径解析器，能从指定的包路径，根据指定的pattern，加载相应的Resource
+	 */
 	@Nullable
 	private ResourcePatternResolver resourcePatternResolver;
 
+	/**
+	 * 工厂类，用于生成读取类元数据的 MetadataReader
+	 */
 	@Nullable
 	private MetadataReaderFactory metadataReaderFactory;
 
@@ -424,8 +431,11 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 		// candidates:候选人  此集合存放的是自定义的加注解的bean。
 		Set<BeanDefinition> candidates = new LinkedHashSet<>();
 		try {
+			// 初始化在指定包内扫描资源的pattern ：packageSearchPath
+			// 缺省情况下，这里只关注所有的java类文件，也就是.class结尾的字节码文件
 			String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
 					resolveBasePackage(basePackage) + '/' + this.resourcePattern;
+			// 获取匹配 packageSearchPath pattern 的资源
 			Resource[] resources = getResourcePatternResolver().getResources(packageSearchPath);
 			boolean traceEnabled = logger.isTraceEnabled();
 			boolean debugEnabled = logger.isDebugEnabled();
@@ -437,10 +447,17 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 				if (resource.isReadable()) {
 					try {
 						MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(resource);
+						// 判断这是否是一个符合候选条件的bean组件定义类
+						// 如果符合条件的话，将其添加到候选类集合 : candidates
+
+						// 第一次判断 : 判断这是否是一个符合包含过滤器，并且不在排斥过滤器内的bean组件定义类
 						if (isCandidateComponent(metadataReader)) {
 							ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
 							sbd.setResource(resource);
 							sbd.setSource(resource);
+
+							// 第二次判断 : 构造出sbd之后再次检测是否符合候选条件
+							// 1. 独立类 + 具体实现类 或者  2. 独立类 + 抽象类 + 带有使用注解 Lookup 的方法
 							if (isCandidateComponent(sbd)) {
 								if (debugEnabled) {
 									logger.debug("Identified candidate component class: " + resource);
@@ -497,6 +514,8 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	 * @return whether the class qualifies as a candidate component
 	 */
 	protected boolean isCandidateComponent(MetadataReader metadataReader) throws IOException {
+
+		// 注意，这里排斥过滤器优先被使用
 		for (TypeFilter tf : this.excludeFilters) {
 			if (tf.match(metadataReader, getMetadataReaderFactory())) {
 				return false;

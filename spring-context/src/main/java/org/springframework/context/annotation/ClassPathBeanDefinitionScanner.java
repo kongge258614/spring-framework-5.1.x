@@ -316,7 +316,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	}
 
 	/**
-	 * Register the specified bean with the given registry.
+	 * Register the specified bean with the given registry. 将指定的bean注册到给定的注册中心。
 	 * <p>Can be overridden in subclasses, e.g. to adapt the registration
 	 * process or to register further bean definitions for each scanned bean.
 	 * @param definitionHolder the bean definition plus bean name for the bean
