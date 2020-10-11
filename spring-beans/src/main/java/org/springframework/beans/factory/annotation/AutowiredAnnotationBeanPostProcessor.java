@@ -16,37 +16,13 @@
 
 package org.springframework.beans.factory.annotation;
 
-import java.beans.PropertyDescriptor;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.TypeConverter;
-import org.springframework.beans.factory.BeanCreationException;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.beans.factory.BeanFactoryUtils;
-import org.springframework.beans.factory.InjectionPoint;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.beans.factory.UnsatisfiedDependencyException;
+import org.springframework.beans.factory.*;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessorAdapter;
@@ -64,6 +40,12 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
+
+import java.beans.PropertyDescriptor;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.*;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * {@link org.springframework.beans.factory.config.BeanPostProcessor} implementation
@@ -114,6 +96,13 @@ import org.springframework.util.StringUtils;
  * @see #setAutowiredAnnotationType
  * @see Autowired
  * @see Value
+ *
+ * 该BeanPostProcessor为每个bean进行属性自动装配。
+ * AutowiredAnnotationBeanPostProcessor 对每个bean进行属性自动装配的任务，主要依赖它的两个方法实现:
+ * 	1. MergedBeanDefinitionPostProcessor接口定义的方法postProcessMergedBeanDefinition
+ * 			用于发现和记录bean 的属性注入元数据:需要自动装配的成员属性/方法信息
+ * 	2. InstantiationAwareBeanPostProcessor接口定义的方法postProcessProperties
+ * 			用于根据上面所发现的属性注入元数据为bean进行依赖"注入"
  */
 public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBeanPostProcessorAdapter
 		implements MergedBeanDefinitionPostProcessor, PriorityOrdered, BeanFactoryAware {
@@ -168,6 +157,8 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 	 * <p>This setter property exists so that developers can provide their own
 	 * (non-Spring-specific) annotation type to indicate that a member is supposed
 	 * to be autowired.
+	 *  设置所支持的自动配置注解，缺省情况下所支持的自动配置注解是@Autowired,@Value,@Inject,
+	 *  但通过该方法，开发人员可以提供一个自定义的自动配置注解，而非Spring所提供的标准注解方式。
 	 */
 	public void setAutowiredAnnotationType(Class<? extends Annotation> autowiredAnnotationType) {
 		Assert.notNull(autowiredAnnotationType, "'autowiredAnnotationType' must not be null");
@@ -183,6 +174,9 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 	 * <p>This setter property exists so that developers can provide their own
 	 * (non-Spring-specific) annotation types to indicate that a member is supposed
 	 * to be autowired.
+	 *
+	 * 设置所支持的自动配置注解，缺省情况下所支持的自动配置注解是@Autowired,@Value,@Inject,
+	 * 但通过该方法，开发人员可以提供一个自定义的自动配置注解，而非Spring所提供的标准注解方式。
 	 */
 	public void setAutowiredAnnotationTypes(Set<Class<? extends Annotation>> autowiredAnnotationTypes) {
 		Assert.notEmpty(autowiredAnnotationTypes, "'autowiredAnnotationTypes' must not be empty");
@@ -227,8 +221,18 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 	}
 
 
+	/**
+	 * 用于发现和记录bean 的属性注入元数据:需要自动装配的成员属性/方法信息
+	 *
+	 * 在每个bean实例化后，初始化前执行，获取并记录该bean属性注入的元数据，在随后的属性注入时使用
+	 * 该方法由接口MergedBeanDefinitionPostProcessor定义
+	 * @param beanDefinition the merged bean definition for the bean
+	 * @param beanType the actual type of the managed bean instance
+	 * @param beanName the name of the bean
+	 */
 	@Override
 	public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class<?> beanType, String beanName) {
+		// 获取指定bean的属性注入元数据
 		InjectionMetadata metadata = findAutowiringMetadata(beanName, beanType, null);
 		metadata.checkConfigMembers(beanDefinition);
 	}
@@ -369,10 +373,26 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 		return (candidateConstructors.length > 0 ? candidateConstructors : null);
 	}
 
+	/**
+	 * 用于根据上面所发现的属性注入元数据为bean进行依赖"注入"
+	 *
+	 * 	接口 InstantiationAwareBeanPostProcessor 定义的方法，用于在bean创建时填充属性阶段
+	 * 	对bean进行相应的属性注入
+	 * 	在同一个bean的创建过程中 :
+	 * 		1. postProcessProperties 的调用发生在 postProcessMergedBeanDefinition 之后
+	 * 		2. postProcessMergedBeanDefinition 用于发现和缓存该bean有哪些自动装配成员
+	 * 		3. postProcessProperties 用于对所发现的自动装配成员进行自动转配，也就是执行依赖注入的"注入"
+	 * @param pvs
+	 * @param bean
+	 * @param beanName
+	 * @return
+	 */
 	@Override
 	public PropertyValues postProcessProperties(PropertyValues pvs, Object bean, String beanName) {
+		// 找到该bean需要自动装配的成员，已经由postProcessMergedBeanDefinition放在缓存中
 		InjectionMetadata metadata = findAutowiringMetadata(beanName, bean.getClass(), pvs);
 		try {
+			// 进行自动装配成员的自动装配，也就是真正的依赖"注入"
 			metadata.inject(bean, beanName, pvs);
 		}
 		catch (BeanCreationException ex) {
@@ -395,6 +415,8 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 	/**
 	 * 'Native' processing method for direct calls with an arbitrary target instance,
 	 * resolving all of its fields and methods which are annotated with {@code @Autowired}.
+	 *
+	 * 对一个外部指定的bean对象直接进行依赖注入:属性，方法层面的 @Autowired,@Value 注解处理
 	 * @param bean the target instance to process
 	 * @throws BeanCreationException if autowiring failed
 	 */
@@ -413,7 +435,8 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 		}
 	}
 
-
+	// 获取指定bean的注入元数据，使用了缓存机制，首先从缓存中尝试获取，如果缓存中没找到，从bean类上
+	// 直接获取并缓存
 	private InjectionMetadata findAutowiringMetadata(String beanName, Class<?> clazz, @Nullable PropertyValues pvs) {
 		// Fall back to class name as cache key, for backwards compatibility with custom callers.
 		String cacheKey = (StringUtils.hasLength(beanName) ? beanName : clazz.getName());
@@ -426,6 +449,7 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 					if (metadata != null) {
 						metadata.clear(pvs);
 					}
+					// 直接从bean类上获取注入元数据并缓存
 					metadata = buildAutowiringMetadata(clazz);
 					this.injectionMetadataCache.put(cacheKey, metadata);
 				}
@@ -434,6 +458,10 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 		return metadata;
 	}
 
+	// 从bean的类clazz开始沿着继承链遍历直到遇到null或者基类Object结束，遍历遇到的每个类声明
+	// 的实例成员属性/成员方法(注意:静态成员属性方法会被排除)查看其是否需要自动装配，如果该
+	// 实例成员属性/成员方法需要自动装配，将它们包装成AutowiredFieldElement/AutowiredMethodElement
+	// 然后放在同一个InjectionMetadata对象中返回。
 	private InjectionMetadata buildAutowiringMetadata(final Class<?> clazz) {
 		List<InjectionMetadata.InjectedElement> elements = new ArrayList<>();
 		Class<?> targetClass = clazz;
