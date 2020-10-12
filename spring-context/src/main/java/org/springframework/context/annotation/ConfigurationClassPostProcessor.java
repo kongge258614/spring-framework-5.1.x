@@ -258,11 +258,16 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	}
 
 	/**
+	 * 使用工具ConfigurationClassParser尝试发现所有的配置(@Configuration)类，
+	 * 使用工具ConfigurationClassBeanDefinitionReader注册所发现的配置类中所有的bean定义。
+	 * 结束执行的条件是所有配置类都被发现和处理,相应的bean定义注册到容器。
+	 *
 	 * Build and validate a configuration model based on the registry of
 	 * {@link Configuration} classes.  构建和校验一个配置模型 基于 Configuration类的注册。
 	 * 拿出所有的bd，然后判断bd是否包含了@Configuration、@Service注解
 	 */
 	public void processConfigBeanDefinitions(BeanDefinitionRegistry registry) {
+		// 用来记录候选配置类
 		List<BeanDefinitionHolder> configCandidates = new ArrayList<>();
 		String[] candidateNames = registry.getBeanDefinitionNames();
 
@@ -276,8 +281,9 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 					logger.debug("Bean definition has already been processed as a configuration class: " + beanDef);
 				}
 			}
-			// 理解是否是Configuration类，如果加了Configuration，下面的这几个注解就不用再判断了
+			// 判断是否是Configuration类
 			else if (ConfigurationClassUtils.checkConfigurationClassCandidate(beanDef, this.metadataReaderFactory)) {
+				// 如果这个Bean定义有注解@Configuration，将其记录为候选配置类
 				configCandidates.add(new BeanDefinitionHolder(beanDef, beanName));
 			}
 		}
@@ -313,6 +319,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		}
 
 		// Parse each @Configuration class   解析每个@Configuration类
+		// 使用工具ConfigurationClassParser尝试发现所有的配置(@Configuration)类
 		ConfigurationClassParser parser = new ConfigurationClassParser(
 				this.metadataReaderFactory, this.problemReporter, this.environment, this.resourceLoader, this.componentScanBeanNameGenerator, registry);
 
