@@ -281,9 +281,10 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 					logger.debug("Bean definition has already been processed as a configuration class: " + beanDef);
 				}
 			}
-			// 判断是否是Configuration类
+			// 判断是否是Configuration类，这里的配置类包括完全配置类和简化配置类
+			// 完全配置类是指使用@Configuration注解的类
+			// 简化配置类是指没有使用@Configuration注解,但是使用了注解@Component或者注解@Component变种的类、@ComponentScan、@Import、@ImportResource、或者某个配置类含有使用@Bean注解的方法的嵌套子类
 			else if (ConfigurationClassUtils.checkConfigurationClassCandidate(beanDef, this.metadataReaderFactory)) {
-				// 如果这个Bean定义有注解@Configuration，将其记录为候选配置类
 				configCandidates.add(new BeanDefinitionHolder(beanDef, beanName));
 			}
 		}
@@ -324,6 +325,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 				this.metadataReaderFactory, this.problemReporter, this.environment, this.resourceLoader, this.componentScanBeanNameGenerator, registry);
 
 		Set<BeanDefinitionHolder> candidates = new LinkedHashSet<>(configCandidates);
+		// 表示已经处理的配置类，已经被处理的配置类已经明确了其类型，所以用 ConfigurationClass 类型记录，
 		Set<ConfigurationClass> alreadyParsed = new HashSet<>(configCandidates.size());
 		do {
 			parser.parse(candidates);
