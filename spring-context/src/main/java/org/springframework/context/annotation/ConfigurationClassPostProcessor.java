@@ -237,23 +237,30 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	/**
 	 * Prepare the Configuration classes for servicing bean requests at runtime
 	 * by replacing them with CGLIB-enhanced subclasses.
-	 * 通过使用cglib增强的子类替换bean请求，准备在运行时为bean请求提供服务的配置类。
+	 * postProcessBeanFactory() 的主要目的有两个:
+	 * 	1.对容器中的每个配置类做增强;
+	 * 	2.往容器中增加一个BeanPostProcessor:ImportAwareBeanPostProcessor(如果所增加的BeanPostProcessor已经存在会先将其删除然后重新添加)
 	 */
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 		int factoryId = System.identityHashCode(beanFactory);
+		// 缓存
 		if (this.factoriesPostProcessed.contains(factoryId)) {
 			throw new IllegalStateException(
 					"postProcessBeanFactory already called on this post-processor against " + beanFactory);
 		}
 		this.factoriesPostProcessed.add(factoryId);
 		if (!this.registriesPostProcessed.contains(factoryId)) {
+			// 因为同一个ConfigurationClassPostProcessor的postProcessBeanDefinitionRegistry
+			// 总是先于它的postProcessBeanFactory被调用，因此代码应该不会执行到这里，所以这里再次调用应该是一次确保
+
 			// BeanDefinitionRegistryPostProcessor hook apparently not supported...
 			// Simply call processConfigurationClasses lazily at this point then.
 			processConfigBeanDefinitions((BeanDefinitionRegistry) beanFactory);
 		}
-
+        //  对容器中的每个配置类做增强
 		enhanceConfigurationClasses(beanFactory);
+		// 往容器中增加一个ImportAwareBeanPostProcessor(如果所增加组件已经存在会先将其删除然后重新添加)
 		beanFactory.addBeanPostProcessor(new ImportAwareBeanPostProcessor(beanFactory));
 	}
 
@@ -386,13 +393,14 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	}
 
 	/**
-	 * Post-processes a BeanFactory in search of Configuration class BeanDefinitions;  对一个BeanFactory进行后处理，以查找配置类beandefinition;
+	 * Post-processes a BeanFactory in search of Configuration class BeanDefinitions;
 	 * any candidates are then enhanced by a {@link ConfigurationClassEnhancer}.
 	 * Candidate status is determined by BeanDefinition attribute metadata.
 	 * @see ConfigurationClassEnhancer
 	 */
 	public void enhanceConfigurationClasses(ConfigurableListableBeanFactory beanFactory) {
 		Map<String, AbstractBeanDefinition> configBeanDefs = new LinkedHashMap<>();
+		// 从容器中找到所有配置类的bean定义
 		for (String beanName : beanFactory.getBeanDefinitionNames()) {
 			BeanDefinition beanDef = beanFactory.getBeanDefinition(beanName);
 			if (ConfigurationClassUtils.isFullConfigurationClass(beanDef)) {
@@ -413,7 +421,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			// nothing to enhance -> return immediately
 			return;
 		}
-
+		// 对每个配置类进行增强
 		ConfigurationClassEnhancer enhancer = new ConfigurationClassEnhancer();
 		for (Map.Entry<String, AbstractBeanDefinition> entry : configBeanDefs.entrySet()) {
 			AbstractBeanDefinition beanDef = entry.getValue();
