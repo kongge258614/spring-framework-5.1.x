@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public class LogisticsService {
+
 	@Autowired
 	private UserService userService;
 
@@ -23,7 +24,6 @@ public class LogisticsService {
 //	}
 
 	public void save() {
-		userService.save();
 		System.out.println("logistics save............");
 	}
 }
