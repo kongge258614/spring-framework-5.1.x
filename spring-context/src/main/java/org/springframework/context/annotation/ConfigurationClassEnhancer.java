@@ -69,12 +69,21 @@ import org.springframework.util.ReflectionUtils;
  * @since 3.0
  * @see #enhance
  * @see ConfigurationClassPostProcessor
+ *
+ * Spring中存在这样一个工具类ConfigurationClassEnhancer,它会对应用中每个配置类，也就是一般通过@Configuration注解定义的类进行一个增强。
+ * 通过增强以后，配置类中使用@Bean注解的bean定义方法就不再是普通的方法了，它们具有了如下跟bean作用域有关的能力，以单例bean为例 ：
+ * 1. 它们首次被调用时，相应方法逻辑会被执行用于创建bean实例；
+ * 2. 再次被调用时，不会再执行创建bean实例，而是根据bean名称返回首次该方法被执行时创建的bean实例。
+ *
+ * 该增强是通过为相应配置类创建一个CGLIB子类来完成的。
+ * 该工具类会被ConfigurationClassPostProcessor在应用启动阶段发现和注册过配置类中的所有bean定义之后，应用于所有的配置类对它们进行增强。
  */
 class ConfigurationClassEnhancer {
 
 	// The callbacks to use. Note that these callbacks must be stateless.
 	private static final Callback[] CALLBACKS = new Callback[] {
 			new BeanMethodInterceptor(),
+			// 拦截BeanFactoryAware 定义的方法 setBeanFactory
 			new BeanFactoryAwareMethodInterceptor(),
 			NoOp.INSTANCE
 	};
@@ -106,6 +115,7 @@ class ConfigurationClassEnhancer {
 			}
 			return configClass;
 		}
+		// 使用一个CGLIB增强器创建配置类configClass的子类enhancedClass
 		Class<?> enhancedClass = createClass(newEnhancer(configClass, classLoader));
 		if (logger.isTraceEnabled()) {
 			logger.trace(String.format("Successfully enhanced %s; enhanced class name is: %s",
@@ -116,14 +126,19 @@ class ConfigurationClassEnhancer {
 
 	/**
 	 * Creates a new CGLIB {@link Enhancer} instance. 创建一个CGLIB实例
+	 * 创建一个新的 CGLIB Enhancer 增强器实例,configSuperClass是要增强的配置类
 	 */
 	private Enhancer newEnhancer(Class<?> configSuperClass, @Nullable ClassLoader classLoader) {
 		Enhancer enhancer = new Enhancer();
+		// 设置被增强类的父类是配置类
 		enhancer.setSuperclass(configSuperClass);
+		// 为增强类增加新的接口EnhancedConfiguration，主要目的是增加接口BeanFactoryAware
 		enhancer.setInterfaces(new Class<?>[] {EnhancedConfiguration.class});
 		enhancer.setUseFactory(false);
 		enhancer.setNamingPolicy(SpringNamingPolicy.INSTANCE);
 		enhancer.setStrategy(new BeanFactoryAwareGeneratorStrategy(classLoader));
+		// 增强器可以理解为是对被增强类的对象进行了增强，比如在方法调用前后做拦截等等，
+		// 下面的回调过滤器设置就是这个意思，CALLBACK_FILTER就相当于为被增强类增加的功能
 		enhancer.setCallbackFilter(CALLBACK_FILTER);
 		enhancer.setCallbackTypes(CALLBACK_FILTER.getCallbackTypes());
 		return enhancer;
