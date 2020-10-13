@@ -473,6 +473,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 * @see #doCreateBean
 	 *
 	 * 该类的核心方法：创建一个bean实例。填充bean实例，应用后处理程序，等等。
+	 * 传入的参数RootBeanDefinition mbd,前面生成的MergedBeanDefinition,专门有一个applyMergedBeanDefinitionPostProcessors()调用，
+	 * 这里就是容器中注册的MergedBeanDefinitionPostProcessor的应用阶段 ：
 	 */
 	@Override
 	protected Object createBean(String beanName, RootBeanDefinition mbd, @Nullable Object[] args) throws BeanCreationException {
@@ -553,6 +555,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			instanceWrapper = this.factoryBeanInstanceCache.remove(beanName);
 		}
 		if (instanceWrapper == null) {
+			// 创建bean POJO 对象
 			instanceWrapper = createBeanInstance(beanName, mbd, args);
 		}
 		final Object bean = instanceWrapper.getWrappedInstance();
@@ -566,6 +569,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		synchronized (mbd.postProcessingLock) {
 			if (!mbd.postProcessed) {
 				try {
+					// 对每一个MergedBeanDefinition执行postProcessMergedBeanDefinition方法
 					applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName);
 				}
 				catch (Throwable ex) {
@@ -1068,6 +1072,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 * @param beanType the actual type of the managed bean instance
 	 * @param beanName the name of the bean
 	 * @see MergedBeanDefinitionPostProcessor#postProcessMergedBeanDefinition
+	 *
+	 *  找到容器中注册的所有BeanPostProcessor中每一个MergedBeanDefinitionPostProcessor，
+	 *  将它们应用到指定的RootBeanDefinition mbd上，这里 mbd 其实就是一个 MergedBeanDefinition。
 	 */
 	protected void applyMergedBeanDefinitionPostProcessors(RootBeanDefinition mbd, Class<?> beanType, String beanName) {
 		for (BeanPostProcessor bp : getBeanPostProcessors()) {
