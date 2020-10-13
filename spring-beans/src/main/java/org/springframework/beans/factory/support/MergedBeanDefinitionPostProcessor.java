@@ -34,6 +34,14 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
  * @author Juergen Hoeller
  * @since 2.5
  * @see org.springframework.beans.factory.config.ConfigurableBeanFactory#getMergedBeanDefinition
+ *
+ *
+ * 一个MergedBeanDefinition是这样一个载体:
+ * 	1.根据原始BeanDefinition及其可能存在的双亲BeanDefinition中的bean定义信息"合并"而得来的一个RootBeanDefinition；
+ * 	2.每个Bean的创建需要的是一个MergedBeanDefinition，也就是需要基于原始BeanDefinition及其双亲BeanDefinition信息得到一个信息"合并"之后的BeanDefinition；
+ * 	3.Spring框架同时提供了一个机会给框架其他部分，或者开发人员用于在bean创建过程中，MergedBeanDefinition生成之后，
+ * 	bean属性填充之前，对该bean和该MergedBeanDefinition做一次回调，相应的回调接口是MergedBeanDefinitionPostProcessor。
+ * 	4.MergedBeanDefinition没有相应的Spring建模，它是处于一个内部使用目的合并自其它BeanDefinition对象，其具体对象所使用的实现类类型是RootBeanDefinition。
  */
 public interface MergedBeanDefinitionPostProcessor extends BeanPostProcessor {
 
