@@ -45,9 +45,6 @@ import org.springframework.util.ClassUtils;
  * definitions for annotation-based configuration. Also registers a common
  * {@link org.springframework.beans.factory.support.AutowireCandidateResolver}.
  *
- * 允许方便的注册 BeanPostProcessor 和 BeanFactoryPostProcessor 的工具类。基于注解配置的定义。
- * 也可以注册 AutowireCandidateResolver 。
- *
  *
  * @author Mark Fisher
  * @author Juergen Hoeller
@@ -60,6 +57,21 @@ import org.springframework.util.ClassUtils;
  * @see CommonAnnotationBeanPostProcessor
  * @see org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor
  * @see org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor
+ *
+ * AnnotationConfigUtils是一个Spring内部工具类，用于识别注解配置类中的bean定义。
+ * 该工具类主要提供了两个工具方法 :
+ * 	1.registerAnnotationConfigProcessors(BeanDefinitionRegistry registry,Object source)
+ * 	该方法主要是向容器注册了一组基础设施PostProcessor bean定义,这些bean定义生成的PostProcessor实例被框架自己用于识别注解配置类中的bean定义。
+ * 	它们里面还有一些作用于BeanDefinitionRegistry(容器级)的BeanDefinitionRegistryPostProcessor,
+ * 	和作用于BeanFactory(容器级)的BeanFactoryPostProcessor,其它才是一般bean级别的BeanPostProcessor。
+ *
+ * 	另外该方法还注册了一个通用的org.springframework.beans.factory.support.AutowireCandidateResolver ：ContextAnnotationAutowireCandidateResolver。
+ *
+ * 	2.processCommonDefinitionAnnotations(AnnotatedBeanDefinition abd)
+ * 	输入参数一般是某个基于注解的bean定义(类级别或者方法级别bean定义)，以AnnotatedBeanDefinition类型存在的一个对象实例，
+ * 	可能创建者已经设置了该对象的一些成员属性，但是更多的成员属性还存在于原始bean定义的元数据中，
+ * 	该方法从原始bean定义的元数据中获取那些通用的注解信息：@Lazy,@DependsOn,@Role,@Description,然后设置AnnotatedBeanDefinition实例相应的属性。
+ *
  */
 public abstract class AnnotationConfigUtils {
 
