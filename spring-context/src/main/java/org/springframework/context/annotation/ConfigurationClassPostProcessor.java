@@ -323,14 +323,19 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		// 使用工具ConfigurationClassParser尝试发现所有的配置(@Configuration)类
 		ConfigurationClassParser parser = new ConfigurationClassParser(
 				this.metadataReaderFactory, this.problemReporter, this.environment, this.resourceLoader, this.componentScanBeanNameGenerator, registry);
-
+		// 表示将要被处理的候选配置类
+		// 因为不清楚候选是否确实是@Configuration配置类，所以使用BeanDefinitionHolder类型记录
 		Set<BeanDefinitionHolder> candidates = new LinkedHashSet<>(configCandidates);
 		// 表示已经处理的配置类，已经被处理的配置类已经明确了其类型，所以用 ConfigurationClass 类型记录，
 		Set<ConfigurationClass> alreadyParsed = new HashSet<>(configCandidates.size());
 		do {
+			// 分析配置类，分析过程中
+			// 1. 如果遇到注解了@Component类，直接作为Bean定义注册到容器
+			// 2. 如果注解或者注解的注解中有@Import, 处理所有这些@import，识别配置类,添加到分析器的属性configurationClasses中去
 			parser.parse(candidates);
 			parser.validate();
 
+			// 从分析器parser中获取分析得到的配置类configurationClasses
 			Set<ConfigurationClass> configClasses = new LinkedHashSet<>(parser.getConfigurationClasses());
 			configClasses.removeAll(alreadyParsed);
 
@@ -339,11 +344,16 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 				this.reader = new ConfigurationClassBeanDefinitionReader(
 						registry, this.sourceExtractor, this.resourceLoader, this.environment, this.importBeanNameGenerator, parser.getImportRegistry());
 			}
+			// 使用 ConfigurationClassBeanDefinitionReader reader 从 configClasses 中加载 Bean定义并注册到容器
 			this.reader.loadBeanDefinitions(configClasses);  // 此方法的目的是:向工厂中注册用户自定义的BeanDefintion
+			// 刚刚处理完的配置类记录到已处理配置类alreadyParsed
 			alreadyParsed.addAll(configClasses);
-
+			// 清空候选配置类集合，为下一轮do循环做初始化准备
 			candidates.clear();
 			if (registry.getBeanDefinitionCount() > candidateNames.length) {
+				// 经过一轮do循环,现在容器中Bean定义数量超过了该次循环开始时的容器内Bean定义数量，
+				// 说明在该次循环中发现并注册了更多的Bean定义到容器中去，这些新注册的Bean定义
+				// 也有可能是候选配置类，它们也要被处理用来发现和注册Bean定义
 				String[] newCandidateNames = registry.getBeanDefinitionNames();
 				Set<String> oldCandidateNames = new HashSet<>(Arrays.asList(candidateNames));
 				Set<String> alreadyParsedClasses = new HashSet<>();
@@ -361,7 +371,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 				candidateNames = newCandidateNames;
 			}
 		}
-		while (!candidates.isEmpty());
+		while (!candidates.isEmpty()); // 一直循环到没有新的候选配置类被发现
 
 		// Register the ImportRegistry as a bean in order to support ImportAware @Configuration classes
 		if (sbr != null && !sbr.containsSingleton(IMPORT_REGISTRY_BEAN_NAME)) {
