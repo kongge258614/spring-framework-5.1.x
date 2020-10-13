@@ -46,23 +46,35 @@ import org.springframework.util.ClassUtils;
  * @since 3.0
  * @see BeanMethod
  * @see ConfigurationClassParser
+ *
+ * ConfigurationClass类代表一个用户定义的配置(@Configuration)类，包括@Bean注解标注的方法，
+ * 包括所有在类的父类中定义的方法，用一种扁平化的方式来管理；
  */
 final class ConfigurationClass {
 
+	//配置类的注解元数据
 	private final AnnotationMetadata metadata;
 
+	//配置类的资源对象
 	private final Resource resource;
 
 	@Nullable
 	private String beanName;
 
+	//存放通过@Import注解引入的候选类是通过那个配置类引入的
+	//包括ImportSelector选择器类中引入的候选类
+	//包括DeferredImportSelector选择器中引入的候选类
+	//包括@Import引入的普通类
 	private final Set<ConfigurationClass> importedBy = new LinkedHashSet<>(1);
 
+	//配置类的Bean方法对象
 	private final Set<BeanMethod> beanMethods = new LinkedHashSet<>();
 
 	private final Map<String, Class<? extends BeanDefinitionReader>> importedResources =
 			new LinkedHashMap<>();
 
+	//存放通过@Import注解引入的ImportBeanDefinitionRegistrar实现类，用于注册自定义bean到IOC容器
+	//value值是引入当前类的类的注解元数据
 	private final Map<ImportBeanDefinitionRegistrar, AnnotationMetadata> importBeanDefinitionRegistrars =
 			new LinkedHashMap<>();
 

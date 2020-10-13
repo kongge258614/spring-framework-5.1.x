@@ -48,6 +48,10 @@ import org.springframework.core.type.AnnotationMetadata;
  * @see Import
  * @see ImportSelector
  * @see Configuration
+ *
+ * 在Spring中，配置类(使用@Configuration的那些类)可以使用@Import直接导入另外一个配置类，也可以导入一个ImportSelector实现类根据特定的选择条件导入符合条件的配置类，
+ * 也可以实现该接口ImportBeanDefinitionRegistrar根据特定条件程序化地直接注册bean定义到容器。
+ *
  */
 public interface ImportBeanDefinitionRegistrar {
 
