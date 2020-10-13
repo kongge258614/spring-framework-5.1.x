@@ -14,6 +14,15 @@ public class UserService {
 	@Autowired
 	private LogisticsService logisticsService;
 
+//	public LogisticsService getLogisticsService() {
+//		return logisticsService;
+//	}
+//
+//	@Autowired
+//	public void setLogisticsService(LogisticsService logisticsService) {
+//		this.logisticsService = logisticsService;
+//	}
+
 	public void save() {
 
 		// Spring如何解决循环依赖

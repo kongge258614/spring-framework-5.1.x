@@ -13,8 +13,17 @@ public class LogisticsService {
 	@Autowired
 	private UserService userService;
 
+//	public UserService getUserService() {
+//		return userService;
+//	}
+//
+//	@Autowired
+//	public void setUserService(UserService userService) {
+//		this.userService = userService;
+//	}
+
 	public void save() {
-//		userService.save();
+		userService.save();
 		System.out.println("logistics save............");
 	}
 }
