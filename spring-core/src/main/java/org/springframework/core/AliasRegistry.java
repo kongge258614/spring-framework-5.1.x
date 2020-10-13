@@ -22,6 +22,8 @@ package org.springframework.core;
  *
  * @author Juergen Hoeller
  * @since 2.5.2
+ *
+ * 一个公共的接口，用户注册别名
  */
 public interface AliasRegistry {
 
