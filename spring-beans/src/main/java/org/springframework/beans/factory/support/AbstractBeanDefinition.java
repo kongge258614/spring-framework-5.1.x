@@ -53,6 +53,20 @@ import org.springframework.util.StringUtils;
  * @see GenericBeanDefinition
  * @see RootBeanDefinition
  * @see ChildBeanDefinition
+ *
+ * AbstractBeanDefinition是最终全功能BeanDefinition实现类的基类，也就是这些类的共同属性和公共逻辑实现。
+ * AbstractBeanDefinition中并没有太复杂的实现逻辑，而是主要是用于：
+ * 	1.定义共用的构造函数。
+ * 	2.定义共用BeanDefinition属性以及提供它们的getter/setter方法。
+ * 	3.其他一些共用工具方法 : 从另外一个bean定义覆盖当前bean定义，应用初始值等等。
+ * 另外AbstractBeanDefinition继承自BeanMetadataAttributeAccessor。
+ * BeanMetadataAttributeAccessor为AbstractBeanDefinition提供了接口AttributeAccessor定义的属性访问能力以及BeanMetadataElement定义的源配置对象设置/获取能力。
+ *
+ * 继承自AbstractBeanDefinition的全功能BeanDefinition实现类有 :
+ *
+ * 	1.GenericBeanDefinition
+ * 	2.RootBeanDefinition
+ * 	3.ChildBeanDefinition
  */
 @SuppressWarnings("serial")
 public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccessor implements BeanDefinition, Cloneable {
@@ -153,8 +167,10 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	// 是否延迟加载
 	private boolean lazyInit = false;
 
+	// 自动装配模式 : 初始化为不要使用自动装配
 	private int autowireMode = AUTOWIRE_NO;
 
+	// 依赖检查 : 初始化为不要做依赖检查
 	private int dependencyCheck = DEPENDENCY_CHECK_NONE;
 
 	// 用来表示一个bean的实例化依靠另一个bean先实例化，对应bean属性 depend-on
@@ -173,25 +189,29 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	private Supplier<?> instanceSupplier;
 
 	private boolean nonPublicAccessAllowed = true;
-
+	//调用构造函数时，是否采用宽松匹配
 	private boolean lenientConstructorResolution = true;
 
+	// 工厂bean名称
 	@Nullable
 	private String factoryBeanName;
 
+	// 工厂方法名称
 	@Nullable
 	private String factoryMethodName;
 
-	// 记录构造函数注入属性，对应bean属性 constructor-arg
+	// 构造函数参数值
 	@Nullable
 	private ConstructorArgumentValues constructorArgumentValues;
 
+	// 属性值，注意这里使用了 MutablePropertyValues ， 表示这些属性值在最终被设置到 bean实例之前一直是可以被修改的
 	@Nullable
 	private MutablePropertyValues propertyValues;
 
 	@Nullable
 	private MethodOverrides methodOverrides;
 
+	// 初始化方法的名称
 	@Nullable
 	private String initMethodName;
 
@@ -202,8 +222,15 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 
 	private boolean enforceDestroyMethod = true;
 
+	// 是否是一个合成 BeanDefinition,
+	// 合成 在这里的意思表示这不是一个应用开发人员自己定义的 BeanDefinition, 而是程序
+	// 自己组装而成的一个 BeanDefinition, 例子 :
+	// 1. 自动代理的helper bean，一个基础设施bean，因为使用<aop:config> 被自动合成创建;
+	// 2. bean errorPageRegistrarBeanPostProcessor , Spring boot 自动配置针对Web错误页面的
+	// 一个bean，这个bean不需要应用开发人员定义，而是框架根据上下文自动合成组装而成；
 	private boolean synthetic = false;
 
+	// 当前bean 定义的角色，初始化为 ROLE_APPLICATION ， 提示这是一个应用bean， 另外还有基础设施bean（仅供框架内部工作使用），和 支持bean
 	private int role = BeanDefinition.ROLE_APPLICATION;
 
 	@Nullable
@@ -232,6 +259,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	/**
 	 * Create a new AbstractBeanDefinition as a deep copy of the given
 	 * bean definition.
+	 * 深度复制给定的bean定义创建一个新的AbstractBeanDefinition
 	 * @param original the original bean definition to copy from
 	 */
 	protected AbstractBeanDefinition(BeanDefinition original) {
@@ -360,7 +388,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 		}
 	}
 
-	/**
+	/** 使用缺省值定义进行当前bean定义的初始化
 	 * Apply the provided default values to this bean.  将提供的默认值应用于此bean。
 	 * @param defaults the default settings to apply
 	 * @since 2.5
