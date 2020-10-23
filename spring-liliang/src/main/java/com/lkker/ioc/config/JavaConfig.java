@@ -2,6 +2,7 @@ package com.lkker.ioc.config;
 
 import com.lkker.ioc.model.Logistics;
 import com.lkker.ioc.service.impl.LkkerService;
+import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +19,7 @@ import org.springframework.context.annotation.Import;
 @Import(value = LkkerService.class)
 public class JavaConfig {
 
-	@Bean
+	@Bean(autowire = Autowire.BY_TYPE)
 	public Logistics logistics(){
 		return new Logistics();
 	}
