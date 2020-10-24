@@ -38,9 +38,7 @@ import org.springframework.util.Assert;
  * This is an alternative to {@link ClassPathBeanDefinitionScanner}, applying
  * the same resolution of annotations but for explicitly registered classes only.
  *
- * 	一个实用的适配器，有计划的注册被注解标注的bean 类
- * 	这是一个 ClassPathBeanDefinitionScanner 的替代方案，使用相同的注解，但是仅仅是显示的注册类
- *
+ * 一个工具类，作用：注册一个或多个被注解标识的类
  * @author Juergen Hoeller
  * @author Chris Beams
  * @author Sam Brannen
