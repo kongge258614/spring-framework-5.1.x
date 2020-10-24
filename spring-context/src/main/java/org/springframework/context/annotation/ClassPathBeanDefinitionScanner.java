@@ -73,6 +73,9 @@ import org.springframework.util.PatternMatchUtils;
  * ClassPathBeanDefinitionScanner继承自ClassPathScanningCandidateComponentProvider,实际上使用哪些过滤器，以及扫描目标组件的逻辑，
  * 主要实现在ClassPathScanningCandidateComponentProvider,不过ClassPathScanningCandidateComponentProvider是从一个包中扫描组件,
  * 而ClassPathBeanDefinitionScanner在此基础上做了增强，从而具备从多个包中扫描目标组件的能力。
+ *
+ * 该类的主要方法：1.doScan（doScan主要用到了父类的findCandidateComponents方法，实现了从多个包中扫描组件的能力）
+ *                 2. registerBeanDefinition （将beanDefinition注册到容器中）
  */
 public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateComponentProvider {
 
