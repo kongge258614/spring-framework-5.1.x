@@ -59,6 +59,20 @@ import org.springframework.util.PatternMatchUtils;
  * @see org.springframework.stereotype.Repository
  * @see org.springframework.stereotype.Service
  * @see org.springframework.stereotype.Controller
+ *
+ * ClassPathBeanDefinitionScanner是一个从指定包内扫描所有组件bean定义的Spring工具。
+ * 工作时，它接收一组包的名称，然后在这些包内扫描所有的类，查找其中符合条件的bean组件定义并将这些bean组件定义注册到容器。
+ * 这些bean定义注册到容器时具体使用的类为ScannedGenericBeanDefinition,
+ * 这是Spring bean定义模型接口BeanDefinition的一个具体实现类，针对扫描得到的bean定义。
+ *
+ *
+ * 调用者也可以通过添加包含参数includeFilter告诉该工具类考虑应用了其他注解的类。
+ * 当然也并不是每个带有上面注解之一的类就会被认为是符合条件的，该工具类也会考虑调用者提供的排除参数excludeFilter。
+ *
+ * 该工具类的典型应用是被ComponentScanAnnotationParser使用。
+ * ClassPathBeanDefinitionScanner继承自ClassPathScanningCandidateComponentProvider,实际上使用哪些过滤器，以及扫描目标组件的逻辑，
+ * 主要实现在ClassPathScanningCandidateComponentProvider,不过ClassPathScanningCandidateComponentProvider是从一个包中扫描组件,
+ * 而ClassPathBeanDefinitionScanner在此基础上做了增强，从而具备从多个包中扫描目标组件的能力。
  */
 public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateComponentProvider {
 
