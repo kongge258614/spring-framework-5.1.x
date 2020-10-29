@@ -106,6 +106,16 @@ import org.springframework.util.StringUtils;
  * @see ConfigurationClassBeanDefinitionReader
  *
  * Spring的工具类ConfigurationClassParser用于分析@Configuration注解的配置类，产生一组ConfigurationClass对象。
+ * 它的分析过程会接受一组种子配置类(调用者已知的配置类，通常很可能只有一个)，从这些种子配置类开始分析所有关联的配置类，
+ * 分析过程主要是递归分析配置类的注解@Import，配置类内部嵌套类，找出其中所有的配置类，然后返回这组配置类。
+ *
+ * 该工具主要由ConfigurationClassPostProcessor使用。
+ *
+ * 这个工具类自身的逻辑并不注册bean定义，它的主要任务是发现@Configuration注解的所有配置类并将这些配置类交给调用者(调用者会通过其他方式注册其中的bean定义)，
+ * 而对于非@Configuration注解的其他bean定义，比如@Component注解的bean定义，该工具类使用另外一个工具ComponentScanAnnotationParser扫描和注册它们。
+ *
+ * 一般情况下一个@Configuration注解的类只会产生一个ConfigurationClass对象，但是因为@Configuration注解的类可能会使用注解@Import引入其他配置类，
+ * 也可能内部嵌套定义配置类，所以总的来看，ConfigurationClassParser分析一个@Configuration注解的类，可能产生任意多个ConfigurationClass对象。
  */
 class ConfigurationClassParser {
 
@@ -239,13 +249,18 @@ class ConfigurationClassParser {
 		}
 
 		// Recursively process the configuration class and its superclass hierarchy.
+		// 从当前配置类configClass开始向上沿着类继承结构逐层执行doProcessConfigurationClass,
+		// 直到遇到的父类是由Java提供的类结束循环
 		SourceClass sourceClass = asSourceClass(configClass);
 		do {
-
+			// 循环处理配置类configClass直到sourceClass变为null
+			// doProcessConfigurationClass的返回值是其参数configClass的父类，
+			// 如果该父类是由Java提供的类或者已经处理过，返回null
 			sourceClass = doProcessConfigurationClass(configClass, sourceClass);
 		}
 		while (sourceClass != null);
 
+		// 需要被处理的配置类configClass已经被分析处理，将它记录到已处理配置类
 		this.configurationClasses.put(configClass, configClass);
 	}
 
@@ -256,6 +271,17 @@ class ConfigurationClassParser {
 	 * @param configClass the configuration class being build
 	 * @param sourceClass a source class
 	 * @return the superclass, or {@code null} if none found or previously processed
+	 *
+	 * doProcessConfigurationClass()对一个配置类执行真正的处理:
+	 * 1、一个配置类的成员类(配置类内嵌套定义的类)也可能适配类，先遍历这些成员配置类，调用processConfigurationClass处理它们;
+	 * 2、处理配置类上的注解@PropertySources,@PropertySource
+	 * 3、处理配置类上的注解@ComponentScans,@ComponentScan
+	 * 4、处理配置类上的注解@Import
+	 * 5、处理配置类上的注解@ImportResource
+	 * 6、处理配置类中每个带有@Bean注解的方法
+	 * 7、处理配置类所实现接口的缺省方法
+	 * 8、检查父类是否需要处理，如果父类需要处理返回父类，否则返回null
+	 *
 	 */
 	@Nullable
 	protected final SourceClass doProcessConfigurationClass(ConfigurationClass configClass, SourceClass sourceClass)
@@ -283,7 +309,8 @@ class ConfigurationClassParser {
 		Set<AnnotationAttributes> componentScans = AnnotationConfigUtils.attributesForRepeatable(sourceClass.getMetadata(), ComponentScans.class, ComponentScan.class);
 		if (!componentScans.isEmpty() && !this.conditionEvaluator.shouldSkip(sourceClass.getMetadata(), ConfigurationPhase.REGISTER_BEAN)) {
 			for (AnnotationAttributes componentScan : componentScans) {
-				// The config class is annotated with @ComponentScan -> perform the scan immediately 配置类由@ComponentScan注释——>立即执行扫描
+				// The config class is annotated with @ComponentScan -> perform the scan immediately
+				// 配置类由@ComponentScan注释——>立即执行扫描
 				Set<BeanDefinitionHolder> scannedBeanDefinitions = this.componentScanParser.parse(componentScan, sourceClass.getMetadata().getClassName());
 				// Check the set of scanned definitions for any further config classes and parse recursively if needed
 				for (BeanDefinitionHolder holder : scannedBeanDefinitions) {
