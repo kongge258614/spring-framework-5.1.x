@@ -503,8 +503,14 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		try {
+			/**
+			 * 在执行doCreateBean之前有resolveBeforeInstantiation方法；doCreateBean是创建bean的方法；
+			 * resolveBeforeInstantiation是 判断执行InstantiationAwareBeanPostProcessor.postProcessBeforeInstantiation的接方法实现
+			 */
+
 			// Give BeanPostProcessors a chance to return a proxy instead of the target bean instance. 让beanpostprocessor有机会返回代理而不是目标bean实例。
-			Object bean = resolveBeforeInstantiation(beanName, mbdToUse);  //在实例化之前解析
+			//在实例化之前解析,InstantiationAwareBeanPostProcessor的执行时机
+			Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
 			if (bean != null) {
 				return bean;
 			}
@@ -1095,8 +1101,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	@Nullable
 	protected Object resolveBeforeInstantiation(String beanName, RootBeanDefinition mbd) {
 		Object bean = null;
+		//如果beforeInstantiationResolved还没有设置或者是false（说明还没有需要在实例化前执行的操作）
 		if (!Boolean.FALSE.equals(mbd.beforeInstantiationResolved)) {
-			// Make sure bean class is actually resolved at this point. 确保此时bean类已经被解析
+			// Make sure bean class is actually resolved at this point.
+			// 判断是否有注册过InstantiationAwareBeanPostProcessor类型的bean
 			if (!mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {
 				Class<?> targetType = determineTargetType(beanName, mbd);
 				if (targetType != null) {
@@ -1110,6 +1118,16 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 		return bean;
 	}
+	/**
+	 * 上面代码说明：
+	 *
+	 * 1、如果postProcessBeforeInstantiation方法返回了Object是null;那么就直接返回，调用doCreateBean方法();
+	 * 2、如果postProcessBeforeInstantiation返回不为null;说明修改了bean对象;然后这个时候就立马执行postProcessAfterInitialization方法
+	 * (注意这个是初始化之后的方法,也就是通过这个方法实例化了之后，直接执行初始化之后的方法;中间的实例化之后 和 初始化之前都不执行);
+	 * 3、在调用postProcessAfterInitialization方法时候如果返回null;那么就直接返回，调用doCreateBean方法();(初始化之后的方法返回了null,那就需要调用doCreateBean生成对象了)
+	 * 4、在调用postProcessAfterInitialization时返回不为null;那这个bean就直接返回给ioc容器了 初始化之后的操作 是这里面最后一个方法了；
+	 * 5、通过上面的描述，我们其实可以在这里生成一个代理类；
+	 */
 
 	/**
 	 * Apply InstantiationAwareBeanPostProcessors to the specified bean definition
@@ -1128,6 +1146,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			if (bp instanceof InstantiationAwareBeanPostProcessor) {
 				InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
 				Object result = ibp.postProcessBeforeInstantiation(beanClass, beanName);
+				//如果返回null；后面的所有 后置处理器的方法就不执行，直接返回(所以执行顺序很重要)
 				if (result != null) {
 					return result;
 				}
