@@ -119,6 +119,8 @@ class ConfigurationClassBeanDefinitionReader {
 	 * configurationModel 是一组ConfigurationClass，表示一组配置类,该方法从中读取bean定义
 	 * 并注册到bean容器
 	 */
+	// 这是该类对外提供的唯一的服务方法入口
+	// configurationModel 通常来自 ConfigurationClassParser
 	public void loadBeanDefinitions(Set<ConfigurationClass> configurationModel) {
 		TrackedConditionEvaluator trackedConditionEvaluator = new TrackedConditionEvaluator();
 		for (ConfigurationClass configClass : configurationModel) {
