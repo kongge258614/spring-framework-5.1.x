@@ -138,6 +138,9 @@ import org.springframework.util.StringValueResolver;
  * @see #setResourceFactory
  * @see org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor
  * @see org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor
+ *
+ * CommonAnnotationBeanPostProcessor类在spring中是一个极其重要的类，它负责解析@Resource、@WebServiceRef、@EJB三个注解。
+ * 这三个注解都是定义在javax.*包下的注解，属于java中的注解。
  */
 @SuppressWarnings("serial")
 public class CommonAnnotationBeanPostProcessor extends InitDestroyAnnotationBeanPostProcessor
@@ -291,7 +294,14 @@ public class CommonAnnotationBeanPostProcessor extends InitDestroyAnnotationBean
 		}
 	}
 
-
+	/**
+	 * 这个方法首先会调用父类的postProcessMergedBeanDefinition方法，然后调用findResourceMetadata方法。
+	 *
+	 * CommonAnnoatationBeanPostProcessor的父类是InitDestoryAnnoatationBeanPostProcessor，
+	 * 在InitDestoryAnnoatationBeanPostProcessor类中postProcessMergedBeanDefinition方法主要完成的解析和初始化（@PostConstruct）和销毁（@PreDestory）相关的注解并缓存到lifecycleMetadataCache中。
+	 *
+	 * CommonAnnoatationBeanPostProcessor的findResourceMetadata方法主要完成的是解析@Resource、@WebServiceRef、@EJB三个注解并缓存到injectionMetadataCache中。
+	 */
 	@Override
 	public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class<?> beanType, String beanName) {
 		super.postProcessMergedBeanDefinition(beanDefinition, beanType, beanName);
@@ -304,11 +314,13 @@ public class CommonAnnotationBeanPostProcessor extends InitDestroyAnnotationBean
 		this.injectionMetadataCache.remove(beanName);
 	}
 
+	// postProcessBeforeInstantiation方法，该方法的返回值为null，即不会在bean实例化前产生一个代理对象。
 	@Override
 	public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) {
 		return null;
 	}
 
+	// postProcessAfterInstantiation方法，该方法的返回值为true，也就是说该类不会阻止属性的注入。
 	@Override
 	public boolean postProcessAfterInstantiation(Object bean, String beanName) {
 		return true;
@@ -355,6 +367,11 @@ public class CommonAnnotationBeanPostProcessor extends InitDestroyAnnotationBean
 		return metadata;
 	}
 
+	/**
+	 * 此方法分别从属性和方法上判断是否有@Resource、@WebServiceRef、@EJB注解，如果存在则放入injectionMetadataCache中。
+	 * 从这里可以看出这三个注解可以用在方法和属性上。
+	 *
+	 */
 	private InjectionMetadata buildResourceMetadata(final Class<?> clazz) {
 		List<InjectionMetadata.InjectedElement> elements = new ArrayList<>();
 		Class<?> targetClass = clazz;
