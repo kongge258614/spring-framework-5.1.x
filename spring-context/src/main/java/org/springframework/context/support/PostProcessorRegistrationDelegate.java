@@ -42,7 +42,6 @@ import org.springframework.lang.Nullable;
 
 /**
  * Delegate for AbstractApplicationContext's post-processor handling.
- * 委托AbstractApplicationContext的后处理器处理。
  * PostProcessorRegistrationDelegate是AbstractApplicationContext委托执行post processors任务的工具类
  * @author Juergen Hoeller
  * @since 4.0
