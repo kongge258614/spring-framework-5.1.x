@@ -1412,6 +1412,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		PropertyValues pvs = (mbd.hasPropertyValues() ? mbd.getPropertyValues() : null);
 
+		// 1. 自动注入：包括名称注入和类型注入(XML)
 		if (mbd.getResolvedAutowireMode() == AUTOWIRE_BY_NAME || mbd.getResolvedAutowireMode() == AUTOWIRE_BY_TYPE) {
 			MutablePropertyValues newPvs = new MutablePropertyValues(pvs);
 			// Add property values based on autowire by name if applicable.
@@ -1428,6 +1429,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		boolean hasInstAwareBpps = hasInstantiationAwareBeanPostProcessors();
 		boolean needsDepCheck = (mbd.getDependencyCheck() != AbstractBeanDefinition.DEPENDENCY_CHECK_NONE);
 
+		//注解注入：后置处理器ibp#postProcessProperties，大名鼎鼎的@Autowired、@Resource就是在这处理的。
+		// AutowiredAnnotationBeanPostProcessor 用于处理 @Autowired 和 @Value 注解
+		// CommonAnnotationBeanPostProcessor 用于处理 @Resource 注解
 		PropertyDescriptor[] filteredPds = null;
 		if (hasInstAwareBpps) {
 			if (pvs == null) {
