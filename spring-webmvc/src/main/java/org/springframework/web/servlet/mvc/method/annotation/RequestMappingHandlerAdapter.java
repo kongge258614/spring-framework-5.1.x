@@ -129,26 +129,33 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 					AnnotatedElementUtils.hasAnnotation(method, ModelAttribute.class));
 
 
+	// 自定义的参数解析器
 	@Nullable
 	private List<HandlerMethodArgumentResolver> customArgumentResolvers;
 
+	// 内置参数解析器
 	@Nullable
 	private HandlerMethodArgumentResolverComposite argumentResolvers;
 
+	//供@InitBinder注解方法使用的参数解析器
 	@Nullable
 	private HandlerMethodArgumentResolverComposite initBinderArgumentResolvers;
 
+	// 自定义的返回值处理器
 	@Nullable
 	private List<HandlerMethodReturnValueHandler> customReturnValueHandlers;
 
+	//内置返回值处理器
 	@Nullable
 	private HandlerMethodReturnValueHandlerComposite returnValueHandlers;
 
 	@Nullable
 	private List<ModelAndViewResolver> modelAndViewResolvers;
 
+	// 内容协商管理器 : 可以判断请求的媒体类型MediaType,也可以根据媒体类型MediaType获取相应的文件扩展名
 	private ContentNegotiationManager contentNegotiationManager = new ContentNegotiationManager();
 
+	//HTTP消息转换器
 	private List<HttpMessageConverter<?>> messageConverters;
 
 	private List<Object> requestResponseBodyAdvice = new ArrayList<>();
@@ -156,6 +163,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 	@Nullable
 	private WebBindingInitializer webBindingInitializer;
 
+	// 异步任务执行器
 	private AsyncTaskExecutor taskExecutor = new SimpleAsyncTaskExecutor("MvcAsync");
 
 	@Nullable
@@ -555,7 +563,11 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 		return this.beanFactory;
 	}
 
-
+	// InitializingBean 接口定义的该bean的初始化方法 ：
+	// 1. 初始化 controller advice cache : this.requestResponseBodyAdvice
+	// 2. 初始化参数解析器 ：this.argumentResolvers
+	// 3. 初始化 @InitBinder 方法使用的参数解析器 : this.initBinderArgumentResolvers
+	// 4. 初始化 返回值处理器 : this.returnValueHandlers
 	@Override
 	public void afterPropertiesSet() {
 		// Do this first, it may add ResponseBody advice beans
@@ -840,8 +852,10 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 	}
 
 	/**
+	 *
 	 * Invoke the {@link RequestMapping} handler method preparing a {@link ModelAndView}
 	 * if view resolution is required.
+	 * 调用 @RequestMapping 注解的目标控制器方法，如果需要视图解析的话准备一个 ModelAndView对象并返回
 	 * @since 4.2
 	 * @see #createInvocableHandlerMethod(HandlerMethod)
 	 */
