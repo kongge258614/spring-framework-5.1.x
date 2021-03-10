@@ -245,11 +245,11 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		Object cacheKey = getCacheKey(beanClass, beanName);
 
 		if (!StringUtils.hasLength(beanName) || !this.targetSourcedBeans.contains(beanName)) {
-			if (this.advisedBeans.containsKey(cacheKey)) {
+			if (this.advisedBeans.containsKey(cacheKey)) { //查缓存，是否有处理过了，不管是不是需要通知增强的，只要处理过了就会放里面
 				return null;
 			}
 			if (isInfrastructureClass(beanClass) || shouldSkip(beanClass, beanName)) {
-				this.advisedBeans.put(cacheKey, Boolean.FALSE);
+				this.advisedBeans.put(cacheKey, Boolean.FALSE); //要跳过的直接设置FALSE
 				return null;
 			}
 		}
@@ -359,7 +359,9 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 	/**
 	 * Return whether the given bean class represents an infrastructure class
-	 * that should never be proxied. 返回给定的bean类是否表示永远不应该代理的基础设施类。
+	 * that should never be proxied.
+	 * 回返给定的bean类是否表示永远不应该代理的基础设施类。
+	 * 主要看bean的类型是不是内部的类型，比如Advice，Pointcut，Advisor，AopInfrastructureBean这些是跟AOP相关的，所以不应该被处理。
 	 * <p>The default implementation considers Advices, Advisors and
 	 * AopInfrastructureBeans as infrastructure classes.
 	 * @param beanClass the class of the bean
