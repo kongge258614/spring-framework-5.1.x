@@ -79,9 +79,10 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 	 * <p>Creates a Spring Advisor for each AspectJ advice method.
 	 * @return the list of {@link org.springframework.aop.Advisor} beans
 	 * @see #isEligibleBean
+	 * 这里就是复杂的地方啦，其实他做的就是寻找Aspect注解的切面对象，然后解析他的方法，通过注解来生成对应的通知器Advisor
 	 */
 	public List<Advisor> buildAspectJAdvisors() {
-		List<String> aspectNames = this.aspectBeanNames;
+		List<String> aspectNames = this.aspectBeanNames;  //获取切面名字列表
 
 		if (aspectNames == null) {
 			synchronized (this) {
